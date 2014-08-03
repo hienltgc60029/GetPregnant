@@ -58,6 +58,7 @@ public class Fragment_MusikListe extends Fragment implements
 	int curVolume = 10;
 	Messenger messenger;
 	Message mg;
+	int demo;
 
 	private static Fragment_MusikListe _ins;
 
@@ -113,7 +114,6 @@ public class Fragment_MusikListe extends Fragment implements
 		this.wrapper.addView(initUIMusicBar);
 		//this.wrapper.addView(initUIListView);
 		this.wrapper.addView(this.initUIBottom);
-
 	}
 
 	public void preference() {
