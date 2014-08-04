@@ -38,7 +38,7 @@ import android.widget.Toast;
 
 public class Fragment_MusikListe extends Fragment implements
 		OnItemClickListener, OnClickListener, OnSeekBarChangeListener,
-		OnCompletionListener, OnPreparedListener {
+		OnCompletionListener {
 
 	private Helper mHelper;
 	public UI_Musik mMusik;
@@ -96,7 +96,7 @@ public class Fragment_MusikListe extends Fragment implements
 		Musik musik = (Musik) getActivity();
 		messenger = musik.getMessenger1();
 		
-		media.setOnPreparedListener(this);
+		
 
 		mg = new Message();
 		preference();
@@ -416,7 +416,7 @@ public class Fragment_MusikListe extends Fragment implements
 
 				media.start();
 				this.mMusik.mLine.setMax(media.getDuration());
-				publishProgress(media.getCurrentPosition());
+				
 				media.setOnCompletionListener(new OnCompletionListener() {
 
 					@Override
@@ -449,31 +449,6 @@ public class Fragment_MusikListe extends Fragment implements
 
 	}
 
-	@Override
-	public void onPrepared(final MediaPlayer mp) {
-		// TODO Auto-generated method stub
-		this.mMusik.mLine.setMax(mp.getDuration());
-		new Thread(new Runnable() {
-			UI_Musik mMusik = UI_Musik.shareIns(getActivity());
 
-			@Override
-			public void run() {
-				while (mp != null && mp.getCurrentPosition() < mp.getDuration()) {
-					this.mMusik.mLine.setProgress(mp.getCurrentPosition());
-					Message msg = new Message();
-					int millis = mp.getCurrentPosition();
-
-					msg.obj = millis / 1000;
-
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
-
-	}
 
 }
