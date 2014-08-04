@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
+import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Musik_Adapter;
@@ -43,7 +44,7 @@ public class Fragment_MusikListe extends Fragment implements
 	public UI_Musik mMusik;
 	public FrameLayout wrapper;
 	public View initUIBackGround, initUIHeader;
-	public FrameLayout initUIListView;
+	public ListView initUIListView;
 	public RelativeLayout initUIMusicBar;
 	public FrameLayout initUIBottom;
 	ListView list;
@@ -58,20 +59,20 @@ public class Fragment_MusikListe extends Fragment implements
 	int curVolume = 10;
 	Messenger messenger;
 	Message mg;
-	int demo;
+	
 
 	private static Fragment_MusikListe _ins;
 
-	private Fragment_MusikListe(ArrayList<Songs> arrList, int sliteVolume) {
+	private Fragment_MusikListe(ArrayList<Songs> arrList) {
 		arr = arrList;
-		curVolume = sliteVolume;
+	
 	}
 
-	public static Fragment_MusikListe newInstance(ArrayList<Songs> arrList,
-			int sliteVolume) {
+	public static Fragment_MusikListe newInstance(ArrayList<Songs> arrList
+			) {
 		if (Fragment_MusikListe._ins == null) {
-			Fragment_MusikListe._ins = new Fragment_MusikListe(arrList,
-					sliteVolume);
+			Fragment_MusikListe._ins = new Fragment_MusikListe(arrList
+					);
 		}
 
 		return Fragment_MusikListe._ins;
@@ -91,15 +92,44 @@ public class Fragment_MusikListe extends Fragment implements
 		this.initUIListView = this.mMusik.initUIListView();
 
 		initUI();
+		getArray();
 		Musik musik = (Musik) getActivity();
 		messenger = musik.getMessenger1();
-		media = musik.getMedia();
+		
 		media.setOnPreparedListener(this);
 
 		mg = new Message();
 		preference();
 		return wrapper;
 	}
+	public void getArray() {
+		String timePhut = null;
+		String timeGiay = null;
+		GetSongsAll all = new GetSongsAll();
+		arr = all.getPlayList();
+
+		for (int i = 0; i < arr.size(); i++) {
+			media = MediaPlayer.create(getActivity(),
+					Uri.parse(arr.get(i).getmURL()));
+			int phut = (int) ((media.getDuration() / 60000) % 60);
+			if (phut < 10) {
+				timePhut = "0" + String.valueOf(phut);
+			} else {
+				timePhut = String.valueOf(phut);
+			}
+
+			int giay = (int) (((media.getDuration() - (phut * 60000)) / 1000) % 60);
+			if (giay < 10) {
+				timeGiay = "0" + String.valueOf(giay);
+			} else {
+				timeGiay = String.valueOf(giay);
+			}
+			arr.get(i).setmLine(timePhut + ":" + timeGiay);
+
+		}
+
+	}
+
 
 	public void initUI() {
 
@@ -112,7 +142,7 @@ public class Fragment_MusikListe extends Fragment implements
 		this.wrapper.addView(initUIBackGround);
 
 		this.wrapper.addView(initUIMusicBar);
-		//this.wrapper.addView(initUIListView);
+		this.wrapper.addView(initUIListView);
 		this.wrapper.addView(this.initUIBottom);
 	}
 
@@ -142,16 +172,9 @@ public class Fragment_MusikListe extends Fragment implements
 		// seekLine.setVisibility(View.GONE);
 		seekVolume = (SeekBar) wrapper.findViewById(Key.SEEKBAR_VOLUME);
 
-		//list = (ListView) wrapper.findViewById(Key.LISTVIEW_LIBRARY);
+		list = (ListView) wrapper.findViewById(Key.LISTVIEW_LIBRARY);
 		
-		ListView list = new ListView(getActivity());
-		int h = (int) (55 * mHelper.getAppHeight() / 100 + 8);
-		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, h);
-		int margin = (int) (this.mHelper.getAppWidth() / 10);
-		viewPara.setMargins(margin, (int) this.mHelper.DpToPixel(174), margin, 0);
-		list.setLayoutParams(viewPara);
-		list.setId(Key.LISTVIEW_LIBRARY);
+		
 		
 		adapter = new Musik_Adapter(arr, R.layout.items_musik, getActivity());
 		//Log.i("LTH", "position array:" + String.valueOf(adapter.getCount()));
@@ -184,7 +207,7 @@ public class Fragment_MusikListe extends Fragment implements
 			pause.setVisibility(View.GONE);
 		}
 		
-		this.wrapper.addView(list);
+	
 	}
 
 	public void setVolume(int Max, int process) {
@@ -232,52 +255,7 @@ public class Fragment_MusikListe extends Fragment implements
 		}
 	}
 
-	public void setListviewSelection(final ListView list, final int pos) {
-		Log.i("LTH", String.valueOf(pos));
-		list.setSelection(pos);
-		View v = list.findViewById((int) adapter.getItemId(pos));
-		
-		
-		
-		if (v != null) {
-			TextView mTitle = (TextView) v.findViewById(R.id.title);
-			Log.i("LTH", (String) mTitle.getText());
-			v.requestFocus();
-			try {
-				play.setEnabled(true);
-				mPosition = pos;
-				if (mPosition == 0) {
-					prev.setEnabled(false);
-				} else {
-					prev.setEnabled(true);
-				}
-				if (mPosition == arr.size()) {
-					next.setEnabled(false);
-				} else {
-					next.setEnabled(true);
-				}
-
-				MusikAsyntask asyntask = new MusikAsyntask();
-				asyntask.execute(arr.get(mPosition).getmURL());
-
-				for (int i = 0; i < arr.size(); i++) {
-					arr.get(i).setmStatus(false);
-				}
-				arr.get(mPosition).setmStatus(true);
-				adapter.notifyDataSetChanged();
-
-				play.setVisibility(View.GONE);
-				pause.setVisibility(View.VISIBLE);
-				setVolume(mMaxVolume, curVolume);
-
-			} catch (Exception ex) {
-				Log.i("LTH", "Listview error");
-			}
-		} else {
-			Log.i("LTH", "View null");
-		}
-
-	}
+	
 
 	@Override
 	public void onClick(View v) {
