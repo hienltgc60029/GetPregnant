@@ -1,16 +1,11 @@
 package vn.theagency.layout;
 
 import vn.theagency.getpregnant.R;
-import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
-import android.animation.LayoutTransition;
+import vn.theagency.helper.Key;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -32,8 +27,8 @@ public class UI_Nohitaky {
 
 	int musik_height;
 	int musik_width;
-	int back_height;
-	int back_width;
+	int btn_back;
+	
 
 	int bottomHeight;
 	int checkHeight;
@@ -45,6 +40,7 @@ public class UI_Nohitaky {
 	int seekHeight;
 	int seekWidth;
 	int avartaHeight, avartaWidth;
+	int mTitleSize,mDecSize;
 
 	int DP_10;
 
@@ -65,55 +61,44 @@ public class UI_Nohitaky {
 	}
 
 	private void size() {
-		// TODO Auto-generated method stub
+	
+		musik_height =(int) this.mHelper.DpToPixel(73);
+		musik_width = (int)this.mHelper.DpToPixel(360);
+		
 
-		Drawable musik = this.context.getResources().getDrawable(
-				R.drawable.bg_musik_liste);
-		musik_height =(int) musik.getIntrinsicHeight();
-		musik_width = (int)musik.getIntrinsicWidth();
-		musik = null;
+		
+		btn_back = (int)this.mHelper.DpToPixel(30);
+		
 
-		Drawable btn_back = this.context.getResources().getDrawable(
-				R.drawable.btn_back_normal);
-		back_height = (int)btn_back.getIntrinsicHeight();
-		back_width =(int) btn_back.getIntrinsicWidth();
-		btn_back = null;
+		
+		bottomHeight =(int) this.mHelper.DpToPixel(293);
+	
 
-		Drawable bottom = this.context.getResources().getDrawable(
-				R.drawable.bg_nohitaki);
-		bottomHeight =(int) bottom.getIntrinsicHeight();
-		bottom = null;
-
-		Drawable checkbox = this.context.getResources().getDrawable(
-				R.drawable.btn_check_normal);
-		checkHeight = (int)checkbox.getIntrinsicHeight();
-		checkWidth = (int)checkbox.getIntrinsicWidth();
-		checkbox = null;
+		
+		checkHeight = (int)this.mHelper.DpToPixel(39);
+		checkWidth = (int)this.mHelper.DpToPixel(39);
+		
 		DP_10 = (int) this.context.getResources().getDimension(R.dimen.DP_10);
 
-		Drawable sw = this.context.getResources().getDrawable(R.drawable.sw_bg);
-		swHeight = (int) (sw.getIntrinsicHeight());
-		swWidth = (int) (sw.getIntrinsicWidth());
-		sw = null;
+		
+		swHeight = (int) this.mHelper.DpToPixel(200);
+		swWidth = (int) this.mHelper.DpToPixel(220);
+		
+		playHeight = (int)this.mHelper.DpToPixel(20);
+		playWidth = (int)this.mHelper.DpToPixel(27);
+	
 
-		Drawable play = this.context.getResources().getDrawable(
-				R.drawable.btn_playaudio);
-		playHeight = (int)play.getIntrinsicHeight();
-		playWidth = (int)play.getIntrinsicWidth();
-		play = null;
+	
+		seekHeight = (int)this.mHelper.DpToPixel(12);
+		seekWidth = (int)this.mHelper.DpToPixel(12);
+		
 
-		Drawable seek = this.context.getResources().getDrawable(
-				R.drawable.seekbar_point);
-		seekHeight = (int)seek.getIntrinsicHeight();
-		seekWidth = (int)seek.getIntrinsicWidth();
-		seek = null;
-
-		Drawable avarta = this.context.getResources().getDrawable(
-				R.drawable.music_avatar);
-		avartaHeight = (int) (avarta.getIntrinsicHeight());
-		avartaWidth = (int) (avarta.getIntrinsicWidth());
-		avarta = null;
-
+		avartaHeight = (int)this.mHelper.DpToPixel(137);
+		avartaWidth = (int) this.mHelper.DpToPixel(137);
+		mTitleSize = (int) this.mHelper.DpToSp(30);
+		mDecSize = (int) this.mHelper.DpToSp(15);
+		
+		
 	}
 
 	public View initUIBackGround() {
@@ -142,9 +127,9 @@ public class UI_Nohitaky {
 	public FrameLayout initUIBack() {
 		FrameLayout layout = new FrameLayout(this.context);
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				back_width, back_height);
-		params.topMargin = 15;
-		params.leftMargin = 15;
+				btn_back, btn_back);
+		params.topMargin = (int) this.mHelper.DpToPixel(10);
+		params.leftMargin = (int) this.mHelper.DpToPixel(10);
 		layout.setLayoutParams(params);
 
 		ImageView view = new ImageView(this.context);
@@ -153,6 +138,7 @@ public class UI_Nohitaky {
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		view.setLayoutParams(viewParams);
 		view.setBackgroundResource(R.drawable.btn_back);
+		view.setId(Key.btn_back);
 
 		layout.addView(view);
 
@@ -164,7 +150,7 @@ public class UI_Nohitaky {
 
 		FrameLayout.LayoutParams mainPara = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT, avartaHeight);
-		mainPara.topMargin = 150;
+		mainPara.topMargin = (int) this.mHelper.DpToPixel(75);
 		main.setLayoutParams(mainPara);
 
 		ImageView avarta = new ImageView(this.context);
@@ -172,14 +158,14 @@ public class UI_Nohitaky {
 		avarta.setImageResource(R.drawable.music_avatar);
 		RelativeLayout.LayoutParams avarPara = new RelativeLayout.LayoutParams(
 				avartaWidth, avartaHeight);
-		avarPara.leftMargin = 40;
+		avarPara.leftMargin = (int) this.mHelper.DpToPixel(20);
 
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),
 				"museosans_300.otf");
 
 		TextView title = new TextView(this.context);
 		title.setTypeface(type);
-		title.setTextSize(25);
+		title.setTextSize(mTitleSize);
 		title.setTextColor(Color.WHITE);
 		title.setAlpha(0.8f);
 		title.setText("Nohitaky");
@@ -187,6 +173,7 @@ public class UI_Nohitaky {
 		TextView dec = new TextView(this.context);
 		dec.setId(Key.AUDIOS_DECRIPTION);
 		dec.setAlpha(0.5f);
+		dec.setTextColor(Color.WHITE);
 		dec.setTypeface(type);
 		dec.setText("Lescient elitis endia tiu a sin ciluemol est ciam et ita int. Lga ris sime volutar");
 
@@ -201,7 +188,7 @@ public class UI_Nohitaky {
 		RelativeLayout.LayoutParams titlePara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		titlePara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+		titlePara.addRule(RelativeLayout.ABOVE, dec.getId());
 		titlePara.addRule(RelativeLayout.RIGHT_OF, avarta.getId());
 		titlePara.rightMargin = 20;
 		titlePara.leftMargin = 20;
@@ -310,7 +297,7 @@ public class UI_Nohitaky {
 		Switch musik3 = new Switch(this.context);
 		musik3.setId(Key.NOHITAKI_ChangeBg);
 		LinearLayout.LayoutParams musikPara3 = new LinearLayout.LayoutParams(
-				LinearLayout.LayoutParams.WRAP_CONTENT, checkHeight);
+				swWidth, swHeight);
 		musikPara3.gravity = Gravity.CENTER;
 		musik3.setLayoutParams(musikPara3);
 
@@ -319,9 +306,7 @@ public class UI_Nohitaky {
 
 		musik3.setTextOn("   ");
 		musik3.setTextOff("            ");
-		Typeface type = Typeface.createFromAsset(this.context.getAssets(),
-				"museosans_300.otf");
-		musik3.setTypeface(type);
+		
 
 		layout3.addView(musik3);
 		// ==========
@@ -368,10 +353,18 @@ public class UI_Nohitaky {
 				RelativeLayout.TRUE);
 		volumePara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 		//
+		FrameLayout frameLayout = new FrameLayout(this.context);
+		FrameLayout.LayoutParams seekLinePara = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.MATCH_PARENT,
+				20);
+		mLine.setLayoutParams(seekLinePara);
+		frameLayout.addView(mLine);
+		//
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-
+				RelativeLayout.LayoutParams.WRAP_CONTENT
+				);
+	
 		barVolumePara.addRule(RelativeLayout.RIGHT_OF, timeStart.getId());
 		barVolumePara.addRule(RelativeLayout.LEFT_OF, timeEnd.getId());
 		barVolumePara.addRule(RelativeLayout.CENTER_VERTICAL,
@@ -400,7 +393,7 @@ public class UI_Nohitaky {
 		main.addView(volume, volumePara);
 		main.addView(timeStart, startPara);
 		main.addView(timeEnd, endPara);
-		main.addView(mLine, barVolumePara);
+		main.addView(frameLayout, barVolumePara);
 
 		return main;
 	}
