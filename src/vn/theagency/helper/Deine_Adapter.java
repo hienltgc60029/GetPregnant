@@ -26,14 +26,16 @@ public class Deine_Adapter extends BaseAdapter {
 	public Context mContext;
 	public ArrayList<Audios> arr;
 	public int sizeRow;
+	public String indexHome;
 
 	public Deine_Adapter(int layout, Context mContext, ArrayList<Audios> arr,
-			int sizeRow) {
+			int sizeRow,String indexHome) {
 		super();
 		this.layout = layout;
 		this.mContext = mContext;
 		this.arr = arr;
 		this.sizeRow = sizeRow;
+		this.indexHome = indexHome;
 	}
 
 	@Override
@@ -78,6 +80,7 @@ public class Deine_Adapter extends BaseAdapter {
     				Intent intent = new Intent(mContext, Musik.class);
     				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
     				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    				intent.putExtra("Audios", indexHome);
     				mContext.startActivity(intent);
     			}
     		});
@@ -86,8 +89,8 @@ public class Deine_Adapter extends BaseAdapter {
     		AbsListView.LayoutParams params = new AbsListView.LayoutParams(
     				AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
     		int imgHeight = (int) mViewHolder.imageView.getHeight();
-    		;
-    		int h = (int) ((sizeRow / 5) - imgHeight) / 2;
+    		
+    		int h = (int) ((sizeRow / 7) - imgHeight) / 2;
     		view.setLayoutParams(params);
     		view.setPadding(30,  h, 30, h);
     		

@@ -7,6 +7,7 @@ import vn.theagency.objects.Audios;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @SuppressLint("InflateParams")
@@ -24,8 +26,8 @@ public class Audios_Adapter extends BaseAdapter {
 	public Context mContext;
 	public ArrayList<Audios> arr;
 	public int sizeRow;
-	//
 
+	//
 
 	public Audios_Adapter(int layout, Context mContext, ArrayList<Audios> arr,
 			int sizeRow) {
@@ -35,7 +37,6 @@ public class Audios_Adapter extends BaseAdapter {
 		this.arr = arr;
 		this.sizeRow = sizeRow;
 	}
-
 
 	@Override
 	public int getCount() {
@@ -64,38 +65,35 @@ public class Audios_Adapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			view = inflater.inflate(R.layout.items, null);
 			mViewHolder = new MyViewHolder();
-            view.setTag(mViewHolder);
-            //
+			view.setTag(mViewHolder);
+			//
 
-    		mViewHolder.mTitle = mTextView(view, R.id.txtTitle, arr.get(position).getmTitle());
-    		mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
-    		mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position).getmDecription());
-    		mViewHolder.btnView = mButton(view, R.id.btnView, R.drawable.btn_view);
-    		mViewHolder.btnDownload = mButton(view, R.id.btn, R.drawable.btn_download);
-    		//
-            
-        	AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-    				AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
-        	
-    		int imgHeight = (int) mViewHolder.imageView.getHeight();
-    		
-    		int h = (int) ((sizeRow/4) - imgHeight) / 2;    		
-    		view.setLayoutParams(params);
-    		view.setPadding(30, h, 30, h);
-    		
-    		
-            
-		}else{
+			mViewHolder.mTitle = mTextView(view, R.id.txtTitle,
+					arr.get(position).getmTitle());
+			mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
+			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
+					.getmDecription());
+			mViewHolder.btnView = mButton(view, R.id.btnView,
+					R.drawable.btn_view);
+			mViewHolder.btnDownload = mButton(view, R.id.btn,
+					R.drawable.btn_download);
+			//
+
+			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
+					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
+
+			int imgHeight = (int) mViewHolder.imageView.getHeight();
+			int h = (int) ((sizeRow / 4) - imgHeight) / 2;
+			view.setLayoutParams(params);
+			view.setPadding(30, h, 30, h);
+			
+
+		} else {
 			mViewHolder = (MyViewHolder) view.getTag();
 		}
-		
-		
-		
-		
-	
 
 		if ((position % 2) != 0) {
-		//	view.setBackgroundResource(R.drawable.bg_library);
+			// view.setBackgroundResource(R.drawable.bg_library);
 		}
 
 		return view;
@@ -104,7 +102,7 @@ public class Audios_Adapter extends BaseAdapter {
 	private class MyViewHolder {
 		TextView mTitle, mDec;
 		ImageView imageView;
-		Button btnView,btnDownload;
+		Button btnView, btnDownload;
 	}
 
 	private TextView mTextView(View v, int resId, String textview) {
@@ -112,6 +110,7 @@ public class Audios_Adapter extends BaseAdapter {
 		tv.setText(textview);
 		return tv;
 	}
+
 	private Button mButton(View v, int resId, int button) {
 		Button btn = (Button) v.findViewById(resId);
 		btn.setBackgroundResource(button);

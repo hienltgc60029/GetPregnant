@@ -28,7 +28,7 @@ public class UI_Home {
 	int icon_plus;
 	int bar_width;
 	int plus;
-	int frameAddition,textAddition,textsize;
+	int plusMargin,plusTextMargin,textAddition,textsize;
 	
 	
 	
@@ -56,8 +56,9 @@ public class UI_Home {
 		icon_home = (int) mHelper.DpToPixel(30) ;
 		icon_home_aligh = (int) mHelper.DpToPixel(12) ;
 		plus = (int) mHelper.DpToPixel(46);
-		frameAddition = (int) mHelper.DpToPixel(150);
+		plusMargin = (int) mHelper.DpToPixel(120);
 		textAddition = (int) mHelper.DpToPixel(100);
+		plusTextMargin= (int) mHelper.DpToPixel(170);
 		textsize = (int) mHelper.DpToSp(20);
 	}
 
@@ -214,9 +215,8 @@ public class UI_Home {
 		FrameLayout main = new FrameLayout(this.context);
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				frameAddition, FrameLayout.LayoutParams.WRAP_CONTENT);
+				FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		mainFrame.topMargin = (int) ((84*mHelper.getAppHeight())/100);
-		mainFrame.gravity = Gravity.CENTER_HORIZONTAL;
 		main.setLayoutParams(mainFrame);
 		main.setLayoutTransition(lt);
 		
@@ -226,7 +226,7 @@ public class UI_Home {
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
 		
-		audiosPara.gravity = Gravity.LEFT;
+		audiosPara.leftMargin = plusMargin;
 		audios.setLayoutParams(audiosPara);
 		audios.setImageResource(R.drawable.plus);
 		audios.setId(Key.AUSWAHL);
@@ -243,7 +243,8 @@ public class UI_Home {
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
 				textAddition,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		textPara.gravity = Gravity.RIGHT|Gravity.CENTER_VERTICAL;
+		textPara.leftMargin = plusTextMargin;
+		textPara.gravity = Gravity.CENTER_VERTICAL;
 		
 		text.setLayoutParams(textPara);
 		

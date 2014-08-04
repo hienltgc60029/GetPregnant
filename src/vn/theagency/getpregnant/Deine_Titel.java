@@ -16,11 +16,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class Deine_Titel extends Activity implements OnClickListener {
+public class Deine_Titel extends Activity implements OnClickListener,OnScrollListener {
 
 	private Helper mHelper;
 	public UI_Deneine mDeine;
@@ -53,15 +55,13 @@ public class Deine_Titel extends Activity implements OnClickListener {
 		initUI();
 		list = (ListView) findViewById(Key.LISTVIEW_LIBRARY);
 		
-		BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.library_header);
-		BitmapDrawable header = (BitmapDrawable) getResources()
-				.getDrawable(R.drawable.header_deine_titel);
-		int h =(int)((2*drawable.getBitmap().getHeight())/3);
-		int header_height = (int) (2 * header.getBitmap().getHeight()) / 3;
-		int height = (int) (mHelper.getAppHeight()-(h+header_height))/3;
 		
-		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), audiosArray(),height);
+		int header_height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
+		int height = (int) (mHelper.getAppHeight()-header_height)/3;
+		String indexHome = getIntent().getExtras().getString("Audios");
+		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), audiosArray(),height,indexHome);
 		list.setAdapter(adapter);
+		list.setOnScrollListener(this);
 		
 	}
 	public void initUI() {
@@ -166,6 +166,19 @@ public class Deine_Titel extends Activity implements OnClickListener {
 		super.onDestroy();
 		clearMemory();
 		System.gc();
+	}
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		this.initUIDown.setVisibility(View.VISIBLE);
+		if((firstVisibleItem+visibleItemCount)== totalItemCount){
+			this.initUIDown.setVisibility(View.GONE);
+		}
 	}
 	
 }

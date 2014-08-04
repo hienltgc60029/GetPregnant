@@ -25,8 +25,7 @@ public class SammlungAdapter extends BaseAdapter {
 	public Context mContext;
 	public ArrayList<Audios> arr;
 	public int sizeRow;
-	
-	
+
 	public SammlungAdapter(int layout, Context mContext, ArrayList<Audios> arr,
 			int sizeRow) {
 		super();
@@ -69,15 +68,20 @@ public class SammlungAdapter extends BaseAdapter {
 			mViewHolder.btnDownload = mButton(view, R.id.btn_down);
 			mViewHolder.btnUp = mButton(view, R.id.btn_up);
 			mViewHolder.btnLos = mButton(view, R.id.btn_los);
-			mViewHolder.mTitle = mTextView(view, R.id.txtTitle, arr.get(position).getmTitle());
-			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position).getmDecription());
-			
+			mViewHolder.mTitle = mTextView(view, R.id.txtTitle,
+					arr.get(position).getmTitle());
+			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
+					.getmDecription());
+
 			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
 					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
-			view.setLayoutParams(params);
 			
+			view.setLayoutParams(params);
+			view.setPadding(40, 0, 40, 0);
+			
+
 			mViewHolder.btnLos.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -85,9 +89,9 @@ public class SammlungAdapter extends BaseAdapter {
 					notifyDataSetChanged();
 				}
 			});
-			
+
 			mViewHolder.btnUp.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
@@ -95,46 +99,47 @@ public class SammlungAdapter extends BaseAdapter {
 					notifyDataSetChanged();
 				}
 			});
-			
+
 			mViewHolder.btnDownload.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					upAction(arr, position+1);
+					upAction(arr, position + 1);
 					notifyDataSetChanged();
 				}
 			});
-			
+
 			//
 			if ((position % 2) != 0) {
 				view.setBackgroundResource(R.drawable.bg_library);
-				//view.setBackgroundColor(Color.WHITE);
+				// view.setBackgroundColor(Color.WHITE);
 			}
-			
-			if(position==0){
-				mViewHolder.btnUp.setEnabled(false);	
+
+			if (position == 0) {
+				mViewHolder.btnUp.setEnabled(false);
 			}
-			
-			if(position == (arr.size()-1)){
+
+			if (position == (arr.size() - 1)) {
 				mViewHolder.btnUp.setEnabled(true);
 			}
-			if(position==(arr.size()-1)){
-				mViewHolder.btnDownload.setEnabled(false);	
+			if (position == (arr.size() - 1)) {
+				mViewHolder.btnDownload.setEnabled(false);
 			}
-			if(position==0){
-				mViewHolder.btnDownload.setEnabled(true);	
+			if (position == 0) {
+				mViewHolder.btnDownload.setEnabled(true);
 			}
-		}else{
+		} else {
 			mViewHolder = (MyViewHolder) view.getTag();
 		}
 
 		return view;
 	}
+
 	private class MyViewHolder {
 		TextView mTitle, mDec;
 		ImageView imageView;
-		Button btnLos,btnUp,btnDownload;
+		Button btnLos, btnUp, btnDownload;
 	}
 
 	private TextView mTextView(View v, int resId, String textview) {
@@ -142,9 +147,10 @@ public class SammlungAdapter extends BaseAdapter {
 		tv.setText(textview);
 		return tv;
 	}
+
 	private Button mButton(View v, int resId) {
 		Button btn = (Button) v.findViewById(resId);
-		
+
 		return btn;
 	}
 
@@ -154,26 +160,26 @@ public class SammlungAdapter extends BaseAdapter {
 
 		return iv;
 	}
-	public void upAction(ArrayList<Audios> array, int position){
+
+	public void upAction(ArrayList<Audios> array, int position) {
 		ArrayList<Audios> mtemp = new ArrayList<Audios>();
 		Log.i("LTH", array.get(position).getmTitle());
-		for(int i = 0 ; i < array.size();i++){
-			if(i==(position-1)){
+		for (int i = 0; i < array.size(); i++) {
+			if (i == (position - 1)) {
 				mtemp.add(array.get(position));
 				mtemp.add(array.get(i));
 				i++;
-				
-			}else{
+
+			} else {
 				mtemp.add(array.get(i));
 			}
 		}
-		Log.i("LTH", mtemp.get(position-1).getmTitle());
+		Log.i("LTH", mtemp.get(position - 1).getmTitle());
 		array.clear();
-		for(int i = 0; i < mtemp.size();i++){
+		for (int i = 0; i < mtemp.size(); i++) {
 			array.add(mtemp.get(i));
 		}
 		mtemp.clear();
 	}
-	
 
 }

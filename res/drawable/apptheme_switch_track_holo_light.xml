@@ -19,9 +19,9 @@
   
     
 
-    <item android:state_enabled="false" android:drawable="@drawable/sw_bg" />
-    <item android:state_focused="true"  android:drawable="@drawable/sw_bg" />
-    <item                               android:drawable="@drawable/sw_bg" />
+    <item android:state_enabled="false" android:drawable="@drawable/bg_tag_nacth" />
+    <item android:state_focused="true"  android:drawable="@drawable/bg_tag_nacth" />
+    <item                               android:drawable="@drawable/bg_tag_nacth" />
 
     
 </selector>

@@ -1,28 +1,23 @@
 package vn.theagency.layout;
 
 import vn.theagency.getpregnant.R;
-import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
-import vn.theagency.helper.Values;
+import vn.theagency.helper.Key;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
 public class UI_Musik {
 
 	private Helper mHelper;
-	private Values mValues;
 	private Context context;
 	public SeekBar mBarVolume, mLine;
 
@@ -31,6 +26,9 @@ public class UI_Musik {
 			shufferHeight, volumeWidth, volumeHeight;
 
 	int headerHeight, seekbar_width, seekbar_height;
+	int musik_bar_width,musik_bar_height;
+	int musik_list_height,musik_list_width;
+	int marginMusik;
 
 	int LEFT_VOLUME;
 	private static UI_Musik _ins;
@@ -76,6 +74,11 @@ public class UI_Musik {
 		volumeHeight = (int) this.mHelper.DpToPixel(32);
 		pauseWidth = (int) this.mHelper.DpToPixel(46);
 		pauseHeight = (int) this.mHelper.DpToPixel(46);
+		musik_bar_width = (int) this.mHelper.DpToPixel(304);
+		musik_bar_height = (int) this.mHelper.DpToPixel(54);
+		musik_list_width = (int) this.mHelper.DpToPixel(304); 
+		musik_list_height = (int) this.mHelper.DpToPixel(360);
+		marginMusik =(int) this.mHelper.DpToPixel(28);
 
 	}
 
@@ -86,7 +89,7 @@ public class UI_Musik {
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		params.topMargin = headerHeight;
 		v.setLayoutParams(params);
-		v.setBackgroundResource(R.drawable.bg_9);
+		v.setBackgroundResource(R.drawable.bg_list);
 		return v;
 	}
 
@@ -104,6 +107,7 @@ public class UI_Musik {
 		RelativeLayout main = new RelativeLayout(this.context);
 		LayoutTransition lt = new LayoutTransition();
 		lt.disableTransitionType(LayoutTransition.DISAPPEARING);
+		main.setBackgroundResource(R.drawable.bg_music_tools);
 		main.setLayoutTransition(lt);
 		View shuffer = new View(this.context);
 		shuffer.setBackgroundResource(R.drawable.btn_shuffer);
@@ -119,6 +123,7 @@ public class UI_Musik {
 
 		RelativeLayout.LayoutParams volumePara = new RelativeLayout.LayoutParams(
 				volumeWidth, volumeHeight);
+		volumePara.leftMargin = (int)marginMusik/2;
 		volumePara.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
 				RelativeLayout.TRUE);
 		volumePara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
@@ -129,13 +134,13 @@ public class UI_Musik {
 		//
 
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		barVolumePara.topMargin = (int) (2 * LEFT_VOLUME / 3);
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				20);
+		
 
 		barVolumePara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
 		barVolumePara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
-		barVolumePara.addRule(RelativeLayout.ALIGN_PARENT_TOP,
+		barVolumePara.addRule(RelativeLayout.CENTER_VERTICAL,
 				RelativeLayout.TRUE);
 
 		mBarVolume = new SeekBar(this.context);
@@ -150,7 +155,7 @@ public class UI_Musik {
 		RelativeLayout.LayoutParams startPara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		startPara.leftMargin = LEFT_VOLUME + 20;
+		startPara.bottomMargin = 10;
 		startPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
 				RelativeLayout.TRUE);
 		startPara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
@@ -163,7 +168,7 @@ public class UI_Musik {
 		RelativeLayout.LayoutParams endPara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		endPara.rightMargin = LEFT_VOLUME + 20;
+		endPara.bottomMargin = 10;
 		endPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		endPara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
 
@@ -172,6 +177,7 @@ public class UI_Musik {
 		//
 		RelativeLayout.LayoutParams repeatPara = new RelativeLayout.LayoutParams(
 				repeatWidth, repeatHeight);
+		repeatPara.rightMargin = (int)marginMusik/2;
 		repeatPara.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,
 				RelativeLayout.TRUE);
 		repeatPara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
@@ -194,9 +200,9 @@ public class UI_Musik {
 		//
 
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, 80);
-		int margin = (int) (this.mHelper.getAppWidth() / 10);
-		params.setMargins(margin, (margin + headerHeight), margin, 0);
+				musik_bar_width, musik_bar_height);
+		
+		params.setMargins(marginMusik, (marginMusik + headerHeight), marginMusik, 0);
 
 		main.setLayoutParams(params);
 		main.addView(volume, volumePara);
@@ -212,7 +218,7 @@ public class UI_Musik {
 
 	public FrameLayout initUIBottom() {
 		FrameLayout main = new FrameLayout(this.context);
-		int w = (int) (mHelper.getAppWidth() - 112);
+		
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				(int) (mHelper.getAppHeight() / 6));
@@ -267,28 +273,20 @@ public class UI_Musik {
 	 * 
 	 * @return
 	 */
-	public FrameLayout initUIListView() {
-		FrameLayout main = new FrameLayout(this.context);
-		main.setBackgroundColor(Color.RED);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
-		int margin = (int) (this.mHelper.getAppWidth() / 10);
-		params.setMargins(margin, (int) this.mHelper.DpToPixel(174), margin, 0);
-
-		params.gravity = Gravity.CENTER_HORIZONTAL;
-		main.setLayoutParams(params);
+	public ListView initUIListView() {
+		
 
 		ListView view = new ListView(this.context);
-		//int h = (int) (55 * mHelper.getAppHeight() / 100 + 8);
+		view.setBackgroundResource(R.drawable.bg_music_list);
+		int margin = headerHeight+musik_bar_height+marginMusik;
 		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		viewPara.setMargins(margin, (int) this.mHelper.DpToPixel(174), margin, 0);
+				musik_list_width, musik_list_height);
+		viewPara.setMargins(marginMusik, margin, marginMusik, 0);
 		view.setLayoutParams(viewPara);
 		view.setId(Key.LISTVIEW_LIBRARY);
-		main.addView(view);
+		
 
-		return main;
+		return view;
 	}
 	
 	

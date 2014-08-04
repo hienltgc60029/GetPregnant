@@ -1,13 +1,11 @@
 package vn.theagency.layout;
 
 import vn.theagency.getpregnant.R;
-import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
+import vn.theagency.helper.Key;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -27,11 +25,12 @@ public class UI_Deneine {
 	//
 	int bottom_height;
 	int header_width;
-	int header_height;
-	int mTitleSize,mDecSize;
+	public static int header_height;
+	int mTitleSize, mDecSize;
 	int play_width, play_height;
 	int seekbar_width, seekbar_height;
 	int btn_back;
+	public static int bottom, bottom_down;
 
 	private UI_Deneine(Context _context) {
 		this.context = _context;
@@ -48,18 +47,22 @@ public class UI_Deneine {
 
 	public void size() {
 		//
-		btn_back = (int)mHelper.DpToPixel(30);
-		
+		btn_back = (int) mHelper.DpToPixel(30);
+
 		//
-		header_width = (int)mHelper.DpToPixel(360);
-		header_height = (int)mHelper.getAppHeight()/5;
+		header_width = (int) mHelper.DpToPixel(360);
+		header_height = (int) mHelper.getAppHeight() / 5;
 		mTitleSize = (int) mHelper.DpToSp(35);
 		mDecSize = (int) mHelper.DpToSp(15);
-		play_width = (int)mHelper.DpToPixel(18);
+		play_width = (int) mHelper.DpToPixel(18);
 		play_height = (int) mHelper.DpToPixel(14);
-		seekbar_width = (int)mHelper.DpToPixel(170);
-		seekbar_height = (int)mHelper.DpToPixel(8);
+		seekbar_width = (int) mHelper.DpToPixel(170);
+		seekbar_height = (int) mHelper.DpToPixel(8);
 		bottom_height = (int) this.mHelper.DpToPixel(92);
+		bottom = (int) this.mHelper.DpToPixel(52);
+		bottom_down = (int) this.mHelper.DpToPixel(40);
+		
+
 	}
 
 	public FrameLayout initUIHeader() {
@@ -121,10 +124,8 @@ public class UI_Deneine {
 	}
 
 	public View initUIBottom() {
-		BitmapDrawable drawable = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_deine_normal);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
-		int hieght = (int) (mHelper.getAppHeight() - h);
+
+		int hieght = (int) (mHelper.getAppHeight() - bottom);
 		View view = new View(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
@@ -137,17 +138,12 @@ public class UI_Deneine {
 	}
 
 	public ImageView initUIDown() {
-		BitmapDrawable drawable1 = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_deine_normal);
-		int h1 = (int) ((2 * drawable1.getBitmap().getHeight()) / 3);
 
-		BitmapDrawable drawable = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_more_normal);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
-		int w = (int) ((2 * drawable.getBitmap().getWidth()) / 3);
-		int hieght = (int) (mHelper.getAppHeight() - h - h1 - 20);
+		int hieght = (int) (mHelper.getAppHeight() - bottom - bottom_down);
 		ImageView view = new ImageView(this.context);
-		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(w, h);
+		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT);
 		paraHeader.topMargin = hieght;
 		paraHeader.gravity = Gravity.CENTER_HORIZONTAL;
 		view.setLayoutParams(paraHeader);
@@ -214,23 +210,24 @@ public class UI_Deneine {
 		LinearLayout layout = new LinearLayout(this.context);
 		LinearLayout.LayoutParams layoutPara = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
-				(int)(2*header_height/3));
+				(int) (2 * header_height / 3));
 
 		layoutPara.gravity = Gravity.CENTER;
 		layout.setLayoutParams(layoutPara);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setGravity(Gravity.CENTER);
-		layout.setPadding(0, 0, 0, 10); 
+		layout.setPadding(0, 0, 0, 10);
 
 		// Title
 		TextView mTitle = new TextView(this.context);
 		LinearLayout.LayoutParams titlePara = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		titlePara.bottomMargin= 20;
+		titlePara.bottomMargin = 20;
 		mTitle.setLayoutParams(titlePara);
 		mTitle.setTextSize(30);
-		Typeface type = Typeface.createFromAsset(this.context.getAssets(),"museosans_300.otf"); 
+		Typeface type = Typeface.createFromAsset(this.context.getAssets(),
+				"museosans_300.otf");
 		mTitle.setTypeface(type);
 		mTitle.setText("DEINE SAMMLUNG");
 		mTitle.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -240,10 +237,8 @@ public class UI_Deneine {
 		FrameLayout.LayoutParams paraPlay = new FrameLayout.LayoutParams(
 				(int) mHelper.getAppWidth(),
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		
-		playLayout.setLayoutParams(paraPlay);
 
-		
+		playLayout.setLayoutParams(paraPlay);
 
 		View view = new View(this.context);
 		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
@@ -253,28 +248,29 @@ public class UI_Deneine {
 		view.setLayoutParams(viewPara);
 		view.setId(Key.PLAY);
 		view.setBackgroundResource(R.drawable.btn_playaudio);
-		
+
 		TextView timeStart = new TextView(this.context);
 		FrameLayout.LayoutParams startPara = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT);
 		startPara.leftMargin = 120;
 		startPara.gravity = Gravity.CENTER_VERTICAL;
 		timeStart.setLayoutParams(startPara);
 		timeStart.setText("25:58");
-		
+
 		TextView timeEnd = new TextView(this.context);
 		FrameLayout.LayoutParams endPara = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-		endPara.leftMargin = (int) (mHelper.getAppWidth()/4 + seekbar_width);
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT);
+		endPara.leftMargin = (int) (mHelper.getAppWidth() / 4 + seekbar_width);
 		endPara.gravity = Gravity.CENTER_VERTICAL;
 		timeEnd.setLayoutParams(endPara);
 		timeEnd.setText("57:30");
-		
 
 		SeekBar mDec = new SeekBar(this.context);
-		FrameLayout.LayoutParams decPara = new FrameLayout.LayoutParams(seekbar_width,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
-		decPara.leftMargin =(int) (mHelper.getAppWidth()/4);
+		FrameLayout.LayoutParams decPara = new FrameLayout.LayoutParams(
+				seekbar_width, FrameLayout.LayoutParams.WRAP_CONTENT);
+		decPara.leftMargin = (int) (mHelper.getAppWidth() / 4);
 		decPara.gravity = Gravity.CENTER_VERTICAL;
 		mDec.setLayoutParams(decPara);
 		mDec.setProgressDrawable(this.context.getResources().getDrawable(
@@ -282,7 +278,6 @@ public class UI_Deneine {
 		mDec.setThumb(this.context.getResources().getDrawable(
 				R.drawable.seekbar_point));
 
-	
 		playLayout.addView(timeStart);
 		playLayout.addView(timeEnd);
 		playLayout.addView(view);
@@ -297,10 +292,9 @@ public class UI_Deneine {
 	}
 
 	public View initUISammLungBottom() {
-		BitmapDrawable drawable = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_deine_normal);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
-		int hieght = (int) (mHelper.getAppHeight() - h);
+		
+		
+		int hieght = (int) (mHelper.getAppHeight() - bottom);
 		View view = new View(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,

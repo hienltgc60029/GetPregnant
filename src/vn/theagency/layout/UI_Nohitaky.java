@@ -6,6 +6,7 @@ import vn.theagency.helper.Key;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -360,6 +361,7 @@ public class UI_Nohitaky {
 		mLine.setLayoutParams(seekLinePara);
 		frameLayout.addView(mLine);
 		//
+		
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT

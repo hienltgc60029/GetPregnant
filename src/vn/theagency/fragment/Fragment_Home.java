@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Fragment_Home extends Fragment implements OnClickListener,
-		AnimationListener, AnimatorListener {
+		AnimationListener{
 
 	View view = null;
 	public String textTitle, textDec;
@@ -44,12 +44,13 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 	private Helper mHelper;
 	LinearLayout linearLayout;
 	ImageView imgAusgleichen, imgAuflosen, imgVerbessern, imgVorbereiten,
-			imgUnterstutzen, initUIHome, auswahl;
+			imgUnterstutzen, initUIHome, plus;
 	ImageView home;
 	Messenger messenger;
 	Message msg;
-	TextView plus;
+	TextView plusText;
 	View bg, frist;
+	Animation animation,animationText,scalePlus;
 
 	public static Fragment_Home newInstance(int pTop, int bg, int background,
 			int pTitle) {
@@ -82,6 +83,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 	}
 
 	public void preference() {
+		getAnimation();
 
 		linearAuflosen = (FrameLayout) wrapper.findViewById(Key.linearAuflosen);
 		linearAusgleichen = (FrameLayout) wrapper
@@ -119,7 +121,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 		imgUnterstutzen = (ImageView) wrapper.findViewById(Key.unterstutzen);
 		imgVerbessern = (ImageView) wrapper.findViewById(Key.verbessern);
 		imgVorbereiten = (ImageView) wrapper.findViewById(Key.vorbereiten);
-		plus = (TextView) wrapper.findViewById(Key.AUDIOS_NAME);
+		plusText = (TextView) wrapper.findViewById(Key.AUDIOS_NAME);
 
 	}
 
@@ -157,8 +159,9 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 		// getActivity().setContentView(this.wrapper);
 		preference();
 
-		auswahl = (ImageView) wrapper.findViewById(Key.AUSWAHL);
-		auswahl.setOnClickListener(this);
+		plus = (ImageView) wrapper.findViewById(Key.AUSWAHL);
+		plus.setOnClickListener(this);
+		plusText.setOnClickListener(this);
 
 		imgAuflosen.setOnClickListener(this);
 		imgAusgleichen.setOnClickListener(this);
@@ -229,12 +232,13 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			}
 			break;
 		case Key.AUSWAHL:
-
-			Animation animation = AnimationUtils.loadAnimation(getActivity(),
-					R.anim.slide_up);
-			Animation animationText = AnimationUtils.loadAnimation(
-					getActivity(), R.anim.slide_text);
-
+			this.initUIHome.startAnimation(animation);
+			this.initUIText.startAnimation(animation);
+			this.bg.startAnimation(animation);
+			animationText.setAnimationListener(this);
+			this.initUIAddition.startAnimation(animationText);
+			break;
+		case Key.AUDIOS_NAME:
 			this.initUIHome.startAnimation(animation);
 			this.initUIText.startAnimation(animation);
 			this.bg.startAnimation(animation);
@@ -257,30 +261,67 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 		}
 	}
 
+	public void getAnimation(){
+		animation = AnimationUtils.loadAnimation(getActivity(),
+				R.anim.slide_up);
+		animationText = AnimationUtils.loadAnimation(
+				getActivity(), R.anim.slide_text);
+		scalePlus = AnimationUtils.loadAnimation(getActivity(), R.anim.home_to_audios);
+	}
+	
 	public void clearMemory() {
 		imgAuflosen.setOnClickListener(null);
 		imgAusgleichen.setOnClickListener(null);
 		imgUnterstutzen.setOnClickListener(null);
 		imgVerbessern.setOnClickListener(null);
 		imgVorbereiten.setOnClickListener(null);
-		auswahl.setOnClickListener(null);
+		plus.setOnClickListener(null);
 	}
 
 	@Override
 	public void onAnimationStart(Animation animation) {
 		// TODO Auto-generated method stub
-		auswahl.setEnabled(false);
+		plus.setEnabled(false);
 	}
 
 	@Override
 	public void onAnimationEnd(Animation animation) {
 		// TODO Auto-generated method stub
+		
+		
+		
+			try {
+				//plus.setText("AUDIOS LIBRARY");
+				clearMemory();
 
-		Animator animator = AnimatorInflater.loadAnimator(getActivity(),
-				R.animator.card_flip_left_out);
-		animator.addListener(this);
-		animator.setTarget(auswahl);
-		animator.start();
+				switch (getArguments().getInt("background")) {
+				case R.drawable.bg:
+					msg.arg2 = 1;
+					break;
+				case R.drawable.bg_auf:
+					msg.arg2 = 2;
+					break;
+				case R.drawable.bg_unt:
+					msg.arg2 = 3;
+					break;
+				case R.drawable.bg_ver:
+					msg.arg2 = 4;
+					break;
+				case R.drawable.bg_vor:
+					msg.arg2 = 5;
+					break;
+
+				default:
+					break;
+				}
+
+				msg.arg1 = 6;
+				messenger.send(msg);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		
+		
 
 	}
 
@@ -290,57 +331,6 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 
 	}
 
-	@Override
-	public void onAnimationStart(Animator animation) {
-		// TODO Auto-generated method stub
-		auswahl.setImageResource(R.drawable.btn_slip_normal);
-	}
-
-	@Override
-	public void onAnimationEnd(Animator animation) {
-		// TODO Auto-generated method stub
-		try {
-			//plus.setText("AUDIOS LIBRARY");
-			clearMemory();
-
-			switch (getArguments().getInt("background")) {
-			case R.drawable.bg:
-				msg.arg2 = 1;
-				break;
-			case R.drawable.bg_auf:
-				msg.arg2 = 2;
-				break;
-			case R.drawable.bg_unt:
-				msg.arg2 = 3;
-				break;
-			case R.drawable.bg_ver:
-				msg.arg2 = 4;
-				break;
-			case R.drawable.bg_vor:
-				msg.arg2 = 5;
-				break;
-
-			default:
-				break;
-			}
-
-			msg.arg1 = 6;
-			messenger.send(msg);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	@Override
-	public void onAnimationCancel(Animator animation) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onAnimationRepeat(Animator animation) {
-		// TODO Auto-generated method stub
-
-	}
+	
 	
 }

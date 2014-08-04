@@ -18,14 +18,17 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class Audios_Library extends Activity implements OnClickListener, AnimationListener {
+public class Audios_Library extends Activity implements OnClickListener, AnimationListener,OnScrollListener {
 
 	private Helper mHelper;
 	public UI_Audios mAudios;
@@ -36,7 +39,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 	ListView libraries, initUIListView;
 	View initUIBgView,initUIBottom;
 	ImageView initUIDown; 
-	RelativeLayout initUIHeader;
+	FrameLayout initUIHeader;
 	View deine,audio;
 	int pos;
 	TextView textView;
@@ -80,6 +83,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		libraries.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 		libraries.setVerticalScrollBarEnabled(false);
 		libraries.setHorizontalScrollBarEnabled(false);
+		libraries.setOnScrollListener(this);
 		
 		deine = findViewById(Key.btn_deine_musik);
 		audio = findViewById(Key.AUDIOS_NAME);
@@ -216,6 +220,23 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 	@Override
 	public void onAnimationRepeat(Animation animation) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		this.initUIDown.setVisibility(View.VISIBLE);
+		if((firstVisibleItem+visibleItemCount)==totalItemCount){
+			this.initUIDown.setVisibility(View.GONE);
+		}
 		
 	}
 

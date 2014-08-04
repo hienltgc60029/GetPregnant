@@ -27,9 +27,10 @@ public class UI_Audios {
 	
 	
 	
-
+	int plusMargin;
+	int plusTextMargin;
 	int plus;
-	
+	int bottom,bottom_down;
 	//
 	public static int header_width,header_height,textsize;
 
@@ -49,13 +50,17 @@ public class UI_Audios {
 	}
 	private void size() {
 		
-		plus = (int) mHelper.DpToPixel(46);
+		plus = (int) mHelper.DpToPixel(34);
 		
 		
 		//
 		header_width = (int) this.mHelper.DpToPixel(360);
 		header_height = (int) this.mHelper.DpToPixel(92);
 		textsize = (int) this.mHelper.DpToSp(20);
+		bottom = (int) this.mHelper.DpToPixel(52);
+		bottom_down = (int) this.mHelper.DpToPixel(40);
+		plusMargin = (int) mHelper.DpToPixel(70);
+		plusTextMargin= (int) mHelper.DpToPixel(115);
 	}
 
 	public ListView initUIListView() {
@@ -71,29 +76,27 @@ public class UI_Audios {
 		return view;
 	}
 
-	public RelativeLayout initUIHeader() {
+	public FrameLayout initUIHeader() {
 		LayoutTransition lt = new LayoutTransition();
 	    lt.disableTransitionType(LayoutTransition.DISAPPEARING);
 
-		RelativeLayout main = new RelativeLayout(this.context);
+		FrameLayout main = new FrameLayout(this.context);
+		main.setLayoutTransition(lt);
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, this.header_height);
+				FrameLayout.LayoutParams.MATCH_PARENT, header_height);
 		main.setLayoutParams(mainFrame);
 		main.setBackgroundResource(R.drawable.library_header);
 		
 		
-		RelativeLayout layout = new RelativeLayout(this.context);
-		RelativeLayout.LayoutParams paraFrame = new RelativeLayout.LayoutParams(
-				(int) this.context.getResources().getDimension(R.dimen.AUSWAHL), (int)this.header_height/2);
-		paraFrame.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
 		
-		layout.setLayoutTransition(lt);
 
 		View audios = new View(this.context);
-		RelativeLayout.LayoutParams audiosPara = new RelativeLayout.LayoutParams(
+		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
-		audiosPara.addRule(RelativeLayout.CENTER_VERTICAL,RelativeLayout.TRUE);
+		audiosPara.leftMargin =this.plusMargin;
+		audiosPara.gravity = Gravity.CENTER_VERTICAL;
+		audios.setLayoutParams(audiosPara);
 
 		audios.setBackgroundResource(R.drawable.btn_slip);
 		audios.setId(Key.AUDIOS_NAME);
@@ -109,14 +112,15 @@ public class UI_Audios {
 		text.setTypeface(type);
 		text.setText("AUDIOS LIBRARY");
 		text.setId(Key.AUSWAHL);
-		RelativeLayout.LayoutParams textPara = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		textPara.addRule(RelativeLayout.RIGHT_OF, audios.getId());
-		textPara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-		layout.addView(audios,audiosPara);
-		layout.addView(text,textPara);
-		main.addView(layout,paraFrame);
+		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT);
+		textPara.leftMargin= this.plusTextMargin;
+		textPara.gravity = Gravity.CENTER_VERTICAL;
+		text.setLayoutParams(textPara);
+		
+		main.addView(audios);
+		main.addView(text);
 		return main;
 	}
 
@@ -135,14 +139,12 @@ public class UI_Audios {
 	}
 
 	public View initUIBottom() {
-		BitmapDrawable drawable = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_deine_normal);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
-		int hieght = (int) (mHelper.getAppHeight() - h);
+		
+		int hieght = (int) (mHelper.getAppHeight() - bottom);
 		View view = new View(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
+				bottom);
 		paraHeader.topMargin = hieght;
 		view.setLayoutParams(paraHeader);
 		view.setBackgroundResource(R.drawable.btn_deine);
@@ -151,17 +153,12 @@ public class UI_Audios {
 	}
 
 	public ImageView initUIDown() {
-		BitmapDrawable drawable1 = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_deine_normal);
-		int h1 = (int) ((2 * drawable1.getBitmap().getHeight()) / 3);
+		
 
-		BitmapDrawable drawable = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.btn_more_normal);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
-		int w = (int) ((2 * drawable.getBitmap().getWidth()) / 3);
-		int hieght = (int) (mHelper.getAppHeight() - h - h1 - 20);
+		
+		int hieght = (int) (mHelper.getAppHeight() - bottom - bottom_down);
 		ImageView view = new ImageView(this.context);
-		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(w, h);
+		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		paraHeader.topMargin = hieght;
 		paraHeader.gravity = Gravity.CENTER_HORIZONTAL;
 		view.setLayoutParams(paraHeader);

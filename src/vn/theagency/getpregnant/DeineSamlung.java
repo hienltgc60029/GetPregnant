@@ -59,16 +59,11 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		initUI();
 		list = (ListView) findViewById(Key.LISTVIEW_LIBRARY);
 
-		BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(
-				R.drawable.library_header);
-		BitmapDrawable header = (BitmapDrawable) getResources().getDrawable(
-				R.drawable.header_deine_titel);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
-		int header_height = (int) (2 * header.getBitmap().getHeight()) / 3;
-		int height = (int) (mHelper.getAppHeight() - (h + header_height)) / 3;
-
+		
+		int height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
+		int rowSize = (int) (mHelper.getAppHeight()-height)/3;
 		SammlungAdapter adapter = new SammlungAdapter(R.layout.items,
-				getApplicationContext(), audiosArray(), height);
+				getApplicationContext(), audiosArray(), rowSize);
 		list.setAdapter(adapter);
 	}
 

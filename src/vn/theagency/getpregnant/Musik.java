@@ -1,18 +1,18 @@
 package vn.theagency.getpregnant;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
-import vn.theagency.fragment.Fragment_Home;
 import vn.theagency.fragment.Fragment_MusikListe;
 import vn.theagency.fragment.Fragment_Nohitaky;
 import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
-import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Musik;
 import vn.theagency.objects.Songs;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
-
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,12 +23,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
+@SuppressLint("HandlerLeak")
 public class Musik extends Activity {
 
 	private Helper mHelper;
@@ -38,7 +37,7 @@ public class Musik extends Activity {
 	public RelativeLayout initUIMusicBar;
 	public SeekBar mLine, mVolume;
 	public View volume;
-	public MediaPlayer media;
+	
 	ArrayList<Songs> arr;
 	int sliteVolume = 10;
 	FragmentTransaction transaction;
@@ -53,10 +52,7 @@ public class Musik extends Activity {
 		}
 	};
 
-	public MediaPlayer getMedia() {
-		return media;
-	}
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -65,12 +61,12 @@ public class Musik extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.musik);
-		getArray();
+		
 
+		
 		FragmentTransaction transaction1 = getFragmentManager()
 				.beginTransaction();
-		transaction1.add(R.id.musik,
-				Fragment_MusikListe.newInstance(arr, sliteVolume));
+		transaction1.add(R.id.musik, Fragment_MusikListe.newInstance(arr));
 		transaction1.commit();
 
 		FragmentTransaction transaction = getFragmentManager()
@@ -80,84 +76,26 @@ public class Musik extends Activity {
 
 	}
 
-	public void getArray() {
-		String timePhut = null;
-		String timeGiay = null;
-		GetSongsAll all = new GetSongsAll();
-		arr = new ArrayList<Songs>();
-		arr = all.getPlayList(getApplicationContext());
-
-		for (int i = 0; i < arr.size(); i++) {
-			media = MediaPlayer.create(getApplicationContext(),
-					Uri.parse(arr.get(i).getmURL()));
-			int phut = (int) ((media.getDuration() / 60000) % 60);
-			if (phut < 10) {
-				timePhut = "0" + String.valueOf(phut);
-			} else {
-				timePhut = String.valueOf(phut);
-			}
-
-			int giay = (int) (((media.getDuration() - (phut * 60000)) / 1000) % 60);
-			if (giay < 10) {
-				timeGiay = "0" + String.valueOf(giay);
-			} else {
-				timeGiay = String.valueOf(giay);
-			}
-			arr.get(i).setmLine(timePhut + ":" + timeGiay);
-
-		}
-
-	}
+	
 
 	public void actionClickHander(int action) {
 		switch (action) {
 		case 1:
 
-			/*FragmentTransaction transaction = getFragmentManager()
-					.beginTransaction();
-			transaction.setCustomAnimations(R.animator.slide_in_left,
-					R.animator.slide_out_right);
-			transaction.hide(Fragment_Nohitaky.newInstance());
-			transaction.show(Fragment_MusikListe.newInstance(arr, sliteVolume));
-			transaction
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction.commit();*/
-			this.runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					Fragment_Nohitaky.newInstance().getView().setVisibility(View.INVISIBLE);
-					Fragment_MusikListe.newInstance(arr, sliteVolume).getView().setVisibility(View.VISIBLE);
-				}
-			});
-			
+			Fragment_Nohitaky.newInstance().getView().setVisibility(View.GONE);
+			Fragment_MusikListe.newInstance(arr).getView()
+					.setVisibility(View.VISIBLE);
 
 			break;
 		case 2:
 
-			/*FragmentTransaction transaction1 = getFragmentManager()
-					.beginTransaction();
-			transaction1.setCustomAnimations(R.animator.slide_in_right,
-					R.animator.slide_out_left);
-			transaction1.hide(Fragment_MusikListe.newInstance(arr, sliteVolume));
-			transaction1.show(Fragment_Nohitaky.newInstance());
-			transaction1
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-			transaction1.addToBackStack(null);
-			transaction1.commit();*/
-
-			this.runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					Fragment_Nohitaky.newInstance().getView().setVisibility(View.VISIBLE);
-					Fragment_MusikListe.newInstance(arr, sliteVolume).getView().setVisibility(View.INVISIBLE);
-				}
-			});
-
-			
+			Fragment_Nohitaky.newInstance().getView()
+			.setVisibility(View.VISIBLE);
+	Fragment_MusikListe.newInstance(arr).getView()
+			.setVisibility(View.GONE);
+			break;
+		case 3:
+			onBackPressed();
 			break;
 
 		default:
@@ -165,11 +103,43 @@ public class Musik extends Activity {
 		}
 	}
 
+	
+
 	public Messenger getMessenger() {
 		return new Messenger(handler);
 	}
+
 	public Messenger getMessenger1() {
 		return new Messenger(handler);
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		
+	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		super.onBackPressed();
+		Log.i("LTH", "Media: "+ getIntent().getExtras().getString("Audios"));
+		
+		clearMemory();
+		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
+
+		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
+		startActivity(intent);
+		finish();
+	}
+
+	private void clearMemory() {
+		// TODO Auto-generated method stub
+		getFragmentManager().beginTransaction()
+				.remove(Fragment_Nohitaky.newInstance()).commit();
+		getFragmentManager().beginTransaction()
+				.remove(Fragment_MusikListe.newInstance(arr)).commit();
 	}
 
 	@Override
