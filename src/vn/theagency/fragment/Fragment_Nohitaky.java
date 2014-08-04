@@ -2,6 +2,8 @@ package vn.theagency.fragment;
 
 import java.util.Calendar;
 
+import vn.theagency.getpregnant.Audios_Library;
+import vn.theagency.getpregnant.Deine_Titel;
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
@@ -9,6 +11,7 @@ import vn.theagency.layout.UI_Nohitaky;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
@@ -26,40 +29,42 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
-public class Fragment_Nohitaky extends Fragment implements OnClickListener,OnCheckedChangeListener {
+public class Fragment_Nohitaky extends Fragment implements OnClickListener,
+		OnCheckedChangeListener {
 	private Helper mHelper;
 	public UI_Nohitaky mNohitaky;
-	
+
 	public FrameLayout wrapper;
 	public FrameLayout initUIBack;
-	public View initUIBackGround,initUIBackGroundDark;
+	public View initUIBackGround, initUIBackGroundDark;
 	public FrameLayout initUIMusik;
 	public LinearLayout initUIBottom;
-	public RelativeLayout initUIMusicBar,initUITitle;
+	public RelativeLayout initUIMusicBar, initUITitle;
 	Messenger messenger;
 	Message msg;
 	View play_musik;
-	
-	ImageView wecker;
-	CheckBox musikCheck,pdfCheck;
+
+	ImageView wecker, back;
+	CheckBox musikCheck, pdfCheck;
 	Switch changeBg;
 	private static Fragment_Nohitaky _ins;
-	
+
 	public static Fragment_Nohitaky newInstance() {
-		if(Fragment_Nohitaky._ins==null){
+		if (Fragment_Nohitaky._ins == null) {
 			Fragment_Nohitaky._ins = new Fragment_Nohitaky();
 		}
-        return Fragment_Nohitaky._ins;
-    }
-	
+		return Fragment_Nohitaky._ins;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		this.mHelper = Helper.shareIns(getActivity());
 		this.mNohitaky = UI_Nohitaky.shareIns(getActivity());
-		
+
 		this.initUIBackGround = this.mNohitaky.initUIBackGround();
 		this.initUIBack = this.mNohitaky.initUIBack();
 		this.initUIMusik = this.mNohitaky.initUIMusik();
@@ -67,7 +72,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,OnChe
 		this.initUIMusicBar = this.mNohitaky.initUIMusicBar();
 		this.initUITitle = this.mNohitaky.initUITitle();
 		this.initUIBackGroundDark = this.mNohitaky.initUIBackGroundDark();
-		
+
 		initUI();
 		preference();
 		Musik musik = (Musik) getActivity();
@@ -75,30 +80,35 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,OnChe
 		msg = new Message();
 		return wrapper;
 	}
-	public void preference(){
+
+	public void preference() {
 		onAttach(getActivity());
 		play_musik = wrapper.findViewById(Key.PLAY);
 		play_musik.setOnClickListener(this);
-		
-		musikCheck = (CheckBox) this.wrapper.findViewById(Key.NOHITAKI_MusikCheck);
+
+		musikCheck = (CheckBox) this.wrapper
+				.findViewById(Key.NOHITAKI_MusikCheck);
 		musikCheck.setOnCheckedChangeListener(this);
 		pdfCheck = (CheckBox) this.wrapper.findViewById(Key.NOHITAKI_PDFCheck);
-		
+
 		wecker = (ImageView) this.wrapper.findViewById(Key.NOHITAKI_Wecker);
 		wecker.setOnClickListener(this);
-		
+
 		changeBg = (Switch) this.wrapper.findViewById(Key.NOHITAKI_ChangeBg);
 		changeBg.setChecked(true);
 		changeBg.setOnCheckedChangeListener(this);
+		back = (ImageView) this.wrapper.findViewById(Key.btn_back);
+		back.setOnClickListener(this);
+
 	}
+
 	public void initUI() {
 		this.wrapper = new FrameLayout(this.getActivity());
 		FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		this.wrapper.setLayoutParams(para);
-		
-		
+
 		this.wrapper.addView(this.initUIBackGround);
 		this.wrapper.addView(this.initUIBackGroundDark);
 		this.wrapper.addView(initUIMusik);
@@ -106,35 +116,47 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,OnChe
 		this.wrapper.addView(initUITitle);
 		this.wrapper.addView(initUIBottom);
 		this.wrapper.addView(initUIMusicBar);
-		
+
 	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case Key.PLAY:
-			try{
-				msg.arg1 =1;
+			try {
+				msg.arg1 = 1;
 				messenger.send(msg);
-			}catch(Exception ex){
+			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			break;
 		case Key.NOHITAKI_Wecker:
-			PopupMenu menu = new PopupMenu(getActivity(), v);
+			Toast.makeText(getActivity(),
+					"This function isn't reponding. Coming soon",
+					Toast.LENGTH_LONG).show();
+			break;
+		case Key.btn_back:
+			try {
+				msg.arg1 = 3;
+				messenger.send(msg);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			
 			break;
 		default:
 			break;
 		}
 	}
+	
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// TODO Auto-generated method stub
-		if(changeBg.isChecked()){
+		if (changeBg.isChecked()) {
 			initUIBackGroundDark.setVisibility(View.INVISIBLE);
-		}else{
+		} else {
 			initUIBackGroundDark.setVisibility(View.VISIBLE);
 		}
 	}
