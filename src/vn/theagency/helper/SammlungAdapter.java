@@ -65,6 +65,13 @@ public class SammlungAdapter extends BaseAdapter {
 			mViewHolder = new MyViewHolder();
 			view.setTag(mViewHolder);
 			//
+			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
+					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
+			
+			view.setLayoutParams(params);
+			view.setPadding(30, 0, 30, 0);
+		}
+			mViewHolder = (MyViewHolder) view.getTag();
 			mViewHolder.btnDownload = mButton(view, R.id.btn_down);
 			mViewHolder.btnUp = mButton(view, R.id.btn_up);
 			mViewHolder.btnLos = mButton(view, R.id.btn_los);
@@ -73,11 +80,7 @@ public class SammlungAdapter extends BaseAdapter {
 			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
 					.getmDecription());
 
-			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
 			
-			view.setLayoutParams(params);
-			view.setPadding(40, 0, 40, 0);
 			
 
 			mViewHolder.btnLos.setOnClickListener(new OnClickListener() {
@@ -129,9 +132,6 @@ public class SammlungAdapter extends BaseAdapter {
 			if (position == 0) {
 				mViewHolder.btnDownload.setEnabled(true);
 			}
-		} else {
-			mViewHolder = (MyViewHolder) view.getTag();
-		}
 
 		return view;
 	}

@@ -61,15 +61,26 @@ public class Fragment_MusikListe extends Fragment implements
 	Messenger messenger;
 	Message mg;
 	
+	
 
 	private static Fragment_MusikListe _ins;
 
-	
+	public Fragment_MusikListe(){
+		
+	}
 
-	public static Fragment_MusikListe newInstance() {
+	public static Fragment_MusikListe newInstance(boolean isActive) {
 		if (Fragment_MusikListe._ins == null) {
 			Fragment_MusikListe._ins = new Fragment_MusikListe();
+		}else{
+			if(isActive){
+				Fragment_MusikListe._ins.createListenner();
+			}else{
+				Fragment_MusikListe._ins.destroyListenner();
+			}
+			
 		}
+	//	createListenner();
 
 		return Fragment_MusikListe._ins;
 	}
@@ -87,6 +98,7 @@ public class Fragment_MusikListe extends Fragment implements
 		this.initUIListView = this.mMusik.initUIListView();
 
 		initUI();
+		
 		this.mStore = Store.shareIns(getActivity(), arr);
 		arr = this.mStore.getMusikSlite();
 		
@@ -94,8 +106,9 @@ public class Fragment_MusikListe extends Fragment implements
 		messenger = musik.getMessenger();
 		
 		
-
+		
 		mg = new Message();
+		Message.obtain();
 		preference();
 		return wrapper;
 	}
@@ -120,21 +133,21 @@ public class Fragment_MusikListe extends Fragment implements
 	public void preference() {
 
 		prev = wrapper.findViewById(Key.PREVAUDIO);
-		prev.setOnClickListener(this);
+		
 		next = wrapper.findViewById(Key.NEXTAUDIO);
-		next.setOnClickListener(this);
+		
 		play = wrapper.findViewById(Key.PLAYAUDIO);
-		play.setOnClickListener(this);
+		
 		pause = wrapper.findViewById(Key.PAUSEAUDIO);
-		pause.setOnClickListener(this);
+		
 		volume = wrapper.findViewById(Key.VOLUME);
-		volume.setOnClickListener(this);
+		
 		repeat = wrapper.findViewById(Key.REPEAT);
-		repeat.setOnClickListener(this);
+		
 		shuffer = wrapper.findViewById(Key.SHUFFER);
-		shuffer.setOnClickListener(this);
+		
 		header = wrapper.findViewById(Key.HEADER);
-		header.setOnClickListener(this);
+		
 
 		// ///////////////////////
 
@@ -163,8 +176,8 @@ public class Fragment_MusikListe extends Fragment implements
 		list.setDivider(null);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-		list.setOnItemClickListener(this);
-
+		destroyListenner();
+		
 		mPosition = 0;
 		
 			play.setVisibility(View.VISIBLE);
@@ -174,6 +187,28 @@ public class Fragment_MusikListe extends Fragment implements
 		
 	
 	}
+	public void destroyListenner(){
+		list.setOnItemClickListener(null);
+		header.setOnClickListener(null);
+		shuffer.setOnClickListener(null);
+		repeat.setOnClickListener(null);
+		volume.setOnClickListener(null);
+		pause.setOnClickListener(null);
+		play.setOnClickListener(null);
+		next.setOnClickListener(null);
+		prev.setOnClickListener(null);
+	}
+	public void createListenner(){
+		list.setOnItemClickListener(this);
+		header.setOnClickListener(this);
+		shuffer.setOnClickListener(this);
+		repeat.setOnClickListener(this);
+		volume.setOnClickListener(this);
+		pause.setOnClickListener(this);
+		play.setOnClickListener(this);
+		next.setOnClickListener(this);
+		prev.setOnClickListener(this);
+	}
 
 	public void setVolume(int Max) {
 		seekVolume.setMax(mMaxVolume);
@@ -181,6 +216,7 @@ public class Fragment_MusikListe extends Fragment implements
 		media.setVolume((float) curVolume / mMaxVolume, (float) curVolume
 				/ mMaxVolume);
 	}
+	
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -297,6 +333,7 @@ public class Fragment_MusikListe extends Fragment implements
 			break;
 		case Key.HEADER:
 			try {
+				
 				mg.arg1 = 2;
 				messenger.send(mg);
 			} catch (Exception ex) {
@@ -336,13 +373,6 @@ public class Fragment_MusikListe extends Fragment implements
 
 	}
 
-	
-	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		media.release();
-	}
 
 	public class MusikAsyntask extends AsyncTask<String, Integer, Integer> {
 		UI_Musik mMusik = UI_Musik.shareIns(getActivity());

@@ -25,4 +25,9 @@
      <dimen name="ROW_BTN_DOWN_WIDTH">71dp</dimen>
       <dimen name="ROW_BTN_UP_WIDTH">51dp</dimen>
      <dimen name="ROW_BTN_HEIGHT">30dp</dimen>  
+     <!-- Adapter -->
+     <dimen name="MarginLeft">10dp</dimen>
+     <dimen name="MarginTextImage">5dp</dimen>
+     <dimen name="PaddingLeft">20dp</dimen>
+     <dimen name="PaddingRight">15dp</dimen>
 </resources>

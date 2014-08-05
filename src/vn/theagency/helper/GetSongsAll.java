@@ -72,11 +72,12 @@ public class GetSongsAll {
 		if (cursor!=null) {
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
+				String duration = cursor.getString(cursor.getColumnIndex(Media.DURATION));
 				String path = cursor.getString(cursor.getColumnIndex(Media.DATA));
 				String name = cursor.getString(cursor.getColumnIndex(Media.DISPLAY_NAME));
 				if(path.length()>0){
 					if(path.endsWith(mp3Pattern)){
-						songs = new Songs(name, "", path);
+						songs = new Songs(name, duration, path);
 						list.add(songs);
 					}
 				}else{

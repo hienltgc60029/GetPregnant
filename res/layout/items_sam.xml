@@ -28,6 +28,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:includeFontPadding="false"
+            android:textSize="20sp"
+            android:alpha="0.5"
             android:text="TextView" />
 
         <TextView

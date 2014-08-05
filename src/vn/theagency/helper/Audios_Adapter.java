@@ -26,6 +26,7 @@ public class Audios_Adapter extends BaseAdapter {
 	public Context mContext;
 	public ArrayList<Audios> arr;
 	public int sizeRow;
+	private Helper mHelper;
 
 	//
 
@@ -36,6 +37,7 @@ public class Audios_Adapter extends BaseAdapter {
 		this.mContext = mContext;
 		this.arr = arr;
 		this.sizeRow = sizeRow;
+		this.mHelper = Helper.shareIns(mContext);
 	}
 
 	@Override
@@ -67,7 +69,20 @@ public class Audios_Adapter extends BaseAdapter {
 			mViewHolder = new MyViewHolder();
 			view.setTag(mViewHolder);
 			//
+			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
+					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
+			
+			view.setLayoutParams(params);
+			int widthImage = (int)this.mContext.getResources().getDimension(R.dimen.AVARTA_WIDTH);
+			int widthBtn = (int)this.mContext.getResources().getDimension(R.dimen.ROW_BUTTON_WIDTH);
+			int margin = (int)this.mContext.getResources().getDimension(R.dimen.MarginLeft);
+			int widthRow =(int) (this.mHelper.getAppWidth()-((widthBtn*2)+(margin*2)+widthImage));
+			view.setPadding((int)widthRow/2, 0, 0, 0);
+			
+			
 
+		} 
+			mViewHolder = (MyViewHolder) view.getTag();
 			mViewHolder.mTitle = mTextView(view, R.id.txtTitle,
 					arr.get(position).getmTitle());
 			mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
@@ -79,21 +94,11 @@ public class Audios_Adapter extends BaseAdapter {
 					R.drawable.btn_download);
 			//
 
-			AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
-
-			int imgHeight = (int) mViewHolder.imageView.getHeight();
-			int h = (int) ((sizeRow / 4) - imgHeight) / 2;
-			view.setLayoutParams(params);
-			view.setPadding(30, h, 30, h);
 			
-
-		} else {
-			mViewHolder = (MyViewHolder) view.getTag();
-		}
+		
 
 		if ((position % 2) != 0) {
-			// view.setBackgroundResource(R.drawable.bg_library);
+			view.setBackgroundResource(R.drawable.bg_library);
 		}
 
 		return view;

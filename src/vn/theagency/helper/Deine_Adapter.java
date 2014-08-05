@@ -27,6 +27,7 @@ public class Deine_Adapter extends BaseAdapter {
 	public ArrayList<Audios> arr;
 	public int sizeRow;
 	public String indexHome;
+	private Helper mHelper;
 
 	public Deine_Adapter(int layout, Context mContext, ArrayList<Audios> arr,
 			int sizeRow,String indexHome) {
@@ -36,6 +37,7 @@ public class Deine_Adapter extends BaseAdapter {
 		this.arr = arr;
 		this.sizeRow = sizeRow;
 		this.indexHome = indexHome;
+		this.mHelper = Helper.shareIns(mContext);
 	}
 
 	@Override
@@ -66,39 +68,41 @@ public class Deine_Adapter extends BaseAdapter {
 			view = inflater.inflate(R.layout.items, null);
 			mViewHolder = new MyViewHolder();
             view.setTag(mViewHolder);
-            mViewHolder.mTitle = mTextView(view, R.id.txtTitle, arr.get(position).getmTitle());
-    		mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
-    		mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position).getmDecription());
-    		mViewHolder.btnView = mButton(view, R.id.btnView, R.drawable.btn_play);
-    		mViewHolder.btnDownload = mButton(view, R.id.btn, R.drawable.btn_collect);
-
-    		mViewHolder.btnView.setOnClickListener(new OnClickListener() {
-
-    			@Override
-    			public void onClick(View v) {
-    				// TODO Auto-generated method stub
-    				Intent intent = new Intent(mContext, Musik.class);
-    				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    				intent.putExtra("Audios", indexHome);
-    				mContext.startActivity(intent);
-    				
-    			}
-    		});
+           
     		
     	
     		AbsListView.LayoutParams params = new AbsListView.LayoutParams(
     				AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
-    		int imgHeight = (int) mViewHolder.imageView.getHeight();
-    		
-    		int h = (int) ((sizeRow / 7) - imgHeight) / 2;
     		view.setLayoutParams(params);
-    		view.setPadding(30,  h, 30, h);
+    		int widthImage = (int)this.mContext.getResources().getDimension(R.dimen.AVARTA_WIDTH);
+			int widthBtn = (int)this.mContext.getResources().getDimension(R.dimen.ROW_BUTTON_WIDTH);
+			int margin = (int)this.mContext.getResources().getDimension(R.dimen.MarginLeft);
+			int widthRow =(int) (this.mHelper.getAppWidth()-((widthBtn*2)+(margin*2)+widthImage));
+    		view.setPadding((int)widthRow/2,  0, 0, 0);
     		
     		
-		}else{
-			mViewHolder = (MyViewHolder) view.getTag();
 		}
+			mViewHolder = (MyViewHolder) view.getTag();
+			 mViewHolder.mTitle = mTextView(view, R.id.txtTitle, arr.get(position).getmTitle());
+	    		mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
+	    		mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position).getmDecription());
+	    		mViewHolder.btnView = mButton(view, R.id.btnView, R.drawable.btn_play);
+	    		mViewHolder.btnDownload = mButton(view, R.id.btn, R.drawable.btn_collect);
+
+	    		mViewHolder.btnView.setOnClickListener(new OnClickListener() {
+
+	    			@Override
+	    			public void onClick(View v) {
+	    				// TODO Auto-generated method stub
+	    				Intent intent = new Intent(mContext, Musik.class);
+	    				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	    				intent.putExtra("Audios", indexHome);
+	    				mContext.startActivity(intent);
+	    				
+	    			}
+	    		});
+		
 		if ((position % 2) != 0) {
 			view.setBackgroundResource(R.drawable.bg_library);
 		}

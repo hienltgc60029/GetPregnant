@@ -54,7 +54,13 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		this.initUIText = this.mDeine.initUIText();
 		initUI();
 		list = (ListView) findViewById(Key.LISTVIEW_LIBRARY);
-		
+		list.setScrollbarFadingEnabled(true);
+		list.setHorizontalScrollBarEnabled(false);
+		list.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+		list.setVerticalScrollBarEnabled(false);
+		list.setSmoothScrollbarEnabled(true);
+		list.setDivider(null);
+		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		int header_height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
 		int height = (int) (mHelper.getAppHeight()-header_height)/3;

@@ -51,8 +51,8 @@ public class UI_Audios {
 	}
 	private void size() {
 		
-		plus_width = (int) mHelper.DpToPixel(44);
-		plus_height = (int) mHelper.DpToPixel(42);
+		plus_width = (int) mHelper.DpToPixel(55);
+		plus_height = (int) mHelper.DpToPixel(55);
 		
 		//
 		header_width = (int) this.mHelper.DpToPixel(360);
@@ -61,7 +61,7 @@ public class UI_Audios {
 		bottom = (int) this.mHelper.DpToPixel(52);
 		bottom_down = (int) this.mHelper.DpToPixel(40);
 		plusMargin = (int) mHelper.DpToPixel(70);
-		plusTextMargin= (int) mHelper.DpToPixel(115);
+		plusTextMargin= (int) mHelper.DpToPixel(125);
 	}
 
 	public ListView initUIListView() {

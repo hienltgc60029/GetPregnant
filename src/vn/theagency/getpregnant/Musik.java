@@ -69,7 +69,7 @@ public class Musik extends Activity {
 		
 		FragmentTransaction transaction1 = getFragmentManager()
 				.beginTransaction();
-		transaction1.add(R.id.musik, Fragment_MusikListe.newInstance());
+		transaction1.add(R.id.musik, Fragment_MusikListe.newInstance(false));
 		transaction1.commit();
 
 		FragmentTransaction transaction = getFragmentManager()
@@ -85,20 +85,36 @@ public class Musik extends Activity {
 		switch (action) {
 		case 1:
 			
-			
-			
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					Fragment_Nohitaky.newInstance().getView().setVisibility(View.GONE);
+					Fragment_MusikListe.newInstance(true).getView()
+							.setVisibility(View.VISIBLE);
+				}
+			});
+		
 
-			Fragment_Nohitaky.newInstance().getView().setVisibility(View.GONE);
-			Fragment_MusikListe.newInstance().getView()
-					.setVisibility(View.VISIBLE);
+			
 
 			break;
 		case 2:
 
-			Fragment_Nohitaky.newInstance().getView()
-			.setVisibility(View.VISIBLE);
-	Fragment_MusikListe.newInstance().getView()
-			.setVisibility(View.GONE);
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					Fragment_Nohitaky.newInstance().getView()
+					.setVisibility(View.VISIBLE);
+			Fragment_MusikListe.newInstance(false).getView()
+					.setVisibility(View.GONE);
+				}
+			});
+			
+			
 			break;
 		case 3:
 			onBackPressed();
@@ -109,6 +125,8 @@ public class Musik extends Activity {
 		}
 	}
 
+	
+	
 	
 
 	public Messenger getMessenger() {
@@ -130,7 +148,7 @@ public class Musik extends Activity {
 		super.onBackPressed();
 		Log.i("LTH", "Media: "+ getIntent().getExtras().getString("Audios"));
 		
-		clearMemory();
+	//	clearMemory();
 		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
 
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
@@ -143,7 +161,7 @@ public class Musik extends Activity {
 		getFragmentManager().beginTransaction()
 				.remove(Fragment_Nohitaky.newInstance()).commit();
 		getFragmentManager().beginTransaction()
-				.remove(Fragment_MusikListe.newInstance()).commit();
+				.remove(Fragment_MusikListe.newInstance(false)).commit();
 	}
 
 	@Override

@@ -43,6 +43,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 	View deine,audio;
 	int pos;
 	TextView textView;
+	ArrayList<Audios> audiosList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -69,13 +70,14 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		
 		
 		initUI();
-		
+		pos = Integer.parseInt(getIntent().getExtras().getString("Audios"));
+		getArrayFormHome(pos);
 		libraries = (ListView) findViewById(Key.LISTVIEW_LIBRARY);
 		
 		
 		int height = (int) (mHelper.getAppHeight()-(UI_Audios.header_height*2))/3;
 		
-		Audios_Adapter adapter = new Audios_Adapter(R.layout.items, getApplicationContext(), audiosArray(),height);
+		Audios_Adapter adapter = new Audios_Adapter(R.layout.items, getApplicationContext(), audiosList,height);
 		libraries.setAdapter(adapter);
 		//libraries.setScrollBarSize(0);
 		libraries.setScrollbarFadingEnabled(true);
@@ -84,10 +86,10 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		libraries.setVerticalScrollBarEnabled(false);
 		libraries.setHorizontalScrollBarEnabled(false);
 		libraries.setOnScrollListener(this);
+		libraries.setDivider(null);
 		
 		deine = findViewById(Key.btn_deine_musik);
 		audio = findViewById(Key.AUDIOS_NAME);
-		pos = Integer.parseInt(getIntent().getExtras().getString("Audios"));
 		
 		initUIBgView.startAnimation(animation);
 		initUIListView.startAnimation(animation);
@@ -95,6 +97,33 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		
 		
 		
+	}
+	public void getArrayFormHome(int posi){
+		switch (posi) {
+		case 1:
+			//Ausgchen
+			audiosAuflosen();
+			break;
+		case 2:
+			//Auflosen
+			audiosAuflosen();
+			break;
+		case 3:
+			//Unterstutzen
+			audiosUnterstutzen();
+			break;
+		case 4:
+			//Verbessern
+			audiosVerbessern();
+			break;
+		case 5:
+			//Vorbereiten
+			audiosVorbereiten();
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	public void initUI() {
@@ -135,31 +164,121 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		overridePendingTransition(0, 0);
 	}
 
-	private ArrayList<Audios> audiosArray() {
-		ArrayList<Audios> arr = new ArrayList<Audios>();
+	private ArrayList<Audios> audiosAuflosen() {
+		audiosList = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", "");
-		arr.add(audios);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
+		audiosList.add(audios);
 		audios = new Audios("Farben atmen", "Breathing colours", "", "");
-		arr.add(audios);
+		audiosList.add(audios);
 		audios = new Audios(
-				"Lieblingsplatz",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
+				"Zurückkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen,...",
 				"", "");
-		arr.add(audios);
+		audiosList.add(audios);
 		audios = new Audios(
-				"Who I Am",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
+				"Türe der Erkenntnis",
+				"Realisiere, dass nur Du entscheidest, wie Du.",
 				"", "");
-		arr.add(audios);
+		audiosList.add(audios);
 		audios = new Audios(
-				"Remember When",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
+				"Grenzen stärken",
+				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter zu fühlen.",
 				"", "");
-		arr.add(audios);
-		return arr;
+		audiosList.add(audios);
+		audios = new Audios(
+				"Zoo der Emotionen",
+				"Lass deinen Selbstzweifel und deinen Stress eingesperrt im Zoo zurück.",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Heilendes weisses Licht",
+				"Blindtext orRovid moluptat mi",
+				"", "");
+		audiosList.add(audios);
+		return audiosList;
 	}
 
+	private ArrayList<Audios> audiosUnterstutzen() {
+		audiosList = new ArrayList<Audios>();
+		audios = new Audios("Wendeltreppe",
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
+		audiosList.add(audios);
+		audios = new Audios("Farben atmen", "Breathing colours", "", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Zurückkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen,...",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Einnistung",
+				"Unterstütze deinen Körper und deinen Geist nach einem Transfer...",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Sturmwolken",
+				"Egal, wie das Ergebnis wird, das Leben geht weiter.",
+				"", "");
+		audiosList.add(audios);
+		
+		return audiosList;
+	}
+
+	private ArrayList<Audios> audiosVerbessern() {
+		audiosList = new ArrayList<Audios>();
+		audios = new Audios("Wendeltreppe",
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
+		audiosList.add(audios);
+		audios = new Audios("Farben atmen", "Breathing colours", "", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Zurückkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen,...",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Gegensätze",
+				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung...",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Fruchtbarkeitsgarten",
+				"Bereite alles so in deinem Fruchtbarkeitsgarten vor,...",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Heilendes weisses Licht",
+				"Pis ratur a del iniate necepera non",
+				"", "");
+		audiosList.add(audios);
+		
+		return audiosList;
+	}
+	private ArrayList<Audios> audiosVorbereiten() {
+		audiosList = new ArrayList<Audios>();
+		audios = new Audios("Wendeltreppe",
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
+		audiosList.add(audios);
+		audios = new Audios("Farben atmen", "Breathing colours", "", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Zurückkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen,...",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"IVF Vorbereitung",
+				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
+				"", "");
+		audiosList.add(audios);
+		audios = new Audios(
+				"Kontrollzentrale",
+				"Id modion nonet idipitis doluptatur mo cus corrum solorib ",
+				"", "");
+		audiosList.add(audios);		
+		return audiosList;
+	}
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

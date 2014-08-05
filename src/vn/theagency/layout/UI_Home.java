@@ -30,8 +30,8 @@ public class UI_Home {
 	int plus;
 	int plusMargin,plusTextMargin,textAddition,textsize;
 	
-	
-	
+	int titleWidth;
+	int titleHeight;
 	
 	
 	private UI_Home(Context _context) {
@@ -53,13 +53,16 @@ public class UI_Home {
 	 * 
 	 */
 	private void size() {
-		icon_home = (int) mHelper.DpToPixel(30) ;
+		icon_home = (int) mHelper.DpToPixel(40) ;
 		icon_home_aligh = (int) mHelper.DpToPixel(12) ;
-		plus = (int) mHelper.DpToPixel(46);
+		plus = (int) mHelper.DpToPixel(55);
 		plusMargin = (int) mHelper.DpToPixel(120);
 		textAddition = (int) mHelper.DpToPixel(100);
 		plusTextMargin= (int) mHelper.DpToPixel(170);
 		textsize = (int) mHelper.DpToSp(20);
+		
+		titleWidth =(int) this.mHelper.DpToPixel(289);
+		titleHeight =(int) this.mHelper.DpToPixel(115);
 	}
 
 	/**
@@ -68,8 +71,8 @@ public class UI_Home {
 	 */
 	public FrameLayout initUI(int pos) {
 		
-		BitmapDrawable bar = (BitmapDrawable) this.context.getResources().getDrawable(R.drawable.bar);
-		int barHeight = bar.getBitmap().getHeight();
+		
+		int barHeight = (int) this.mHelper.DpToPixel(30);
 
 		// Auflosen
 		FrameLayout linearAuflosen = new FrameLayout(this.context);
@@ -84,7 +87,7 @@ public class UI_Home {
 		
 		ImageView auflosen = new ImageView(this.context);
 		FrameLayout.LayoutParams paraAuflosen = new FrameLayout.LayoutParams(
-				(int)(mHelper.getAppWidth()/6), (int)(barHeight/4));
+				(int)(mHelper.getAppWidth()/6), (int)(barHeight/2));
 		paraAuflosen.gravity = Gravity.CENTER;
 		auflosen.setLayoutParams(paraAuflosen);
 		auflosen.setBackgroundResource(R.drawable.btn_auf);
@@ -107,7 +110,7 @@ public class UI_Home {
 
 		ImageView vorbereiten = new ImageView(this.context);
 		FrameLayout.LayoutParams paraVorbereiten = new FrameLayout.LayoutParams(
-				(int)(mHelper.getAppWidth()/5), (int)(barHeight/4));
+				(int)(mHelper.getAppWidth()/5), (int)(barHeight/2));
 		paraVorbereiten.gravity = Gravity.CENTER;
 		vorbereiten.setLayoutParams(paraVorbereiten);
 		vorbereiten.setBackgroundResource(R.drawable.btn_vor);
@@ -129,7 +132,7 @@ public class UI_Home {
 
 		ImageView unterstutzen = new ImageView(this.context);
 		FrameLayout.LayoutParams paraUnterstutzen = new FrameLayout.LayoutParams(
-				(int)(mHelper.getAppWidth()/5), (int)(barHeight/4));
+				(int)(mHelper.getAppWidth()/5), (int)(barHeight/2));
 		paraUnterstutzen.gravity = Gravity.CENTER;
 		unterstutzen.setLayoutParams(paraUnterstutzen);
 		unterstutzen.setBackgroundResource(R.drawable.btn_unt);
@@ -150,7 +153,7 @@ public class UI_Home {
 
 		ImageView verbessern = new ImageView(this.context);
 		FrameLayout.LayoutParams paraVerbessern = new FrameLayout.LayoutParams(
-				(int)(mHelper.getAppWidth()/5), (int)(barHeight/4));
+				(int)(mHelper.getAppWidth()/5), (int)(barHeight/2));
 		paraVerbessern.gravity = Gravity.CENTER;
 		
 		
@@ -174,7 +177,7 @@ public class UI_Home {
 
 		ImageView ausgleichen = new ImageView(this.context);
 		FrameLayout.LayoutParams paraAusgleichen = new FrameLayout.LayoutParams(
-				(int)(mHelper.getAppWidth()/5), (int)(barHeight/3));
+				(int)(mHelper.getAppWidth()/5), (int)(barHeight/2));
 		paraAusgleichen.gravity = Gravity.CENTER;
 		ausgleichen.setLayoutParams(paraAusgleichen);
 		ausgleichen.setBackgroundResource(R.drawable.btn_ausg);
@@ -261,9 +264,7 @@ public class UI_Home {
 	
 	public FrameLayout initUIText(float pTop,int bgText) {
 		
-	BitmapDrawable bitmap = (BitmapDrawable) this.context.getResources().getDrawable(bgText);
-	int w =(int) (2*bitmap.getBitmap().getWidth())/3;
-	int h =(int) (2*bitmap.getBitmap().getHeight())/3;
+	
 		
 	FrameLayout layout = new FrameLayout(this.context);
 	FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
@@ -275,7 +276,7 @@ public class UI_Home {
 
 	ImageView mTitle1 = new ImageView(this.context);
 	LinearLayout.LayoutParams mLayoutTitle1 = new LinearLayout.LayoutParams(
-			w, h);
+			titleWidth, titleHeight);
 	mLayoutTitle1.gravity = Gravity.CENTER;
 	mTitle1.setLayoutParams(mLayoutTitle1);
 	mTitle1.setBackgroundResource(bgText);

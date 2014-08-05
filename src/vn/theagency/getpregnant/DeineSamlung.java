@@ -58,7 +58,13 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		this.initUIDeineSamlung = this.mDeine.initUIDeineSamlung();
 		initUI();
 		list = (ListView) findViewById(Key.LISTVIEW_LIBRARY);
-
+		list.setScrollbarFadingEnabled(true);
+		list.setHorizontalScrollBarEnabled(false);
+		list.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+		list.setVerticalScrollBarEnabled(false);
+		list.setSmoothScrollbarEnabled(true);
+		list.setDivider(null);
+		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
 		int height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
 		int rowSize = (int) (mHelper.getAppHeight()-height)/3;

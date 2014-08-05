@@ -78,6 +78,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		Musik musik = (Musik) getActivity();
 		messenger = musik.getMessenger();
 		msg = new Message();
+		Message.obtain();
 		return wrapper;
 	}
 

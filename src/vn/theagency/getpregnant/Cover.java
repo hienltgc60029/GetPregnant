@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class Cover extends Activity implements OnClickListener {
 
@@ -24,12 +25,12 @@ public class Cover extends Activity implements OnClickListener {
 	public FrameLayout wrapper;
 	
 	public View initUIBackGround;
-	public FrameLayout initUIInfo;
+	public ImageView initUIInfo;
 	public FrameLayout initUIBottom;
 	public View initUIText;
 	FrameLayout initUIBottom2;
-	View aus,auf,unt,vor,ver,home;
-	View initUIWarning;
+	View aus,auf,unt,vor,ver,home,hide;
+	View initUIWarning,initUIHideBackGround;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class Cover extends Activity implements OnClickListener {
 		this.initUIBottom2 = this.mCover.initUIBottom2();
 		this.initUIText = this.mCover.initUIText();
 		this.initUIWarning = this.mCover.initUIWarning();
+		this.initUIHideBackGround = this.mCover.initUIHideBackGround();
 		
 		
 		initUI();
@@ -62,6 +64,8 @@ public class Cover extends Activity implements OnClickListener {
 		vor.setOnClickListener(this);
 		ver.setOnClickListener(this);
 		home.setOnClickListener(this);
+		hide.setOnClickListener(this);
+		
 	}
 	
 	public void preference(){
@@ -71,6 +75,7 @@ public class Cover extends Activity implements OnClickListener {
 		vor = findViewById(Key.linearVorbereiten);
 		ver = findViewById(Key.linearVerbessern);
 		home = findViewById(Key.HOME);
+		hide = findViewById(Key.HEADER);
 	}
 	
 	public void initUI() {
@@ -86,6 +91,7 @@ public class Cover extends Activity implements OnClickListener {
 		this.wrapper.addView(this.initUIText);
 		this.wrapper.addView(initUIBottom2);
 		this.wrapper.addView(this.initUIBottom);
+		this.wrapper.addView(this.initUIHideBackGround);
 		this.wrapper.addView(this.initUIWarning);
 		setContentView(this.wrapper);
 	}
@@ -134,9 +140,14 @@ public class Cover extends Activity implements OnClickListener {
 			break;
 		case Key.HOME:
 			this.initUIWarning.setVisibility(View.VISIBLE);
-					  
+			this.initUIHideBackGround.setVisibility(View.VISIBLE);
+			this.home.setVisibility(View.GONE);
 			break;
-			
+		case Key.HEADER:
+			this.home.setVisibility(View.VISIBLE);
+			this.initUIWarning.setVisibility(View.GONE);
+			this.initUIHideBackGround.setVisibility(View.GONE);	
+			break;
 
 		default:
 			break;
@@ -148,6 +159,8 @@ public class Cover extends Activity implements OnClickListener {
 		unt.setOnClickListener(null);
 		vor.setOnClickListener(null);
 		ver.setOnClickListener(null);
+		home.setOnClickListener(null);
+		hide.setOnClickListener(null);
 	}
 	@Override
 	public void finish() {

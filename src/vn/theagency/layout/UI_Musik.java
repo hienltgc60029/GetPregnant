@@ -134,10 +134,10 @@ public class UI_Musik {
 		//
 
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		
-
+	//	barVolumePara.setMargins(20, 0, 20, 0);
 		barVolumePara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
 		barVolumePara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
 		barVolumePara.addRule(RelativeLayout.CENTER_VERTICAL,
@@ -153,20 +153,25 @@ public class UI_Musik {
 		//
 
 		RelativeLayout.LayoutParams startPara = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				100,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		startPara.bottomMargin = 10;
 		startPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
 				RelativeLayout.TRUE);
 		startPara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
+	
+		//startPara.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
 
 		TextView timeStart = new TextView(this.context);
 		timeStart.setAlpha(0.5f);
 		timeStart.setText("25:58");
+		timeStart.setGravity(Gravity.RIGHT);
+		
+		
 		//
 		TextView timeEnd = new TextView(this.context);
 		RelativeLayout.LayoutParams endPara = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
+				100,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		endPara.bottomMargin = 10;
 		endPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -174,6 +179,7 @@ public class UI_Musik {
 
 		timeEnd.setText("57:30");
 		timeEnd.setAlpha(0.5f);
+		timeEnd.setGravity(Gravity.LEFT);
 		//
 		RelativeLayout.LayoutParams repeatPara = new RelativeLayout.LayoutParams(
 				repeatWidth, repeatHeight);
