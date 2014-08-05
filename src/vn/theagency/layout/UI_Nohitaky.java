@@ -342,9 +342,10 @@ public class UI_Nohitaky {
 		mLine.setProgressDrawable(this.context.getResources().getDrawable(
 				R.drawable.seekbar_process));
 		mLine.setThumb(this.context.getResources().getDrawable(
-				R.drawable.seekbar_point));
+				R.drawable.thumbler_small));
 		mLine.setId(Key.SEEKBAR_LINE);
 		mLine.setVisibility(View.VISIBLE);
+		
 		// volume image
 		View volume = new View(this.context);
 		volume.setBackgroundResource(R.drawable.btn_playaudio);
@@ -359,7 +360,7 @@ public class UI_Nohitaky {
 		
 		//
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
+				20,
 				RelativeLayout.LayoutParams.WRAP_CONTENT
 				);
 	
@@ -386,7 +387,7 @@ public class UI_Nohitaky {
 				FrameLayout.LayoutParams.MATCH_PARENT, 80);
 		params.topMargin = pTop;
 		params.leftMargin = DP_10 * 2;
-		params.rightMargin = DP_10 * 2;
+		
 		main.setLayoutParams(params);
 		main.addView(volume, volumePara);
 		main.addView(timeStart, startPara);

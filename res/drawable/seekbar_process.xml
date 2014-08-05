@@ -4,11 +4,12 @@
             android:drawable="@drawable/progress_red" />
     <item android:id="@android:id/secondaryProgress">
         <scale android:scaleWidth="100%"
-                android:drawable="@drawable/progress_red" />
+                android:drawable="@drawable/progress_cyan" />
     </item>
     <item android:id="@android:id/progress">
         <scale android:scaleWidth="100%"
                 android:drawable="@drawable/progress_cyan" />
     </item>
 </layer-list>
+
 

@@ -5,9 +5,9 @@ public class Audios {
 	public String mTitle;
 	public String mDecription;
 	public String mURLDownload;
-	public String mImageURL;
+	public int mImageURL;
 	public Audios(String mTitle, String mDecription, String mURLDownload,
-			String mImageURL) {
+			int mImageURL) {
 		super();
 		this.mTitle = mTitle;
 		this.mDecription = mDecription;
@@ -32,11 +32,12 @@ public class Audios {
 	public void setmURLDownload(String mURLDownload) {
 		this.mURLDownload = mURLDownload;
 	}
-	public String getmImageURL() {
+	public int getmImageURL() {
 		return mImageURL;
 	}
-	public void setmImageURL(String mImageURL) {
+	public void setmImageURL(int mImageURL) {
 		this.mImageURL = mImageURL;
 	}
+	
 	
 }

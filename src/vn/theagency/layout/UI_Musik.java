@@ -156,6 +156,7 @@ public class UI_Musik {
 				100,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		startPara.bottomMargin = 10;
+	
 		startPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
 				RelativeLayout.TRUE);
 		startPara.addRule(RelativeLayout.RIGHT_OF, volume.getId());

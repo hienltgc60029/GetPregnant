@@ -56,7 +56,7 @@ public class UI_Deneine {
 		mDecSize = (int) mHelper.DpToSp(15);
 		play_width = (int) mHelper.DpToPixel(18);
 		play_height = (int) mHelper.DpToPixel(14);
-		seekbar_width = (int) mHelper.DpToPixel(170);
+		seekbar_width = (int) (3*mHelper.getAppWidth()/5);
 		seekbar_height = (int) mHelper.DpToPixel(8);
 		bottom_height = (int) this.mHelper.DpToPixel(92);
 		bottom = (int) this.mHelper.DpToPixel(52);

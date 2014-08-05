@@ -167,59 +167,53 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 	private ArrayList<Audios> audiosAuflosen() {
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
 		audiosList.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", "");
-		audiosList.add(audios);
+		
 		audios = new Audios(
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen,...",
-				"", "");
+				"", R.drawable.zur);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Türe der Erkenntnis",
 				"Realisiere, dass nur Du entscheidest, wie Du.",
-				"", "");
+				"", R.drawable.ture);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Grenzen stärken",
 				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter zu fühlen.",
-				"", "");
+				"", R.drawable.gre);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Zoo der Emotionen",
 				"Lass deinen Selbstzweifel und deinen Stress eingesperrt im Zoo zurück.",
-				"", "");
+				"", R.drawable.zoo);
 		audiosList.add(audios);
-		audios = new Audios(
-				"Heilendes weisses Licht",
-				"Blindtext orRovid moluptat mi",
-				"", "");
-		audiosList.add(audios);
+		
 		return audiosList;
 	}
 
 	private ArrayList<Audios> audiosUnterstutzen() {
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "",R.drawable.wen);
 		audiosList.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", "");
-		audiosList.add(audios);
+		
 		audios = new Audios(
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen,...",
-				"", "");
+				"", R.drawable.zur);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Einnistung",
 				"Unterstütze deinen Körper und deinen Geist nach einem Transfer...",
-				"", "");
+				"", R.drawable.ein);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Sturmwolken",
 				"Egal, wie das Ergebnis wird, das Leben geht weiter.",
-				"", "");
+				"", R.drawable.stur);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -228,54 +222,46 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 	private ArrayList<Audios> audiosVerbessern() {
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
-		audiosList.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", "");
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen,...",
-				"", "");
+				"", R.drawable.zur);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Gegensätze",
 				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung...",
-				"", "");
+				"", R.drawable.ver03);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Fruchtbarkeitsgarten",
 				"Bereite alles so in deinem Fruchtbarkeitsgarten vor,...",
-				"", "");
+				"", R.drawable.fru);
 		audiosList.add(audios);
-		audios = new Audios(
-				"Heilendes weisses Licht",
-				"Pis ratur a del iniate necepera non",
-				"", "");
-		audiosList.add(audios);
+		
 		
 		return audiosList;
 	}
 	private ArrayList<Audios> audiosVorbereiten() {
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", "");
-		audiosList.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", "");
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen,...",
-				"", "");
+				"", R.drawable.zur);
 		audiosList.add(audios);
 		audios = new Audios(
 				"IVF Vorbereitung",
 				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
-				"", "");
+				"", R.drawable.ivf);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Kontrollzentrale",
 				"Id modion nonet idipitis doluptatur mo cus corrum solorib ",
-				"", "");
+				"",R.drawable.kon);
 		audiosList.add(audios);		
 		return audiosList;
 	}

@@ -156,9 +156,11 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// TODO Auto-generated method stub
 		if (changeBg.isChecked()) {
-			initUIBackGroundDark.setVisibility(View.INVISIBLE);
+			this.wrapper.setAlpha(0.5f);
+		//	initUIBackGroundDark.setVisibility(View.INVISIBLE);
 		} else {
-			initUIBackGroundDark.setVisibility(View.VISIBLE);
+			this.wrapper.setAlpha(1f);
+		//	initUIBackGroundDark.setVisibility(View.VISIBLE);
 		}
 	}
 }

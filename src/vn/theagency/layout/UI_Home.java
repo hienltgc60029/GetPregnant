@@ -56,9 +56,9 @@ public class UI_Home {
 		icon_home = (int) mHelper.DpToPixel(40) ;
 		icon_home_aligh = (int) mHelper.DpToPixel(12) ;
 		plus = (int) mHelper.DpToPixel(55);
-		plusMargin = (int) mHelper.DpToPixel(120);
+		plusMargin = (int) mHelper.getAppWidth()/4;
 		textAddition = (int) mHelper.DpToPixel(100);
-		plusTextMargin= (int) mHelper.DpToPixel(170);
+		plusTextMargin= (int)mHelper.DpToPixel(50);
 		textsize = (int) mHelper.DpToSp(20);
 		
 		titleWidth =(int) this.mHelper.DpToPixel(289);
@@ -218,8 +218,9 @@ public class UI_Home {
 		FrameLayout main = new FrameLayout(this.context);
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		mainFrame.topMargin = (int) ((84*mHelper.getAppHeight())/100);
+		mainFrame.gravity = Gravity.CENTER_HORIZONTAL;
 		main.setLayoutParams(mainFrame);
 		main.setLayoutTransition(lt);
 		
@@ -229,7 +230,7 @@ public class UI_Home {
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
 		
-		audiosPara.leftMargin = plusMargin;
+		
 		audios.setLayoutParams(audiosPara);
 		audios.setImageResource(R.drawable.plus);
 		audios.setId(Key.AUSWAHL);

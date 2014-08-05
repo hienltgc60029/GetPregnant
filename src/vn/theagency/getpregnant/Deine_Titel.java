@@ -94,24 +94,22 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 	private ArrayList<Audios> audiosArray() {
 		ArrayList<Audios> arr = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", "");
-		arr.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", "");
+				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.zoo);
 		arr.add(audios);
 		audios = new Audios(
 				"Lieblingsplatz",
 				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", "");
+				"", R.drawable.zur);
 		arr.add(audios);
 		audios = new Audios(
 				"Ka Ki Ko",
 				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", "");
+				"", R.drawable.gre);
 		arr.add(audios);
 		audios = new Audios(
 				"Elitis Endiatiu",
 				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", "");
+				"", R.drawable.stur);
 		arr.add(audios);
 		return arr;
 	}

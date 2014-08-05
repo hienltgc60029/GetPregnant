@@ -85,7 +85,7 @@ public class Audios_Adapter extends BaseAdapter {
 			mViewHolder = (MyViewHolder) view.getTag();
 			mViewHolder.mTitle = mTextView(view, R.id.txtTitle,
 					arr.get(position).getmTitle());
-			mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
+			mViewHolder.imageView = mImage(view, R.id.img, arr.get(position).mImageURL);
 			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
 					.getmDecription());
 			mViewHolder.btnView = mButton(view, R.id.btnView,
