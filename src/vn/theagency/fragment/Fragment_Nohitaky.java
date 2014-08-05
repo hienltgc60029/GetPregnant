@@ -41,7 +41,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 	public View initUIBackGround, initUIBackGroundDark;
 	public FrameLayout initUIMusik;
 	public LinearLayout initUIBottom;
-	public RelativeLayout initUIMusicBar, initUITitle;
+	public RelativeLayout initUITitle,initUIMusicBar;
 	Messenger messenger;
 	Message msg;
 	View play_musik;

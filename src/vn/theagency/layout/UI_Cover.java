@@ -23,6 +23,7 @@ public class UI_Cover {
 	int icon_info;
 	int text_width;
 	int text_heigt;
+	int warning_height,warning_width;
 
 	private Helper mHelper;
 	private Context context;
@@ -53,6 +54,8 @@ public class UI_Cover {
 		icon_top_1 =(int) mHelper.DpToPixel(513);
 		icon_left_ausg =(int) mHelper.DpToPixel(79);
 		icon_info = (int) mHelper.DpToPixel(31);
+		warning_height =(int) mHelper.DpToPixel(411);
+		warning_width = (int) mHelper.DpToPixel(324);
 		
 			
 	}
@@ -64,6 +67,18 @@ public class UI_Cover {
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		v.setLayoutParams(params);
 		v.setBackgroundResource(R.drawable.bg_cover);
+		return v;
+	}
+	public View initUIWarning() {
+		View v = new View(this.context);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+				warning_width,
+				warning_height);
+		params.topMargin=icon_info+icon_left+icon_left;
+		params.gravity = Gravity.CENTER_HORIZONTAL;
+		v.setLayoutParams(params);
+		v.setBackgroundResource(R.drawable.warning_popup);
+		v.setVisibility(View.GONE);
 		return v;
 	}
 	public View initUIText() {
@@ -91,7 +106,7 @@ public class UI_Cover {
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		view.setLayoutParams(viewParams);
 		view.setBackgroundResource(R.drawable.btn_cover_info);
-		
+		view.setId(Key.HOME);
 		layout.addView(view);
 		
 		return layout;
@@ -102,7 +117,7 @@ public class UI_Cover {
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		params.topMargin =(int) ((82*mHelper.getAppHeight())/100);
+		params.topMargin =(int) ((81*mHelper.getAppHeight())/100);
 		//params.gravity = Gravity.CENTER_HORIZONTAL;
 		layout.setLayoutParams(params);
 		//

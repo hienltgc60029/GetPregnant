@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -203,6 +204,7 @@ public class UI_Nohitaky {
 
 	public FrameLayout initUIMusik() {
 		FrameLayout layout = new FrameLayout(this.context);
+		
 		FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -354,14 +356,8 @@ public class UI_Nohitaky {
 				RelativeLayout.TRUE);
 		volumePara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 		//
-		FrameLayout frameLayout = new FrameLayout(this.context);
-		FrameLayout.LayoutParams seekLinePara = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT,
-				20);
-		mLine.setLayoutParams(seekLinePara);
-		frameLayout.addView(mLine);
-		//
 		
+		//
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -395,8 +391,12 @@ public class UI_Nohitaky {
 		main.addView(volume, volumePara);
 		main.addView(timeStart, startPara);
 		main.addView(timeEnd, endPara);
-		main.addView(frameLayout, barVolumePara);
+		main.addView(mLine, barVolumePara);
 
 		return main;
 	}
+
+
+	
+	
 }

@@ -77,7 +77,7 @@ public class UI_Musik {
 		musik_bar_width = (int) this.mHelper.DpToPixel(304);
 		musik_bar_height = (int) this.mHelper.DpToPixel(54);
 		musik_list_width = (int) this.mHelper.DpToPixel(304); 
-		musik_list_height = (int) this.mHelper.DpToPixel(360);
+		musik_list_height = (int) (55*this.mHelper.getAppHeight())/100;
 		marginMusik =(int) this.mHelper.DpToPixel(28);
 
 	}
@@ -135,7 +135,7 @@ public class UI_Musik {
 
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				20);
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		
 
 		barVolumePara.addRule(RelativeLayout.RIGHT_OF, volume.getId());

@@ -29,7 +29,8 @@ public class UI_Audios {
 	
 	int plusMargin;
 	int plusTextMargin;
-	int plus;
+	int plus_width;
+	int plus_height;
 	int bottom,bottom_down;
 	//
 	public static int header_width,header_height,textsize;
@@ -50,8 +51,8 @@ public class UI_Audios {
 	}
 	private void size() {
 		
-		plus = (int) mHelper.DpToPixel(34);
-		
+		plus_width = (int) mHelper.DpToPixel(44);
+		plus_height = (int) mHelper.DpToPixel(42);
 		
 		//
 		header_width = (int) this.mHelper.DpToPixel(360);
@@ -93,7 +94,7 @@ public class UI_Audios {
 
 		View audios = new View(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
-				plus, plus);
+				plus_width, plus_height);
 		audiosPara.leftMargin =this.plusMargin;
 		audiosPara.gravity = Gravity.CENTER_VERTICAL;
 		audios.setLayoutParams(audiosPara);

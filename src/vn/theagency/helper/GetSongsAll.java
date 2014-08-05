@@ -1,13 +1,17 @@
 package vn.theagency.helper;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import vn.theagency.objects.Songs;
-import android.os.Environment;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Audio.Media;
+import android.util.Log;
 
 public class GetSongsAll {
-	final String MEDIA_PATH = Environment.getExternalStorageDirectory()
+	/*final String MEDIA_PATH = Environment.getExternalStorageDirectory()
 	        .getPath() + "/";
 	private ArrayList<Songs> songsList = new ArrayList<Songs>();
 	private String mp3Pattern = ".mp3";
@@ -55,8 +59,8 @@ public class GetSongsAll {
 	        		,"", song.getPath());       
 	        songsList.add(songMap);
 	    }
-	}
-	/*private String mp3Pattern = ".mp3";
+	}*/
+	private String mp3Pattern = ".mp3";
 	
 	private static final Uri Content_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 	
@@ -87,5 +91,5 @@ public class GetSongsAll {
 			cursor =null;
 		}
 		return list;
-	}*/
+	}
 }

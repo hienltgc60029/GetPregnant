@@ -3,6 +3,7 @@ package vn.theagency.getpregnant;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
+import vn.theagency.bussiness.Store;
 import vn.theagency.fragment.Fragment_MusikListe;
 import vn.theagency.fragment.Fragment_Nohitaky;
 import vn.theagency.helper.GetSongsAll;
@@ -31,6 +32,7 @@ import android.widget.SeekBar;
 public class Musik extends Activity {
 
 	private Helper mHelper;
+	private Store mStore;
 	public UI_Musik mMusik;
 	public View initUIBackGround, initUIHeader;
 	public FrameLayout wrapper;
@@ -38,7 +40,7 @@ public class Musik extends Activity {
 	public SeekBar mLine, mVolume;
 	public View volume;
 	
-	ArrayList<Songs> arr;
+
 	int sliteVolume = 10;
 	FragmentTransaction transaction;
 
@@ -62,11 +64,12 @@ public class Musik extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.musik);
 		
+	
 
 		
 		FragmentTransaction transaction1 = getFragmentManager()
 				.beginTransaction();
-		transaction1.add(R.id.musik, Fragment_MusikListe.newInstance(arr));
+		transaction1.add(R.id.musik, Fragment_MusikListe.newInstance());
 		transaction1.commit();
 
 		FragmentTransaction transaction = getFragmentManager()
@@ -81,9 +84,12 @@ public class Musik extends Activity {
 	public void actionClickHander(int action) {
 		switch (action) {
 		case 1:
+			
+			
+			
 
 			Fragment_Nohitaky.newInstance().getView().setVisibility(View.GONE);
-			Fragment_MusikListe.newInstance(arr).getView()
+			Fragment_MusikListe.newInstance().getView()
 					.setVisibility(View.VISIBLE);
 
 			break;
@@ -91,7 +97,7 @@ public class Musik extends Activity {
 
 			Fragment_Nohitaky.newInstance().getView()
 			.setVisibility(View.VISIBLE);
-	Fragment_MusikListe.newInstance(arr).getView()
+	Fragment_MusikListe.newInstance().getView()
 			.setVisibility(View.GONE);
 			break;
 		case 3:
@@ -109,9 +115,7 @@ public class Musik extends Activity {
 		return new Messenger(handler);
 	}
 
-	public Messenger getMessenger1() {
-		return new Messenger(handler);
-	}
+	
 
 	@Override
 	protected void onStop() {
@@ -139,7 +143,7 @@ public class Musik extends Activity {
 		getFragmentManager().beginTransaction()
 				.remove(Fragment_Nohitaky.newInstance()).commit();
 		getFragmentManager().beginTransaction()
-				.remove(Fragment_MusikListe.newInstance(arr)).commit();
+				.remove(Fragment_MusikListe.newInstance()).commit();
 	}
 
 	@Override

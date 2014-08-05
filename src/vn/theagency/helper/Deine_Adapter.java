@@ -82,6 +82,7 @@ public class Deine_Adapter extends BaseAdapter {
     				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     				intent.putExtra("Audios", indexHome);
     				mContext.startActivity(intent);
+    				
     			}
     		});
     		

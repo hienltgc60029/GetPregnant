@@ -2,6 +2,7 @@ package vn.theagency.fragment;
 
 import java.util.ArrayList;
 
+import vn.theagency.bussiness.Store;
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
 import vn.theagency.helper.GetSongsAll;
@@ -37,9 +38,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Fragment_MusikListe extends Fragment implements
-		OnItemClickListener, OnClickListener, OnSeekBarChangeListener,
-		OnCompletionListener {
-
+		OnItemClickListener, OnClickListener, OnSeekBarChangeListener
+		 {
+	private Store mStore;
 	private Helper mHelper;
 	public UI_Musik mMusik;
 	public FrameLayout wrapper;
@@ -63,16 +64,11 @@ public class Fragment_MusikListe extends Fragment implements
 
 	private static Fragment_MusikListe _ins;
 
-	private Fragment_MusikListe(ArrayList<Songs> arrList) {
-		arr = arrList;
 	
-	}
 
-	public static Fragment_MusikListe newInstance(ArrayList<Songs> arrList
-			) {
+	public static Fragment_MusikListe newInstance() {
 		if (Fragment_MusikListe._ins == null) {
-			Fragment_MusikListe._ins = new Fragment_MusikListe(arrList
-					);
+			Fragment_MusikListe._ins = new Fragment_MusikListe();
 		}
 
 		return Fragment_MusikListe._ins;
@@ -87,14 +83,15 @@ public class Fragment_MusikListe extends Fragment implements
 		this.initUIHeader = this.mMusik.initUIHeader();
 		this.initUIBackGround = this.mMusik.initUIBackGround();
 		this.initUIMusicBar = this.mMusik.initUIMusicBar();
-
 		this.initUIBottom = this.mMusik.initUIBottom();
 		this.initUIListView = this.mMusik.initUIListView();
 
 		initUI();
-		getArray();
+		this.mStore = Store.shareIns(getActivity(), arr);
+		arr = this.mStore.getMusikSlite();
+		
 		Musik musik = (Musik) getActivity();
-		messenger = musik.getMessenger1();
+		messenger = musik.getMessenger();
 		
 		
 
@@ -102,33 +99,7 @@ public class Fragment_MusikListe extends Fragment implements
 		preference();
 		return wrapper;
 	}
-	public void getArray() {
-		String timePhut = null;
-		String timeGiay = null;
-		GetSongsAll all = new GetSongsAll();
-		arr = all.getPlayList();
-
-		for (int i = 0; i < arr.size(); i++) {
-			media = MediaPlayer.create(getActivity(),
-					Uri.parse(arr.get(i).getmURL()));
-			int phut = (int) ((media.getDuration() / 60000) % 60);
-			if (phut < 10) {
-				timePhut = "0" + String.valueOf(phut);
-			} else {
-				timePhut = String.valueOf(phut);
-			}
-
-			int giay = (int) (((media.getDuration() - (phut * 60000)) / 1000) % 60);
-			if (giay < 10) {
-				timeGiay = "0" + String.valueOf(giay);
-			} else {
-				timeGiay = String.valueOf(giay);
-			}
-			arr.get(i).setmLine(timePhut + ":" + timeGiay);
-
-		}
-
-	}
+	
 
 
 	public void initUI() {
@@ -177,10 +148,9 @@ public class Fragment_MusikListe extends Fragment implements
 		
 		
 		adapter = new Musik_Adapter(arr, R.layout.items_musik, getActivity());
-		//Log.i("LTH", "position array:" + String.valueOf(adapter.getCount()));
+		
 
-		// /////////////////////////
-		setVolume(mMaxVolume, curVolume);
+		
 
 		seekVolume.setOnSeekBarChangeListener(this);
 		//
@@ -196,23 +166,17 @@ public class Fragment_MusikListe extends Fragment implements
 		list.setOnItemClickListener(this);
 
 		mPosition = 0;
-		if (media.isPlaying()) {
-
-			play.setVisibility(View.GONE);
-			pause.setVisibility(View.VISIBLE);
-
-		} else {
+		
 			play.setVisibility(View.VISIBLE);
 			play.setEnabled(false);
 			pause.setVisibility(View.GONE);
-		}
+		
 		
 	
 	}
 
-	public void setVolume(int Max, int process) {
+	public void setVolume(int Max) {
 		seekVolume.setMax(mMaxVolume);
-		curVolume = 10;
 		seekVolume.setProgress(curVolume);
 		media.setVolume((float) curVolume / mMaxVolume, (float) curVolume
 				/ mMaxVolume);
@@ -248,7 +212,7 @@ public class Fragment_MusikListe extends Fragment implements
 
 			play.setVisibility(View.GONE);
 			pause.setVisibility(View.VISIBLE);
-			setVolume(mMaxVolume, curVolume);
+			
 
 		} catch (Exception ex) {
 			Log.i("LTH", "Listview error");
@@ -275,10 +239,6 @@ public class Fragment_MusikListe extends Fragment implements
 				
 				media.stop();
 				mPosition = mPosition + 1;
-				MusikAsyntask asyntask = new MusikAsyntask();
-				asyntask.execute(arr.get(mPosition).getmURL());
-
-				media.start();
 				if (media.isPlaying()) {
 					play.setVisibility(View.GONE);
 					pause.setVisibility(View.VISIBLE);
@@ -333,7 +293,7 @@ public class Fragment_MusikListe extends Fragment implements
 		case Key.REPEAT:
 			break;
 		case Key.SHUFFER:
-			media.setOnCompletionListener(this);
+			
 			break;
 		case Key.HEADER:
 			try {
@@ -376,25 +336,7 @@ public class Fragment_MusikListe extends Fragment implements
 
 	}
 
-	@Override
-	public void onCompletion(MediaPlayer mp) {
-		// TODO Auto-generated method stub
-		mp.release();
-		mp.stop();
-		if (mPosition < arr.size()) {
-
-			mPosition++;
-			mp = MediaPlayer.create(getActivity(),
-					Uri.parse(arr.get(mPosition).getmURL()));
-			mp.start();
-			while (mp.isPlaying())
-				;
-
-		} else {
-			mp.setOnCompletionListener(null);
-		}
-	}
-
+	
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
@@ -408,16 +350,17 @@ public class Fragment_MusikListe extends Fragment implements
 		@Override
 		protected Integer doInBackground(String... params) {
 			try {
-				if (media.isPlaying()) {
+				if (media!=null) {
 					media.stop();
 					media.release();
 				}
 				media = MediaPlayer.create(getActivity(), Uri.parse(params[0]));
 
 				media.start();
-				this.mMusik.mLine.setMax(media.getDuration());
+				setVolume(mMaxVolume);
+		//		this.mMusik.mLine.setMax(media.getDuration());
 				
-				media.setOnCompletionListener(new OnCompletionListener() {
+				/*media.setOnCompletionListener(new OnCompletionListener() {
 
 					@Override
 					public void onCompletion(MediaPlayer mp) {
@@ -430,7 +373,7 @@ public class Fragment_MusikListe extends Fragment implements
 
 					}
 				});
-
+*/
 			} catch (Exception ex) {
 				Toast.makeText(getActivity(), "Musik cann't start",
 						Toast.LENGTH_SHORT).show();
@@ -438,14 +381,7 @@ public class Fragment_MusikListe extends Fragment implements
 			return null;
 		}
 
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			// TODO Auto-generated method stub
-			super.onProgressUpdate(values);
-			Log.i("LTH",String.valueOf(values[0]));
-			this.mMusik.mLine.setProgress(values[0]);
-
-		}
+		
 
 	}
 

@@ -5,9 +5,12 @@ import vn.theagency.helper.Helper;
 import vn.theagency.layout.UI_Audios;
 import vn.theagency.layout.UI_Cover;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender.OnFinished;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -25,7 +28,8 @@ public class Cover extends Activity implements OnClickListener {
 	public FrameLayout initUIBottom;
 	public View initUIText;
 	FrameLayout initUIBottom2;
-	View aus,auf,unt,vor,ver;
+	View aus,auf,unt,vor,ver,home;
+	View initUIWarning;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class Cover extends Activity implements OnClickListener {
 		this.initUIInfo = this.mCover.initUIInfo();
 		this.initUIBottom2 = this.mCover.initUIBottom2();
 		this.initUIText = this.mCover.initUIText();
+		this.initUIWarning = this.mCover.initUIWarning();
 		
 		
 		initUI();
@@ -56,6 +61,7 @@ public class Cover extends Activity implements OnClickListener {
 		unt.setOnClickListener(this);
 		vor.setOnClickListener(this);
 		ver.setOnClickListener(this);
+		home.setOnClickListener(this);
 	}
 	
 	public void preference(){
@@ -64,6 +70,7 @@ public class Cover extends Activity implements OnClickListener {
 		unt = findViewById(Key.linearUnterstutzen);
 		vor = findViewById(Key.linearVorbereiten);
 		ver = findViewById(Key.linearVerbessern);
+		home = findViewById(Key.HOME);
 	}
 	
 	public void initUI() {
@@ -79,6 +86,7 @@ public class Cover extends Activity implements OnClickListener {
 		this.wrapper.addView(this.initUIText);
 		this.wrapper.addView(initUIBottom2);
 		this.wrapper.addView(this.initUIBottom);
+		this.wrapper.addView(this.initUIWarning);
 		setContentView(this.wrapper);
 	}
 
@@ -124,7 +132,11 @@ public class Cover extends Activity implements OnClickListener {
 			finish();
 			
 			break;
-		
+		case Key.HOME:
+			this.initUIWarning.setVisibility(View.VISIBLE);
+					  
+			break;
+			
 
 		default:
 			break;
