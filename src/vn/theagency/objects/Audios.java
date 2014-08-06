@@ -4,14 +4,14 @@ public class Audios {
 
 	public String mTitle;
 	public String mDecription;
-	public String mURLDownload;
+	public String mPrice;
 	public int mImageURL;
-	public Audios(String mTitle, String mDecription, String mURLDownload,
+	public Audios(String mTitle, String mDecription, String mPrice,
 			int mImageURL) {
 		super();
 		this.mTitle = mTitle;
 		this.mDecription = mDecription;
-		this.mURLDownload = mURLDownload;
+		this.mPrice = mPrice;
 		this.mImageURL = mImageURL;
 	}
 	public String getmTitle() {
@@ -27,10 +27,10 @@ public class Audios {
 		this.mDecription = mDecription;
 	}
 	public String getmURLDownload() {
-		return mURLDownload;
+		return mPrice;
 	}
 	public void setmURLDownload(String mURLDownload) {
-		this.mURLDownload = mURLDownload;
+		this.mPrice = mURLDownload;
 	}
 	public int getmImageURL() {
 		return mImageURL;
