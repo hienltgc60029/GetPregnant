@@ -72,12 +72,6 @@ public class Fragment_MusikListe extends Fragment implements
 	public static Fragment_MusikListe newInstance(boolean isActive) {
 		if (Fragment_MusikListe._ins == null) {
 			Fragment_MusikListe._ins = new Fragment_MusikListe();
-		}else{
-			if(isActive){
-				Fragment_MusikListe._ins.createListenner();
-			}else{
-				Fragment_MusikListe._ins.destroyListenner();
-			}
 			
 		}
 	//	createListenner();
@@ -176,7 +170,7 @@ public class Fragment_MusikListe extends Fragment implements
 		list.setDivider(null);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-		destroyListenner();
+		createListenner();
 		
 		mPosition = 0;
 		

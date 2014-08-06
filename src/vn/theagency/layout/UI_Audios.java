@@ -157,7 +157,7 @@ public class UI_Audios {
 		
 
 		
-		int hieght = (int) (mHelper.getAppHeight() - bottom - bottom_down);
+		int hieght = (int) (mHelper.getAppHeight() - bottom - (bottom_down/2)-10);
 		ImageView view = new ImageView(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		paraHeader.topMargin = hieght;

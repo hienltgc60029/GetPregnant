@@ -107,24 +107,24 @@ public class DeineSamlung extends Activity implements OnClickListener {
 	private ArrayList<Audios> audiosArray() {
 		ArrayList<Audios> arr = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.zoo);
+				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.wen01);
 		arr.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", R.drawable.zur);
+		audios = new Audios("Farben atmen", "Breathing colours", "", R.drawable.far01);
 		arr.add(audios);
 		audios = new Audios(
 				"Lieblingsplatz",
 				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.gre);
+				"", R.drawable.gre01);
 		arr.add(audios);
 		audios = new Audios(
-				"Remember When",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.ivf);
+				"IVF Vorbereitung",
+				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
+				"", R.drawable.ivf01);
 		arr.add(audios);
 		audios = new Audios(
-				"Let Me Out!",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.avatar);
+				"Kontrollzentrale",
+				"Id modion nonet idipitis doluptatur mo cus corrum solorib ",
+				"", R.drawable.kon01);
 		arr.add(audios);
 		return arr;
 	}

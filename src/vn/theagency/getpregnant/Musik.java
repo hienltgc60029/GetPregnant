@@ -67,16 +67,15 @@ public class Musik extends Activity {
 	
 
 		
-		FragmentTransaction transaction1 = getFragmentManager()
-				.beginTransaction();
-		transaction1.add(R.id.musik, Fragment_MusikListe.newInstance(false));
-		transaction1.commit();
+		
 
+		
+		
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 		transaction.add(R.id.musik, Fragment_Nohitaky.newInstance());
 		transaction.commit();
-
+		
 	}
 
 	
@@ -84,35 +83,19 @@ public class Musik extends Activity {
 	public void actionClickHander(int action) {
 		switch (action) {
 		case 1:
-			
-			runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					Fragment_Nohitaky.newInstance().getView().setVisibility(View.GONE);
-					Fragment_MusikListe.newInstance(true).getView()
-							.setVisibility(View.VISIBLE);
-				}
-			});
-		
-
-			
+			FragmentTransaction transaction1 = getFragmentManager()
+			.beginTransaction();
+	transaction1.replace(R.id.musik, Fragment_MusikListe.newInstance(true));
+	transaction1.commit();	
 
 			break;
 		case 2:
+			FragmentTransaction transaction = getFragmentManager()
+			.beginTransaction();
+	transaction.replace(R.id.musik, Fragment_Nohitaky.newInstance());
+	transaction.commit();
 
-			runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					Fragment_Nohitaky.newInstance().getView()
-					.setVisibility(View.VISIBLE);
-			Fragment_MusikListe.newInstance(false).getView()
-					.setVisibility(View.GONE);
-				}
-			});
+			
 			
 			
 			break;

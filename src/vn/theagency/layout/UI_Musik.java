@@ -117,7 +117,7 @@ public class UI_Musik {
 		mLine.setProgressDrawable(this.context.getResources().getDrawable(
 				R.drawable.seekbar_process));
 		mLine.setThumb(this.context.getResources().getDrawable(
-				R.drawable.seekbar_point));
+				R.drawable.thumbler_small));
 		mLine.setId(Key.SEEKBAR_LINE);
 		mLine.setVisibility(View.VISIBLE);
 
@@ -209,7 +209,8 @@ public class UI_Musik {
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				musik_bar_width, musik_bar_height);
 		
-		params.setMargins(marginMusik, (marginMusik + headerHeight), marginMusik, 0);
+		params.setMargins(0, (marginMusik + headerHeight), 0, 0);
+		params.gravity = Gravity.CENTER_HORIZONTAL;
 
 		main.setLayoutParams(params);
 		main.addView(volume, volumePara);
@@ -288,7 +289,8 @@ public class UI_Musik {
 		int margin = headerHeight+musik_bar_height+marginMusik;
 		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
 				musik_list_width, musik_list_height);
-		viewPara.setMargins(marginMusik, margin, marginMusik, 0);
+		viewPara.setMargins(0, margin, 0, 0);
+		viewPara.gravity = Gravity.CENTER_HORIZONTAL;
 		view.setLayoutParams(viewPara);
 		view.setId(Key.LISTVIEW_LIBRARY);
 		

@@ -35,7 +35,7 @@
             android:includeFontPadding="false"
             android:paddingTop="0dp"
             android:text="Lieblingsplatz"
-            
+            android:textColor="#fffab2"
             android:textSize="20sp"
             android:alpha="0.5" />
 
@@ -48,6 +48,7 @@
             android:layout_below="@+id/txtTitle"
             android:gravity="top"
             android:lines="2"
+            android:textColor="#fffab2"
             android:alpha="0.5"
             android:text="Blindtext elitis endiatiu sincil lue molest Uciam ipita int." />
 

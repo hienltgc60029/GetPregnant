@@ -139,7 +139,7 @@ public class UI_Deneine {
 
 	public ImageView initUIDown() {
 
-		int hieght = (int) (mHelper.getAppHeight() - bottom - bottom_down);
+		int hieght = (int) (mHelper.getAppHeight() - bottom - (bottom_down/2));
 		ImageView view = new ImageView(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -276,7 +276,7 @@ public class UI_Deneine {
 		mDec.setProgressDrawable(this.context.getResources().getDrawable(
 				R.drawable.seekbar_process));
 		mDec.setThumb(this.context.getResources().getDrawable(
-				R.drawable.seekbar_point));
+				R.drawable.thumbler_small));
 
 		playLayout.addView(timeStart);
 		playLayout.addView(timeEnd);

@@ -102,7 +102,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		switch (posi) {
 		case 1:
 			//Ausgchen
-			audiosAuflosen();
+			audiosAusgchen();
 			break;
 		case 2:
 			//Auflosen
@@ -163,6 +163,46 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		super.onStart();
 		overridePendingTransition(0, 0);
 	}
+	
+	private ArrayList<Audios> audiosAusgchen() {
+		audiosList = new ArrayList<Audios>();
+		audios = new Audios("Wendeltreppe",
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
+		audiosList.add(audios);
+		
+		audios = new Audios(
+				"Zurückkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen,...",
+				"", R.drawable.zur);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Farben atmen",
+				"Blindtext orRovid moluptat mi, offictorro dolupta",
+				"", R.drawable.far);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Lieblingsplatz",
+				"Blindtext orRovid moluptat mi, offictorro dolupta ",
+				"2,99$", R.drawable.lie);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Kontrollzentrale",
+				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
+				"3,8$", R.drawable.kon);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Gelassenheit als Hilfsmittel",
+				"Blindtext orRovid moluptat mi",
+				"", R.drawable.gela);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Heilendes weisses Licht",
+				"Blindtext orRovid moluptat mi",
+				"2.99$", R.drawable.hei);
+		audiosList.add(audios);
+		
+		return audiosList;
+	}
 
 	private ArrayList<Audios> audiosAuflosen() {
 		audiosList = new ArrayList<Audios>();
@@ -178,17 +218,22 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		audios = new Audios(
 				"Türe der Erkenntnis",
 				"Realisiere, dass nur Du entscheidest, wie Du.",
-				"", R.drawable.ture);
+				"2sFr/1.50", R.drawable.ture);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Grenzen stärken",
 				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter zu fühlen.",
-				"", R.drawable.gre);
+				"4sFr", R.drawable.gre);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Zoo der Emotionen",
 				"Lass deinen Selbstzweifel und deinen Stress eingesperrt im Zoo zurück.",
-				"", R.drawable.zoo);
+				"4sFr", R.drawable.zoo);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Heilendes weisses Licht",
+				"Blindtext orRovid moluptat mi",
+				"4sFr", R.drawable.zoo);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -208,12 +253,12 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		audios = new Audios(
 				"Einnistung",
 				"Unterstütze deinen Körper und deinen Geist nach einem Transfer...",
-				"", R.drawable.ein);
+				"3sFr", R.drawable.ein);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Sturmwolken",
 				"Egal, wie das Ergebnis wird, das Leben geht weiter.",
-				"", R.drawable.stur);
+				"3sFr", R.drawable.stur);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -232,12 +277,17 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		audios = new Audios(
 				"Gegensätze",
 				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung...",
-				"", R.drawable.ver03);
+				"3sFr", R.drawable.ver03);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Fruchtbarkeitsgarten",
 				"Bereite alles so in deinem Fruchtbarkeitsgarten vor,...",
-				"", R.drawable.fru);
+				"3sFr", R.drawable.fru);
+		audiosList.add(audios);
+		audios = new Audios(
+				"Heilendes weisses Licht",
+				"Pis ratur a del iniate necepera non",
+				"3,8$", R.drawable.fru);
 		audiosList.add(audios);
 		
 		
@@ -256,12 +306,12 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		audios = new Audios(
 				"IVF Vorbereitung",
 				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
-				"", R.drawable.ivf);
+				"4sFr", R.drawable.ivf);
 		audiosList.add(audios);
 		audios = new Audios(
 				"Kontrollzentrale",
 				"Id modion nonet idipitis doluptatur mo cus corrum solorib ",
-				"",R.drawable.kon);
+				"2,99",R.drawable.kon);
 		audiosList.add(audios);		
 		return audiosList;
 	}

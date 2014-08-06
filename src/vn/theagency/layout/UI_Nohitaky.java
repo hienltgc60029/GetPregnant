@@ -328,13 +328,13 @@ public class UI_Nohitaky {
 		// time start
 		TextView timeStart = new TextView(this.context);
 		timeStart.setTextColor(Color.WHITE);
-		timeStart.setAlpha(0.8f);
+		timeStart.setAlpha(0.5f);
 		timeStart.setText("25:58");
 		timeStart.setId(Key.HEADER);
 		// time end
 		TextView timeEnd = new TextView(this.context);
 		timeEnd.setText("57:30");
-		timeEnd.setAlpha(0.8f);
+		timeEnd.setAlpha(0.5f);
 		timeEnd.setTextColor(Color.WHITE);
 		timeEnd.setId(Key.AUDIOS_NAME);
 		//
@@ -360,7 +360,7 @@ public class UI_Nohitaky {
 		
 		//
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
-				20,
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT
 				);
 	
@@ -384,7 +384,7 @@ public class UI_Nohitaky {
 		endPara.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
 
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, 80);
+				FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		params.topMargin = pTop;
 		params.leftMargin = DP_10 * 2;
 		

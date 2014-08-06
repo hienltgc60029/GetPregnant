@@ -58,7 +58,8 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		list.setHorizontalScrollBarEnabled(false);
 		list.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 		list.setVerticalScrollBarEnabled(false);
-		list.setSmoothScrollbarEnabled(true);
+		list.setHorizontalScrollBarEnabled(false);
+		list.setOnScrollListener(this);
 		list.setDivider(null);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
@@ -94,22 +95,22 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 	private ArrayList<Audios> audiosArray() {
 		ArrayList<Audios> arr = new ArrayList<Audios>();
 		audios = new Audios("Wendeltreppe",
-				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.zoo);
+				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.wen01);
 		arr.add(audios);
 		audios = new Audios(
 				"Lieblingsplatz",
 				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.zur);
+				"", R.drawable.lie01);
 		arr.add(audios);
 		audios = new Audios(
-				"Ka Ki Ko",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.gre);
+				"Zurückkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen,... ",
+				"", R.drawable.zur01);
 		arr.add(audios);
 		audios = new Audios(
-				"Elitis Endiatiu",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.stur);
+				"Gegensätze",
+				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung..",
+				"", R.drawable.geg01);
 		arr.add(audios);
 		return arr;
 	}

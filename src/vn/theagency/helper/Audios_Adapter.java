@@ -90,8 +90,14 @@ public class Audios_Adapter extends BaseAdapter {
 					.getmDecription());
 			mViewHolder.btnView = mButton(view, R.id.btnView,
 					R.drawable.btn_view);
-			mViewHolder.btnDownload = mButton(view, R.id.btn,
-					R.drawable.btn_download);
+			if(arr.get(position).getmURLDownload().equalsIgnoreCase("")){
+				mViewHolder.btnDownload = mButton(view, R.id.btn,
+						R.drawable.btn_download);
+			}else{
+				mViewHolder.btnDownload = mButton(view, R.id.btn,
+						R.drawable.btn_buy);
+			}
+			
 			//
 
 			

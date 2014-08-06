@@ -127,11 +127,11 @@ public class UI_Cover {
 		
 		FrameLayout layout = new FrameLayout(this.context);
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		marginTop2 = (int) ((63*mHelper.getAppHeight())/100);
 		params.topMargin =(int) marginTop2+icon_height+icon_left;
-		//params.gravity = Gravity.CENTER_HORIZONTAL;
+		params.gravity = Gravity.CENTER_HORIZONTAL;
 		layout.setLayoutParams(params);
 		//
 		
@@ -140,7 +140,7 @@ public class UI_Cover {
 				icon_width,
 				icon_height);
 		
-		viewParams.leftMargin = icon_left_parent;
+		
 		view.setLayoutParams(viewParams);
 		view.setBackgroundResource(R.drawable.btn_cover_ver);
 		view.setId(Key.linearVerbessern);
@@ -151,7 +151,7 @@ public class UI_Cover {
 		FrameLayout.LayoutParams viewParams1 = new FrameLayout.LayoutParams(
 				icon_width,
 				icon_height);
-		viewParams1.leftMargin = icon_left+icon_left_parent+icon_width;
+		viewParams1.leftMargin = icon_left+icon_width;
 		view1.setLayoutParams(viewParams1);
 		view1.setBackgroundResource(R.drawable.btn_cover_vor);
 		view1.setId(Key.linearVorbereiten);
@@ -160,7 +160,7 @@ public class UI_Cover {
 		FrameLayout.LayoutParams viewParams2 = new FrameLayout.LayoutParams(
 				icon_width,
 				icon_height);
-		viewParams2.leftMargin = (icon_left*2)+icon_left_parent +(icon_width*2);
+		viewParams2.leftMargin = 2*(icon_left+icon_width);
 		view2.setLayoutParams(viewParams2);
 		view2.setBackgroundResource(R.drawable.btn_cover_unt);
 		view2.setId(Key.linearUnterstutzen);
@@ -182,6 +182,7 @@ public class UI_Cover {
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		marginTop2 = (int) ((63*mHelper.getAppHeight())/100);
 		params.topMargin =marginTop2;
+		params.gravity = Gravity.CENTER_HORIZONTAL;
 		layout.setLayoutParams(params);
 		
 		
@@ -190,7 +191,7 @@ public class UI_Cover {
 				icon_width,
 				icon_height);
 		
-		viewParams.leftMargin = icon_left_ausg;
+		
 		view.setLayoutParams(viewParams);
 		view.setBackgroundResource(R.drawable.btn_cover_aus);
 		view.setId(Key.linearAusgleichen);
@@ -200,7 +201,7 @@ public class UI_Cover {
 				icon_width,
 				icon_height);
 	
-		viewParams1.leftMargin = icon_left_ausg+icon_width+icon_left;
+		viewParams1.leftMargin =icon_width+icon_left;
 		view1.setLayoutParams(viewParams1);
 		view1.setBackgroundResource(R.drawable.btn_cover_auf);
 		view1.setId(Key.linearAuflosen);

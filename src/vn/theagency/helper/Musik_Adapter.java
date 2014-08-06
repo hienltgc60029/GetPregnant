@@ -92,9 +92,9 @@ public class Musik_Adapter extends BaseAdapter {
         	 mViewHolder.mTitle.setSelected(true);
              mViewHolder.mTitle.setEnabled(false);
             // mViewHolder.mTitle.setFocusable(true);
-             mViewHolder.mTime.setTextColor(Color.parseColor("#EDCC27"));
+             mViewHolder.mTime.setTextColor(Color.parseColor("#fce500"));
              mViewHolder.mTime.setAlpha(0.8f);
-             mViewHolder.mTitle.setTextColor(Color.parseColor("#EDCC27"));
+             mViewHolder.mTitle.setTextColor(Color.parseColor("#fce500"));
              mViewHolder.mTitle.setAlpha(0.8f);
         	/* anim = (AnimationDrawable) mViewHolder.mIcon.getBackground(); 
     		 anim.start();*/
