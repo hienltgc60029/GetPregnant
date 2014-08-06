@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="12dp"
+        android:layout_marginLeft="14dp"
        
         android:contentDescription="@null"
       
@@ -21,19 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/icon"
-        android:layout_marginLeft="46dp"
+        android:layout_marginLeft="14dp"
         
         android:singleLine="true" 
     android:ellipsize="marquee"
     android:marqueeRepeatLimit ="marquee_forever"
    android:textColor="#fffab2"
-        android:alpha="0.2"
+        android:alpha="0"
     android:textSize="@dimen/size_text_10"
         
         android:minHeight="@dimen/row_height"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"   
+         
         android:gravity="center_vertical"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="20dp"
         android:paddingRight="40dp"/>
      
     <TextView android:id="@+id/counter"

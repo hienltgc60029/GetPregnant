@@ -2,10 +2,16 @@ package vn.theagency.helper;
 
 import java.util.ArrayList;
 
+import vn.theagency.bussiness.Store;
+import vn.theagency.getpregnant.DeineSamlung;
 import vn.theagency.getpregnant.R;
 import vn.theagency.objects.Audios;
+import vn.theagency.sqlite.SQliteData;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +31,7 @@ public class SammlungAdapter extends BaseAdapter {
 	public Context mContext;
 	public ArrayList<Audios> arr;
 	public int sizeRow;
+	private Store mStore;
 
 	public SammlungAdapter(int layout, Context mContext, ArrayList<Audios> arr,
 			int sizeRow) {
@@ -33,11 +40,13 @@ public class SammlungAdapter extends BaseAdapter {
 		this.mContext = mContext;
 		this.arr = arr;
 		this.sizeRow = sizeRow;
+		this.mStore = Store.shareIns(mContext, null);
 	}
 
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
+		
 		return arr.size();
 	}
 
@@ -72,6 +81,13 @@ public class SammlungAdapter extends BaseAdapter {
 			view.setPadding(30, 0, 30, 0);
 		}
 			mViewHolder = (MyViewHolder) view.getTag();
+			
+			
+			
+			
+			
+			
+			mViewHolder.imageView = mImage(view, R.id.icon, arr.get(position).getmImageURL());
 			mViewHolder.btnDownload = mButton(view, R.id.btn_down);
 			mViewHolder.btnUp = mButton(view, R.id.btn_up);
 			mViewHolder.btnLos = mButton(view, R.id.btn_los);
@@ -88,6 +104,13 @@ public class SammlungAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					mStore.audiosList.add(arr.get(position));
+					
+					SQliteData data = new SQliteData(mContext);
+					data.open();
+					data.removeAudiosCollections(arr.get(position).getmID());
+					data.close();
+					
 					arr.remove(position);
 					notifyDataSetChanged();
 				}
@@ -118,20 +141,26 @@ public class SammlungAdapter extends BaseAdapter {
 				view.setBackgroundResource(R.drawable.bg_library);
 				// view.setBackgroundColor(Color.WHITE);
 			}
-
-			if (position == 0) {
+			if(arr.size()==1){
 				mViewHolder.btnUp.setEnabled(false);
+				mViewHolder.btnDownload.setEnabled(false);
+			}else{
+				if (position == 0) {
+					mViewHolder.btnUp.setEnabled(false);
+				}
+
+				if (position == (arr.size() - 1)) {
+					mViewHolder.btnUp.setEnabled(true);
+				}
+				if (position == (arr.size() - 1)) {
+					mViewHolder.btnDownload.setEnabled(false);
+				}
+				if (position == 0) {
+					mViewHolder.btnDownload.setEnabled(true);
+				}
 			}
 
-			if (position == (arr.size() - 1)) {
-				mViewHolder.btnUp.setEnabled(true);
-			}
-			if (position == (arr.size() - 1)) {
-				mViewHolder.btnDownload.setEnabled(false);
-			}
-			if (position == 0) {
-				mViewHolder.btnDownload.setEnabled(true);
-			}
+			
 
 		return view;
 	}

@@ -53,6 +53,10 @@ public class Helper {
 		 
 		 return (px / this.sDensity);
 	 }
+ public float SpToPx(int sp){
+		 
+		 return (this.sDensity / sp);
+	 }
 	 
 	 public void getScreenActivity() {
 			Log.i("LTH", "set");

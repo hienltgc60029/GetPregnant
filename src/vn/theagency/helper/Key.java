@@ -47,7 +47,8 @@ public class Key {
 	public static final int NOHITAKI_ChangeBg = 803;
 	
 
-	
+	public static final int START = 900;
+	public static final int End = 901;
 	
 	
 	

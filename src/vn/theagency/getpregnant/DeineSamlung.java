@@ -7,20 +7,29 @@ import vn.theagency.helper.Key;
 import vn.theagency.helper.SammlungAdapter;
 import vn.theagency.layout.UI_Deneine;
 import vn.theagency.objects.Audios;
+import vn.theagency.sqlite.SQliteData;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class DeineSamlung extends Activity implements OnClickListener {
+public class DeineSamlung extends Activity implements OnClickListener,OnScrollListener {
 
 	private Helper mHelper;
 	public UI_Deneine mDeine;
@@ -33,8 +42,8 @@ public class DeineSamlung extends Activity implements OnClickListener {
 	public ListView list;
 	public FrameLayout initUIDeineSamlung;
 	Audios audios;
-	View btn_play,back;
-	
+	View btn_play,back,hinzu;
+	ArrayList<Audios> arrAudios;
 
 	
 
@@ -63,13 +72,22 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		list.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 		list.setVerticalScrollBarEnabled(false);
 		list.setSmoothScrollbarEnabled(true);
-		list.setDivider(null);
+		int color = Color.parseColor("#e8d3a0");
+		ColorDrawable drawable = new ColorDrawable(color);
+		drawable.setAlpha(100);
+		list.setDivider(drawable);
+		list.setDividerHeight(1);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		list.setOnScrollListener(this);
 		
 		int height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
 		int rowSize = (int) (mHelper.getAppHeight()-height)/3;
+		SQliteData data = new SQliteData(getApplicationContext());
+		data.open();
+		arrAudios = data.getAllAudiosCollections();
+		data.close();
 		SammlungAdapter adapter = new SammlungAdapter(R.layout.items,
-				getApplicationContext(), audiosArray(), rowSize);
+				getApplicationContext(), arrAudios, rowSize);
 		list.setAdapter(adapter);
 	}
 
@@ -88,7 +106,7 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		this.wrapper.addView(this.initUISammLungBottom);
 		setContentView(this.wrapper);
 		back = findViewById(Key.btn_back);
-		
+		hinzu = findViewById(Key.btn_deine_musik);
 
 		btn_play = findViewById(Key.PLAY);
 		btn_play.setOnClickListener(this);
@@ -99,35 +117,13 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onResume();
 		back.setOnClickListener(this);
+		hinzu.setOnClickListener(this);
 	}
 
 	
 	
 
-	private ArrayList<Audios> audiosArray() {
-		ArrayList<Audios> arr = new ArrayList<Audios>();
-		audios = new Audios("Wendeltreppe",
-				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.wen01);
-		arr.add(audios);
-		audios = new Audios("Farben atmen", "Breathing colours", "", R.drawable.far01);
-		arr.add(audios);
-		audios = new Audios(
-				"Lieblingsplatz",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.gre01);
-		arr.add(audios);
-		audios = new Audios(
-				"IVF Vorbereitung",
-				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
-				"", R.drawable.ivf01);
-		arr.add(audios);
-		audios = new Audios(
-				"Kontrollzentrale",
-				"Id modion nonet idipitis doluptatur mo cus corrum solorib ",
-				"", R.drawable.kon01);
-		arr.add(audios);
-		return arr;
-	}
+	
 
 	@Override
 	public void onClick(View v) {
@@ -136,7 +132,9 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		case Key.btn_back:
 			this.onBackPressed();
 			break;
-
+		case Key.btn_deine_musik:
+			this.onBackPressed();
+			break;
 		default:
 			break;
 		}
@@ -157,4 +155,22 @@ public class DeineSamlung extends Activity implements OnClickListener {
 		finish();
 		overridePendingTransition(R.anim.slide_right_in,R.anim.slide_right_out);
 	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// TODO Auto-generated method stub
+		this.initUIDown.setVisibility(View.VISIBLE);
+		if((firstVisibleItem+visibleItemCount)== totalItemCount){
+			this.initUIDown.setVisibility(View.GONE);
+		}
+		
+	}
+	
 }

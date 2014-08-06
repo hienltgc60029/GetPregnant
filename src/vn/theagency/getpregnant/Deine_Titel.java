@@ -2,6 +2,7 @@ package vn.theagency.getpregnant;
 
 import java.util.ArrayList;
 
+import vn.theagency.bussiness.Store;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Deine_Adapter;
 import vn.theagency.helper.Helper;
@@ -9,7 +10,11 @@ import vn.theagency.layout.UI_Deneine;
 import vn.theagency.objects.Audios;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +30,7 @@ import android.widget.ListView;
 public class Deine_Titel extends Activity implements OnClickListener,OnScrollListener {
 
 	private Helper mHelper;
+	private Store mStore;
 	public UI_Deneine mDeine;
 	public FrameLayout initUIHeader;
 	public FrameLayout wrapper;
@@ -45,6 +51,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.mHelper = Helper.shareIns(getApplicationContext());
+		this.mStore = Store.shareIns(getApplicationContext(), null);
 		this.mDeine = UI_Deneine.shareIns(getApplicationContext());
 		
 		this.initUIHeader = this.mDeine.initUIHeader();
@@ -58,15 +65,20 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		list.setHorizontalScrollBarEnabled(false);
 		list.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 		list.setVerticalScrollBarEnabled(false);
-		list.setHorizontalScrollBarEnabled(false);
-		list.setOnScrollListener(this);
-		list.setDivider(null);
+		list.setSmoothScrollbarEnabled(true);
+		int color = Color.parseColor("#e8d3a0");
+		ColorDrawable drawable = new ColorDrawable(color);
+		drawable.setAlpha(100);
+		list.setDivider(drawable);
+		list.setDividerHeight(1);
+		
+	//	list.setDivider(null);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		
-		int header_height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
-		int height = (int) (mHelper.getAppHeight()-header_height)/3;
+		int height01 =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
+		int height = (int) (mHelper.getAppHeight()-height01)/3;
 		String indexHome = getIntent().getExtras().getString("Audios");
-		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), audiosArray(),height,indexHome);
+		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), this.mStore.audiosList,height,indexHome);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
 		
@@ -92,28 +104,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		deine.setOnClickListener(this);
 		
 	}
-	private ArrayList<Audios> audiosArray() {
-		ArrayList<Audios> arr = new ArrayList<Audios>();
-		audios = new Audios("Wendeltreppe",
-				"Einleitung (kann vor jede Hypnose gesetzt werden)", "", R.drawable.wen01);
-		arr.add(audios);
-		audios = new Audios(
-				"Lieblingsplatz",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"", R.drawable.lie01);
-		arr.add(audios);
-		audios = new Audios(
-				"Zurückkommen",
-				"Sollte nach jeder Hypnose als Abschluss folgen,... ",
-				"", R.drawable.zur01);
-		arr.add(audios);
-		audios = new Audios(
-				"Gegensätze",
-				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung..",
-				"", R.drawable.geg01);
-		arr.add(audios);
-		return arr;
-	}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

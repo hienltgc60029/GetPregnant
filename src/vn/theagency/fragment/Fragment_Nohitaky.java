@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -156,23 +157,24 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// TODO Auto-generated method stub
 		if (changeBg.isChecked()) {
-			this.initUIBackGround.setAlpha(1f);
-			this.initUIBack.setAlpha(1f);
-			this.initUIMusik.setAlpha(1f);
-			this.initUIBottom.setAlpha(1f);
-			this.initUIMusicBar.setAlpha(1f);
-			this.initUITitle.setAlpha(1f);
 			
-			initUIBackGroundDark.setVisibility(View.INVISIBLE);
+			/*WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+			lp.screenBrightness = 1f;
+			getActivity().getWindow().setAttributes(lp);*/
+			
+			this.initUIBackGroundDark.setVisibility(View.GONE);
+			
+			
 		} else {
-			this.wrapper.setAlpha(1f);
-			initUIBackGroundDark.setVisibility(View.VISIBLE);
-			this.initUIBackGround.setAlpha(0.5f);
-			this.initUIBack.setAlpha(0.5f);
-			this.initUIMusik.setAlpha(0.5f);
+			
+			/*WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+			lp.screenBrightness = 0.2f;
+			getActivity().getWindow().setAttributes(lp);*/
+			
 			this.initUIBottom.setAlpha(0.5f);
-			this.initUIMusicBar.setAlpha(0.5f);
-			this.initUITitle.setAlpha(0.5f);
+			this.initUIMusik.setAlpha(0.5f);
+			this.initUIBackGroundDark.setVisibility(View.VISIBLE);
+			
 		}
 	}
 }

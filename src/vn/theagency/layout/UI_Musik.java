@@ -89,7 +89,7 @@ public class UI_Musik {
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		params.topMargin = headerHeight;
 		v.setLayoutParams(params);
-		v.setBackgroundResource(R.drawable.bg_list);
+		v.setBackgroundResource(R.drawable.bg_musik);
 		return v;
 	}
 
@@ -137,17 +137,16 @@ public class UI_Musik {
 				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
 		
-	//	barVolumePara.setMargins(20, 0, 20, 0);
+	
 		barVolumePara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
 		barVolumePara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
-		barVolumePara.addRule(RelativeLayout.CENTER_VERTICAL,
-				RelativeLayout.TRUE);
+		barVolumePara.topMargin = (int)(musik_bar_height/4);
 
 		mBarVolume = new SeekBar(this.context);
 		mBarVolume.setProgressDrawable(this.context.getResources().getDrawable(
 				R.drawable.seekbar_volume));
 		mBarVolume.setThumb(this.context.getResources().getDrawable(
-				R.drawable.seekbar_point));
+				R.drawable.thumbler_small));
 		mBarVolume.setId(Key.SEEKBAR_VOLUME);
 		mBarVolume.setVisibility(View.GONE);
 		//
@@ -164,10 +163,11 @@ public class UI_Musik {
 		//startPara.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
 
 		TextView timeStart = new TextView(this.context);
-		timeStart.setAlpha(0.5f);
+		timeStart.setAlpha(0.8f);
 		timeStart.setText("25:58");
+		timeStart.setTextColor(Color.parseColor("#fffac2"));
 		timeStart.setGravity(Gravity.RIGHT);
-		
+		timeStart.setId(Key.START);
 		
 		//
 		TextView timeEnd = new TextView(this.context);
@@ -177,10 +177,13 @@ public class UI_Musik {
 		endPara.bottomMargin = 10;
 		endPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		endPara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
-
+		
+		
 		timeEnd.setText("57:30");
-		timeEnd.setAlpha(0.5f);
+		timeEnd.setAlpha(0.8f);
+		timeEnd.setTextColor(Color.parseColor("#fffac2"));
 		timeEnd.setGravity(Gravity.LEFT);
+		timeEnd.setId(Key.End);
 		//
 		RelativeLayout.LayoutParams repeatPara = new RelativeLayout.LayoutParams(
 				repeatWidth, repeatHeight);

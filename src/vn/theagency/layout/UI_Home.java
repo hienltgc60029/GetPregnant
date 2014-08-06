@@ -61,8 +61,8 @@ public class UI_Home {
 		plusTextMargin= (int)mHelper.DpToPixel(50);
 		textsize = (int) mHelper.DpToSp(20);
 		
-		titleWidth =(int) this.mHelper.DpToPixel(289);
-		titleHeight =(int) this.mHelper.DpToPixel(115);
+		titleWidth =(int) (8*this.mHelper.getAppWidth()/10);
+		titleHeight =(int) this.mHelper.DpToPixel(120);
 	}
 
 	/**

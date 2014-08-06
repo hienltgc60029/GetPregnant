@@ -6,9 +6,12 @@ import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
 
 import vn.theagency.objects.Audios;
+import vn.theagency.sqlite.SQliteData;
+import vn.theagency.sqlite.SQliteData.SQdata;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +31,7 @@ public class Deine_Adapter extends BaseAdapter {
 	public int sizeRow;
 	public String indexHome;
 	private Helper mHelper;
+	public Audios audios;
 
 	public Deine_Adapter(int layout, Context mContext, ArrayList<Audios> arr,
 			int sizeRow,String indexHome) {
@@ -59,7 +63,7 @@ public class Deine_Adapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = convertView;
 		MyViewHolder mViewHolder;
 		if (view == null) {
@@ -84,7 +88,7 @@ public class Deine_Adapter extends BaseAdapter {
 		}
 			mViewHolder = (MyViewHolder) view.getTag();
 			 mViewHolder.mTitle = mTextView(view, R.id.txtTitle, arr.get(position).getmTitle());
-	    		mViewHolder.imageView = mImage(view, R.id.img, R.drawable.avatar);
+	    		mViewHolder.imageView = mImage(view, R.id.img, arr.get(position).getmImageURL());
 	    		mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position).getmDecription());
 	    		mViewHolder.btnView = mButton(view, R.id.btnView, R.drawable.btn_play);
 	    		mViewHolder.btnDownload = mButton(view, R.id.btn, R.drawable.btn_collect);
@@ -98,10 +102,29 @@ public class Deine_Adapter extends BaseAdapter {
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    				intent.putExtra("Audios", indexHome);
+	    				
 	    				mContext.startActivity(intent);
 	    				
 	    			}
 	    		});
+	    		mViewHolder.btnDownload.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						SQliteData data = new SQliteData(mContext);
+						data.open();
+						Log.i("LTH", "ID OF AUDIOS:" + arr.get(position).getmID());
+						audios = new Audios(arr.get(position).getmID(),arr.get(position).getmTitle()
+								, arr.get(position).getmDecription()
+								, arr.get(position).getmPrice()
+								, arr.get(position).getmImageURL());
+						data.putAudiosCollections(audios);
+						data.close();
+						arr.remove(position);
+						notifyDataSetChanged();
+					}
+				});
 		
 		if ((position % 2) != 0) {
 			view.setBackgroundResource(R.drawable.bg_library);

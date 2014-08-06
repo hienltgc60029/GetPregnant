@@ -10,6 +10,7 @@ import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
 import vn.theagency.layout.UI_Musik;
 import vn.theagency.objects.Songs;
+import android.R.menu;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -122,7 +123,7 @@ public class Musik extends Activity {
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		
+		Fragment_MusikListe.newInstance(true).deleteMusik();
 	}
 
 	@Override

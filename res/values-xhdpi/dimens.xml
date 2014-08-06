@@ -13,8 +13,8 @@
     
 
 	    <!--  Deine Titel -->
-	   <dimen name="AVARTA_WIDTH">93dp</dimen>
-	   <dimen name="AVARTA_HEIGHT">93dp</dimen>
+	   <dimen name="AVARTA_WIDTH">100dp</dimen>
+	   <dimen name="AVARTA_HEIGHT">100dp</dimen>
 	   <dimen name="ROW_BUTTON_WIDTH">102dp</dimen>
 	   <dimen name="ROW_BUTTON_HEIGHT">29dp</dimen> 
 	   <dimen name="ROW_PADDING">20dp</dimen> 

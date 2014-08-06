@@ -54,8 +54,8 @@ public class UI_Deneine {
 		header_height = (int) mHelper.getAppHeight() / 5;
 		mTitleSize = (int) mHelper.DpToSp(35);
 		mDecSize = (int) mHelper.DpToSp(15);
-		play_width = (int) mHelper.DpToPixel(18);
-		play_height = (int) mHelper.DpToPixel(14);
+		play_width = (int) mHelper.DpToPixel(27);
+		play_height = (int) mHelper.DpToPixel(20);
 		seekbar_width = (int) (3*mHelper.getAppWidth()/5);
 		seekbar_height = (int) mHelper.DpToPixel(8);
 		bottom_height = (int) this.mHelper.DpToPixel(92);
@@ -139,7 +139,7 @@ public class UI_Deneine {
 
 	public ImageView initUIDown() {
 
-		int hieght = (int) (mHelper.getAppHeight() - bottom - (bottom_down/2));
+		int hieght = (int) (mHelper.getAppHeight() - bottom - (bottom_down/2)-10);
 		ImageView view = new ImageView(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,

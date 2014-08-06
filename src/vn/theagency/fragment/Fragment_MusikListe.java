@@ -60,7 +60,7 @@ public class Fragment_MusikListe extends Fragment implements
 	int curVolume = 10;
 	Messenger messenger;
 	Message mg;
-	
+	TextView start,end;
 	
 
 	private static Fragment_MusikListe _ins;
@@ -142,6 +142,8 @@ public class Fragment_MusikListe extends Fragment implements
 		
 		header = wrapper.findViewById(Key.HEADER);
 		
+		start = (TextView) this.wrapper.findViewById(Key.START);
+		end =(TextView) this.wrapper.findViewById(Key.End);
 
 		// ///////////////////////
 
@@ -177,7 +179,8 @@ public class Fragment_MusikListe extends Fragment implements
 			play.setVisibility(View.VISIBLE);
 			play.setEnabled(false);
 			pause.setVisibility(View.GONE);
-		
+			next.setEnabled(false);
+			prev.setEnabled(false);
 		
 	
 	}
@@ -311,12 +314,17 @@ public class Fragment_MusikListe extends Fragment implements
 		case Key.VOLUME:
 			if (this.mMusik.mBarVolume.getVisibility() == View.GONE) {
 				this.mMusik.mBarVolume.setVisibility(View.VISIBLE);
+				start.setVisibility(View.GONE);
+				end.setVisibility(View.GONE);
 			} else {
 				this.mMusik.mBarVolume.setVisibility(View.GONE);
+				start.setVisibility(View.VISIBLE);
+				end.setVisibility(View.VISIBLE);
 			}
 			if (this.mMusik.mLine.getVisibility() == View.GONE) {
 				this.mMusik.mLine.setVisibility(View.VISIBLE);
 			} else {
+				
 				this.mMusik.mLine.setVisibility(View.GONE);
 			}
 			break;
@@ -346,8 +354,14 @@ public class Fragment_MusikListe extends Fragment implements
 		switch (seekBar.getId()) {
 		case Key.SEEKBAR_VOLUME:
 			curVolume = progress;
-			media.setVolume((float) progress / mMaxVolume, (float) progress
-					/ mMaxVolume);
+			if(media!=null){
+				if(media.isPlaying()){
+					media.setVolume((float) progress / mMaxVolume, (float) progress
+							/ mMaxVolume);
+				}
+			}
+			
+			
 			break;
 
 		default:
@@ -382,33 +396,22 @@ public class Fragment_MusikListe extends Fragment implements
 
 				media.start();
 				setVolume(mMaxVolume);
-		//		this.mMusik.mLine.setMax(media.getDuration());
-				
-				/*media.setOnCompletionListener(new OnCompletionListener() {
-
-					@Override
-					public void onCompletion(MediaPlayer mp) {
-						// TODO Auto-generated method stub
-						if (mPosition < arr.size()) {
-							mPosition++;
-							MusikAsyntask asyntask = new MusikAsyntask();
-							asyntask.execute(arr.get(mPosition).getmURL());
-						}
-
-					}
-				});
-*/
 			} catch (Exception ex) {
 				Toast.makeText(getActivity(), "Musik cann't start",
 						Toast.LENGTH_SHORT).show();
 			}
 			return null;
 		}
-
-		
-
 	}
 
+	public void deleteMusik(){
+		if(media!=null){
+			if(media.isPlaying()){
+				media.stop();
+				media.release();
+			}		
+		}
+	}
 
 
 }

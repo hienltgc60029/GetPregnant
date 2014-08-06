@@ -6,17 +6,16 @@ import vn.theagency.getpregnant.R;
 import vn.theagency.objects.Audios;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 @SuppressLint("InflateParams")
@@ -90,7 +89,7 @@ public class Audios_Adapter extends BaseAdapter {
 					.getmDecription());
 			mViewHolder.btnView = mButton(view, R.id.btnView,
 					R.drawable.btn_view);
-			if(arr.get(position).getmURLDownload().equalsIgnoreCase("")){
+			if(arr.get(position).getmPrice().equalsIgnoreCase("")){
 				mViewHolder.btnDownload = mButton(view, R.id.btn,
 						R.drawable.btn_download);
 			}else{
@@ -99,8 +98,9 @@ public class Audios_Adapter extends BaseAdapter {
 			}
 			
 			//
-
 			
+				
+		
 		
 
 		if ((position % 2) != 0) {
