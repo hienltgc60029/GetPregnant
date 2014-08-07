@@ -19,7 +19,8 @@
 	   <dimen name="ROW_BUTTON_HEIGHT">29dp</dimen> 
 	   <dimen name="ROW_PADDING">20dp</dimen> 
 	    <dimen name="BOTTOM">52dp</dimen>
-	     <dimen name="BOTTOM_DOWN">39dp</dimen>   
+	     <dimen name="BOTTOM_DOWN">39dp</dimen> 
+	     <dimen name="ItemText_Width">214dp</dimen>   
 	   <!-- sammlung -->
      <dimen name="ROW_BTN_LOS_WIDTH">92dp</dimen>
      <dimen name="ROW_BTN_DOWN_WIDTH">71dp</dimen>

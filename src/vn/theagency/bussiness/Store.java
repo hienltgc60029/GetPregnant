@@ -14,14 +14,19 @@ public class Store {
 	public ArrayList<Audios> audiosList;
 	public Store (Context _context, ArrayList<Songs> arr){
 		this.context = _context;
-		this.arr = arr;
+		if(arr== null){
+			this.arr = new ArrayList<Songs>();
+		}else{
+			this.arr = arr;
+		}
+		
 		audiosArray();
 	}
 	
 	
 	public static Store shareIns(Context _context, ArrayList<Songs> arr){
 		if(Store._ins==null){
-			Store._ins = new Store(_context,arr);
+			Store._ins = new Store(_context,null);
 			
 		}
 		return Store._ins;

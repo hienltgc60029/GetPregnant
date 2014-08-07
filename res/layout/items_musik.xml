@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/icon"
         android:layout_marginLeft="14dp"
-        
+        android:background="@android:color/transparent"
         android:singleLine="true" 
     android:ellipsize="marquee"
     android:marqueeRepeatLimit ="marquee_forever"

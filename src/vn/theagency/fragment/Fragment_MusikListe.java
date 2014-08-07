@@ -57,7 +57,7 @@ public class Fragment_MusikListe extends Fragment implements
 	SeekBar seekLine, seekVolume;
 	public int mPosition;
 	int mMaxVolume = 20;
-	int curVolume = 10;
+	int curVolume;
 	Messenger messenger;
 	Message mg;
 	TextView start,end;
@@ -65,14 +65,18 @@ public class Fragment_MusikListe extends Fragment implements
 
 	private static Fragment_MusikListe _ins;
 
-	public Fragment_MusikListe(){
+	public Fragment_MusikListe(ArrayList<Songs> arr){
+		this.arr = arr;
+		curVolume = 10;
 		
 	}
 
-	public static Fragment_MusikListe newInstance(boolean isActive) {
+	public static Fragment_MusikListe newInstance(boolean isActive, ArrayList<Songs> arr) {
 		if (Fragment_MusikListe._ins == null) {
-			Fragment_MusikListe._ins = new Fragment_MusikListe();
+			Fragment_MusikListe._ins = new Fragment_MusikListe(arr);
 			
+		}else{
+			Fragment_MusikListe._ins.adapter.notifyDataSetChanged();
 		}
 	//	createListenner();
 
@@ -82,6 +86,8 @@ public class Fragment_MusikListe extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.i("LTH", "Fragment Musik");
+		
 		this.mHelper = Helper.shareIns(getActivity());
 		this.mMusik = UI_Musik.shareIns(getActivity());
 
@@ -93,8 +99,7 @@ public class Fragment_MusikListe extends Fragment implements
 
 		initUI();
 		
-		this.mStore = Store.shareIns(getActivity(), arr);
-		arr = this.mStore.getMusikSlite();
+		
 		
 		Musik musik = (Musik) getActivity();
 		messenger = musik.getMessenger();
@@ -123,6 +128,7 @@ public class Fragment_MusikListe extends Fragment implements
 		this.wrapper.addView(initUIListView);
 		this.wrapper.addView(this.initUIBottom);
 	}
+	
 
 	public void preference() {
 
@@ -160,7 +166,8 @@ public class Fragment_MusikListe extends Fragment implements
 		
 
 		
-
+		seekVolume.setProgress(curVolume);
+		seekVolume.setMax(mMaxVolume);
 		seekVolume.setOnSeekBarChangeListener(this);
 		//
 		list.setAdapter(adapter);
@@ -175,16 +182,55 @@ public class Fragment_MusikListe extends Fragment implements
 		createListenner();
 		
 		mPosition = 0;
-		
+		if(media!=null){
+			if(media.isPlaying()){
+				if(list!=null){
+					Log.i("LTH", "1");
+					pause.setVisibility(View.VISIBLE);
+					play.setVisibility(View.GONE);
+					if(list.getSelectedItemPosition()==0){
+						prev.setEnabled(false);
+					}else{
+						prev.setEnabled(true);
+					}
+					if(list.getLastVisiblePosition()==arr.size()){
+						next.setEnabled(false);
+					}else{
+						next.setEnabled(true);
+					}
+					
+				}
+			}else{
+				Log.i("LTH", "2");
+				play.setVisibility(View.VISIBLE);
+				play.setEnabled(true);
+				pause.setVisibility(View.GONE);
+				if(list.getSelectedItemPosition()==0){
+					prev.setEnabled(false);
+				}else{
+					prev.setEnabled(true);
+				}
+				if(list.getLastVisiblePosition()==arr.size()){
+					next.setEnabled(false);
+				}else{
+					next.setEnabled(true);
+				}
+				
+			}
+		}else{
+			Log.i("LTH", "3");
 			play.setVisibility(View.VISIBLE);
 			play.setEnabled(false);
 			pause.setVisibility(View.GONE);
 			next.setEnabled(false);
 			prev.setEnabled(false);
+		}
+		
+			
 		
 	
 	}
-	public void destroyListenner(){
+	/*public void destroyListenner(){
 		list.setOnItemClickListener(null);
 		header.setOnClickListener(null);
 		shuffer.setOnClickListener(null);
@@ -194,7 +240,8 @@ public class Fragment_MusikListe extends Fragment implements
 		play.setOnClickListener(null);
 		next.setOnClickListener(null);
 		prev.setOnClickListener(null);
-	}
+	}*/
+	
 	public void createListenner(){
 		list.setOnItemClickListener(this);
 		header.setOnClickListener(this);
@@ -207,12 +254,7 @@ public class Fragment_MusikListe extends Fragment implements
 		prev.setOnClickListener(this);
 	}
 
-	public void setVolume(int Max) {
-		seekVolume.setMax(mMaxVolume);
-		seekVolume.setProgress(curVolume);
-		media.setVolume((float) curVolume / mMaxVolume, (float) curVolume
-				/ mMaxVolume);
-	}
+	
 	
 
 	@Override
@@ -234,7 +276,7 @@ public class Fragment_MusikListe extends Fragment implements
 				next.setEnabled(true);
 			}
 
-			MusikAsyntask asyntask = new MusikAsyntask();
+			MusikAsyntask asyntask = new MusikAsyntask(null,curVolume,mMaxVolume);
 			asyntask.execute(arr.get(mPosition).getmURL());
 
 			for (int i = 0; i < arr.size(); i++) {
@@ -252,6 +294,11 @@ public class Fragment_MusikListe extends Fragment implements
 		}
 	}
 
+	public void returnFalseStatus(){
+		for (int i = 0; i < arr.size(); i++) {
+			arr.get(i).setmStatus(false);
+		}
+	}
 	
 
 	@Override
@@ -288,7 +335,7 @@ public class Fragment_MusikListe extends Fragment implements
 			if (mPosition > 0) {
 				media.stop();
 				mPosition = mPosition - 1;
-				MusikAsyntask asyntask = new MusikAsyntask();
+				MusikAsyntask asyntask = new MusikAsyntask(null,curVolume,mMaxVolume);
 				asyntask.execute(arr.get(mPosition).getmURL());
 				
 
@@ -383,7 +430,23 @@ public class Fragment_MusikListe extends Fragment implements
 
 
 	public class MusikAsyntask extends AsyncTask<String, Integer, Integer> {
-		UI_Musik mMusik = UI_Musik.shareIns(getActivity());
+		
+		SeekBar mLime;
+		int curVolume;
+		int maxVolume;
+		
+		
+		
+
+		public MusikAsyntask(SeekBar mLime, int curVolume, int maxVolume) {
+			super();
+			this.mLime = mLime;
+			this.curVolume = curVolume;
+			this.maxVolume = maxVolume;
+		}
+
+
+
 
 		@Override
 		protected Integer doInBackground(String... params) {
@@ -393,9 +456,10 @@ public class Fragment_MusikListe extends Fragment implements
 					media.release();
 				}
 				media = MediaPlayer.create(getActivity(), Uri.parse(params[0]));
-
 				media.start();
-				setVolume(mMaxVolume);
+				media.setVolume((float) curVolume / maxVolume, (float) curVolume
+						/ maxVolume);
+		//		setVolume(mMaxVolume);
 			} catch (Exception ex) {
 				Toast.makeText(getActivity(), "Musik cann't start",
 						Toast.LENGTH_SHORT).show();

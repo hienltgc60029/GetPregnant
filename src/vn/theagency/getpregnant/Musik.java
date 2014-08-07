@@ -9,6 +9,7 @@ import vn.theagency.fragment.Fragment_Nohitaky;
 import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
 import vn.theagency.layout.UI_Musik;
+import vn.theagency.objects.Audios;
 import vn.theagency.objects.Songs;
 import android.R.menu;
 import android.annotation.SuppressLint;
@@ -40,8 +41,8 @@ public class Musik extends Activity {
 	public RelativeLayout initUIMusicBar;
 	public SeekBar mLine, mVolume;
 	public View volume;
-	
-
+	ArrayList<Songs> arr;
+	Audios audio;
 	int sliteVolume = 10;
 	FragmentTransaction transaction;
 
@@ -55,7 +56,6 @@ public class Musik extends Activity {
 		}
 	};
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -64,41 +64,41 @@ public class Musik extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.musik);
-		
-	
 
+		getArray();
+		String mTitle = getIntent().getExtras().getString(Audios.TITLE);
+		String mDecription = getIntent().getExtras().getString(
+				Audios.DECRIPTION);
+		String mImage = getIntent().getExtras().getString(Audios.IMAGEURL);
+		String mID = getIntent().getExtras().getString(Audios.ID);
 		
-		
+		audio = new Audios(mID, mTitle, mDecription, "",
+				Integer.parseInt(mImage));
 
-		
-		
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
-		transaction.add(R.id.musik, Fragment_Nohitaky.newInstance());
+		transaction.add(R.id.musik, Fragment_Nohitaky.newInstance(audio));
 		transaction.commit();
-		
-	}
 
-	
+	}
 
 	public void actionClickHander(int action) {
 		switch (action) {
 		case 1:
 			FragmentTransaction transaction1 = getFragmentManager()
-			.beginTransaction();
-	transaction1.replace(R.id.musik, Fragment_MusikListe.newInstance(true));
-	transaction1.commit();	
+					.beginTransaction();
+			transaction1.replace(R.id.musik,
+					Fragment_MusikListe.newInstance(true, arr));
+			transaction1.commit();
 
 			break;
 		case 2:
 			FragmentTransaction transaction = getFragmentManager()
-			.beginTransaction();
-	transaction.replace(R.id.musik, Fragment_Nohitaky.newInstance());
-	transaction.commit();
+					.beginTransaction();
+			transaction.replace(R.id.musik,
+					Fragment_Nohitaky.newInstance(audio));
+			transaction.commit();
 
-			
-			
-			
 			break;
 		case 3:
 			onBackPressed();
@@ -109,32 +109,52 @@ public class Musik extends Activity {
 		}
 	}
 
-	
-	
-	
-
 	public Messenger getMessenger() {
 		return new Messenger(handler);
 	}
-
-	
 
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-		Fragment_MusikListe.newInstance(true).deleteMusik();
+
+		Fragment_MusikListe.newInstance(true, arr).returnFalseStatus();
+
+	}
+
+	public void getArray() {
+		String timePhut = null;
+		String timeGiay = null;
+		GetSongsAll all = new GetSongsAll();
+		arr = all.getPlayList(getApplicationContext());
+
+		for (int i = 0; i < arr.size(); i++) {
+
+			int phut = (int) ((Integer.parseInt(arr.get(i).getmLine()) / 60000) % 60);
+			if (phut < 10) {
+				timePhut = "0" + String.valueOf(phut);
+			} else {
+				timePhut = String.valueOf(phut);
+			}
+
+			int giay = (int) (((Integer.parseInt(arr.get(i).getmLine()) - (phut * 60000)) / 1000) % 60);
+			if (giay < 10) {
+				timeGiay = "0" + String.valueOf(giay);
+			} else {
+				timeGiay = String.valueOf(giay);
+			}
+			arr.get(i).setmLine(timePhut + ":" + timeGiay);
+		}
 	}
 
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		Log.i("LTH", "Media: "+ getIntent().getExtras().getString("Audios"));
-		
-	//	clearMemory();
-		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
+		Log.i("LTH", "Media: " + getIntent().getExtras().getString("Audios"));
 
+		// clearMemory();
+		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 		startActivity(intent);
 		finish();
@@ -143,16 +163,18 @@ public class Musik extends Activity {
 	private void clearMemory() {
 		// TODO Auto-generated method stub
 		getFragmentManager().beginTransaction()
-				.remove(Fragment_Nohitaky.newInstance()).commit();
+				.remove(Fragment_Nohitaky.newInstance(audio)).commit();
 		getFragmentManager().beginTransaction()
-				.remove(Fragment_MusikListe.newInstance(false)).commit();
+				.remove(Fragment_MusikListe.newInstance(false, arr)).commit();
 	}
 
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+
 		System.gc();
+		// System.exit(0);
 	}
 
 }

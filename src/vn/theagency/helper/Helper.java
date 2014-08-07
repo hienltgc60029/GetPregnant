@@ -88,7 +88,9 @@ public class Helper {
 	public float getDpHeight() {
 		return dpHeight;
 	}
-
+	public int getNumberCharTextView(int width,int textsize){
+		return (int)(width/textsize);
+	}
 	
 
 	

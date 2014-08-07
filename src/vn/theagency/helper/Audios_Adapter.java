@@ -2,13 +2,13 @@ package vn.theagency.helper;
 
 import java.util.ArrayList;
 
+import vn.theagency.customlayout.LetterSpacingTextView;
 import vn.theagency.getpregnant.R;
 import vn.theagency.objects.Audios;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,8 +82,11 @@ public class Audios_Adapter extends BaseAdapter {
 
 		} 
 			mViewHolder = (MyViewHolder) view.getTag();
+			
+			
 			mViewHolder.mTitle = mTextView(view, R.id.txtTitle,
 					arr.get(position).getmTitle());
+			
 			mViewHolder.imageView = mImage(view, R.id.img, arr.get(position).mImageURL);
 			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
 					.getmDecription());
@@ -99,10 +102,20 @@ public class Audios_Adapter extends BaseAdapter {
 			
 			//
 			
-				
-		
-		
-
+			
+			/*Paint paint = new Paint();
+			final float densityMultiplier = mContext.getResources().getDisplayMetrics().density;
+			final float scaledPx = mHelper.DpToPixel(23) * densityMultiplier;
+			paint.setTextSize(scaledPx);
+			final float size = paint.measureText(arr.get(position).getmTitle());
+			Log.i("LTH", String.valueOf(mHelper.DpToPixel(214))+"="+String.valueOf(size));
+			int testLenght = (int) (size/mHelper.DpToPixel(214));*/
+			
+			
+			
+			
+			// if testLeght > 1 its mean two line
+			
 		if ((position % 2) != 0) {
 			view.setBackgroundResource(R.drawable.bg_library);
 		}
@@ -121,6 +134,12 @@ public class Audios_Adapter extends BaseAdapter {
 		tv.setText(textview);
 		return tv;
 	}
+	/*private LetterSpacingTextView mTextTitle(View v, int resId, String textview) {
+		LetterSpacingTextView tv = (LetterSpacingTextView) v.findViewById(resId);
+		tv.setLetterSpacing(-2);
+		tv.setText(textview);
+		return tv;
+	}*/
 
 	private Button mButton(View v, int resId, int button) {
 		Button btn = (Button) v.findViewById(resId);

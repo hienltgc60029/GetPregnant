@@ -147,7 +147,7 @@ public class UI_Nohitaky {
 		return layout;
 	}
 
-	public RelativeLayout initUITitle() {
+	public RelativeLayout initUITitle(int pAvarta, String pTitle,String pDec) {
 		RelativeLayout main = new RelativeLayout(this.context);
 
 		FrameLayout.LayoutParams mainPara = new FrameLayout.LayoutParams(
@@ -157,7 +157,7 @@ public class UI_Nohitaky {
 
 		ImageView avarta = new ImageView(this.context);
 		avarta.setId(Key.AUDIOS_NAME);
-		avarta.setImageResource(R.drawable.music_avatar);
+		avarta.setImageResource(pAvarta);
 		RelativeLayout.LayoutParams avarPara = new RelativeLayout.LayoutParams(
 				avartaWidth, avartaHeight);
 		avarPara.leftMargin = (int) this.mHelper.DpToPixel(20);
@@ -170,14 +170,14 @@ public class UI_Nohitaky {
 		title.setTextSize(mTitleSize);
 		title.setTextColor(Color.WHITE);
 		title.setAlpha(0.8f);
-		title.setText("Nohitaky");
+		title.setText(pTitle);
 
 		TextView dec = new TextView(this.context);
 		dec.setId(Key.AUDIOS_DECRIPTION);
 		dec.setAlpha(0.5f);
 		dec.setTextColor(Color.WHITE);
 		dec.setTypeface(type);
-		dec.setText("Lescient elitis endia tiu a sin ciluemol est ciam et ita int. Lga ris sime volutar");
+		dec.setText(pDec);
 
 		RelativeLayout.LayoutParams decPara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -349,7 +349,7 @@ public class UI_Nohitaky {
 		// volume image
 		View volume = new View(this.context);
 		volume.setBackgroundResource(R.drawable.btn_playaudio);
-		volume.setId(Key.VOLUME);
+		volume.setId(Key.PLAYAUDIO);
 
 		RelativeLayout.LayoutParams volumePara = new RelativeLayout.LayoutParams(
 				playWidth, playHeight);

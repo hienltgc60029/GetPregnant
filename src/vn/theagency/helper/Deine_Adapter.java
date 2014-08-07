@@ -102,7 +102,11 @@ public class Deine_Adapter extends BaseAdapter {
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    				intent.putExtra("Audios", indexHome);
-	    				
+	    				intent.putExtra(Audios.TITLE, arr.get(position).getmTitle());
+	    				intent.putExtra(Audios.DECRIPTION, arr.get(position).getmDecription());
+	    				intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(position).getmImageURL()));
+	    				intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(position).getmImageURL()));
+	    				intent.putExtra(Audios.ID, String.valueOf(arr.get(position).getmID()));
 	    				mContext.startActivity(intent);
 	    				
 	    			}
