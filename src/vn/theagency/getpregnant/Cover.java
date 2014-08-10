@@ -110,7 +110,7 @@ public class Cover extends Activity implements OnClickListener, AnimationListene
 					unt.startAnimation(animDownRight);
 					
 				//	auf.setAnimation(animMain);
-					auf.startAnimation(animZoom);		
+					auf.startAnimation(animZoom);
 					return true;
 				}
 				return true;
@@ -222,24 +222,26 @@ public class Cover extends Activity implements OnClickListener, AnimationListene
 	@Override
 	public void onAnimationStart(Animation animation) {
 		// TODO Auto-generated method stub
+		/*initUIBackGround.startAnimation(animAlpha);
+		initUIText.startAnimation(animAlpha);
+		initUIInfo.startAnimation(animAlpha);*/
 		if(animation == animZoom){
-			auf.setAnimation(animAlpha);
+			Log.i("LTH", "animZoom");
+			Intent intent = new Intent(getApplicationContext(), Home.class);
+			clearMemory();
+			intent.putExtra("HomeBG", String.valueOf(2));
+		//	intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			startActivity(intent);
+			finish();
+			overridePendingTransition(R.anim.cover_alpha_in,R.anim.cover_alpha_out);
 		}
 	}
 
 	@Override
 	public void onAnimationEnd(Animation animation) {
 		// TODO Auto-generated method stub
-		this.auf.startAnimation(animZoom);
-		if(animation == animZoom){
-			Intent intent = new Intent(getApplicationContext(), Home.class);
-			clearMemory();
-			intent.putExtra("HomeBG", String.valueOf(2));
-			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			startActivity(intent);
-			finish();
-			overridePendingTransition(0, 0);
-		}
+		//this.auf.startAnimation(animZoom);
+		
 	}
 
 	@Override

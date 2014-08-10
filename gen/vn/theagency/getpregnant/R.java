@@ -15,14 +15,15 @@ public final class R {
         public static final int abc_slide_in_top=0x7f040003;
         public static final int abc_slide_out_bottom=0x7f040004;
         public static final int abc_slide_out_top=0x7f040005;
-        public static final int cover_alpha_out=0x7f040006;
-        public static final int cover_main=0x7f040007;
-        public static final int cover_move_down=0x7f040008;
-        public static final int cover_move_downleft=0x7f040009;
-        public static final int cover_move_downright=0x7f04000a;
-        public static final int cover_move_left=0x7f04000b;
-        public static final int cover_zoom_out=0x7f04000c;
-        public static final int home_zoom_in=0x7f04000d;
+        public static final int cover_alpha_in=0x7f040006;
+        public static final int cover_alpha_out=0x7f040007;
+        public static final int cover_main=0x7f040008;
+        public static final int cover_move_down=0x7f040009;
+        public static final int cover_move_downleft=0x7f04000a;
+        public static final int cover_move_downright=0x7f04000b;
+        public static final int cover_move_left=0x7f04000c;
+        public static final int cover_zoom_out=0x7f04000d;
+        public static final int home_zoom_in=0x7f04000e;
     }
     public static final class animator {
         public static final int alpha_down=0x7f050000;
