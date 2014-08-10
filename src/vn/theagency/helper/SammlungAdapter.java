@@ -31,7 +31,7 @@ public class SammlungAdapter extends BaseAdapter {
 	public Context mContext;
 	public ArrayList<Audios> arr;
 	public int sizeRow;
-	private Store mStore;
+	
 
 	public SammlungAdapter(int layout, Context mContext, ArrayList<Audios> arr,
 			int sizeRow) {
@@ -40,7 +40,7 @@ public class SammlungAdapter extends BaseAdapter {
 		this.mContext = mContext;
 		this.arr = arr;
 		this.sizeRow = sizeRow;
-		this.mStore = Store.shareIns(mContext, null);
+		
 	}
 
 	@Override
@@ -104,10 +104,11 @@ public class SammlungAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
-					mStore.audiosList.add(arr.get(position));
+					
 					
 					SQliteData data = new SQliteData(mContext);
 					data.open();
+					data.putAudios(arr.get(position));
 					data.removeAudiosCollections(arr.get(position).getmID());
 					data.close();
 					
@@ -135,6 +136,7 @@ public class SammlungAdapter extends BaseAdapter {
 					notifyDataSetChanged();
 				}
 			});
+			
 
 			//
 			if ((position % 2) != 0) {
@@ -209,6 +211,16 @@ public class SammlungAdapter extends BaseAdapter {
 			array.add(mtemp.get(i));
 		}
 		mtemp.clear();
+		updateSQLite();
+	}
+	public void updateSQLite(){
+		SQliteData data = new SQliteData(mContext);
+		data.open();
+		data.removeAllAudiosCollections();
+		for(int i = 0 ; i < arr.size(); i++){
+			data.putAudiosCollections(arr.get(i));
+		}
+		data.close();
 	}
 
 }

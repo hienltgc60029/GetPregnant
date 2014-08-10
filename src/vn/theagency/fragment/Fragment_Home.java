@@ -30,8 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Fragment_Home extends Fragment implements OnClickListener,
-		AnimationListener{
+public class Fragment_Home extends Fragment implements OnClickListener{
 
 	View view = null;
 	public String textTitle, textDec;
@@ -50,7 +49,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 	Message msg;
 	TextView plusText;
 	View bg, frist;
-	Animation animation,animationText,scalePlus;
+	
 
 	public static Fragment_Home newInstance(int pTop, int bg, int background,
 			int pTitle) {
@@ -83,8 +82,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 	}
 
 	public void preference() {
-		getAnimation();
-
+		
 		linearAuflosen = (FrameLayout) wrapper.findViewById(Key.linearAuflosen);
 		linearAusgleichen = (FrameLayout) wrapper
 				.findViewById(Key.linearAusgleichen);
@@ -232,64 +230,6 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			}
 			break;
 		case Key.AUSWAHL:
-			this.initUIHome.startAnimation(animation);
-			this.initUIText.startAnimation(animation);
-			this.bg.startAnimation(animation);
-			animationText.setAnimationListener(this);
-			this.initUIAddition.startAnimation(animationText);
-			break;
-		case Key.AUDIOS_NAME:
-			this.initUIHome.startAnimation(animation);
-			this.initUIText.startAnimation(animation);
-			this.bg.startAnimation(animation);
-			animationText.setAnimationListener(this);
-			this.initUIAddition.startAnimation(animationText);
-			break;
-		case Key.HOME:
-			try {
-				clearMemory();
-				msg.arg1 = 7;
-				msg.arg2 = 0;
-				messenger.send(msg);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	public void getAnimation(){
-		animation = AnimationUtils.loadAnimation(getActivity(),
-				R.anim.slide_up);
-		animationText = AnimationUtils.loadAnimation(
-				getActivity(), R.anim.slide_text);
-		scalePlus = AnimationUtils.loadAnimation(getActivity(), R.anim.home_to_audios);
-	}
-	
-	public void clearMemory() {
-		imgAuflosen.setOnClickListener(null);
-		imgAusgleichen.setOnClickListener(null);
-		imgUnterstutzen.setOnClickListener(null);
-		imgVerbessern.setOnClickListener(null);
-		imgVorbereiten.setOnClickListener(null);
-		plus.setOnClickListener(null);
-	}
-
-	@Override
-	public void onAnimationStart(Animation animation) {
-		// TODO Auto-generated method stub
-		plus.setEnabled(false);
-	}
-
-	@Override
-	public void onAnimationEnd(Animation animation) {
-		// TODO Auto-generated method stub
-		
-		
-		
 			try {
 				//plus.setText("AUDIOS LIBRARY");
 				clearMemory();
@@ -320,16 +260,67 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-		
-		
+			break;
+		case Key.AUDIOS_NAME:
+			try {
+				//plus.setText("AUDIOS LIBRARY");
+				clearMemory();
 
+				switch (getArguments().getInt("background")) {
+				case R.drawable.bg:
+					msg.arg2 = 1;
+					break;
+				case R.drawable.bg_auf:
+					msg.arg2 = 2;
+					break;
+				case R.drawable.bg_unt:
+					msg.arg2 = 3;
+					break;
+				case R.drawable.bg_ver:
+					msg.arg2 = 4;
+					break;
+				case R.drawable.bg_vor:
+					msg.arg2 = 5;
+					break;
+
+				default:
+					break;
+				}
+
+				msg.arg1 = 6;
+				messenger.send(msg);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			break;
+		case Key.HOME:
+			try {
+				clearMemory();
+				msg.arg1 = 7;
+				msg.arg2 = 0;
+				messenger.send(msg);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			break;
+
+		default:
+			break;
+		}
 	}
 
-	@Override
-	public void onAnimationRepeat(Animation animation) {
-		// TODO Auto-generated method stub
-
+	
+	
+	public void clearMemory() {
+		imgAuflosen.setOnClickListener(null);
+		imgAusgleichen.setOnClickListener(null);
+		imgUnterstutzen.setOnClickListener(null);
+		imgVerbessern.setOnClickListener(null);
+		imgVorbereiten.setOnClickListener(null);
+		plus.setOnClickListener(null);
 	}
+
+	
 
 	
 	

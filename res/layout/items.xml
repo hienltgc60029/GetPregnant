@@ -10,7 +10,7 @@
         android:layout_width="@dimen/AVARTA_WIDTH"
         android:layout_height="@dimen/AVARTA_HEIGHT"
         android:layout_gravity="center_vertical"
-       
+       	android:layout_marginTop="3dp"
         android:scaleType="fitXY"
         android:contentDescription="@null"
         android:src="@drawable/ic_launcher" />
@@ -19,7 +19,7 @@
         android:id="@+id/listContent"
         android:layout_width="@dimen/ItemText_Width"
         android:layout_gravity="center_vertical"
-        android:layout_height="@dimen/AVARTA_HEIGHT"
+        android:layout_height="@dimen/Item_HEIGHT"
         android:layout_marginLeft="@dimen/MarginLeft" >
 
         <TextView
@@ -32,13 +32,12 @@
             android:layout_marginTop="0dp"
             android:background="@null"
             android:gravity="top|left"
+            android:lineSpacingExtra="-5px"
             android:includeFontPadding="false"
-            
-           	android:maxLines="1"
             android:paddingTop="0dp"
             android:text="Lieblingsplatz"
             android:textColor="#fffab2"
-            android:textSize="23dp"
+            android:textSize="22dp"
             android:alpha="0.5" />
 <FrameLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"

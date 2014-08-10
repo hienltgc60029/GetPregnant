@@ -1,6 +1,8 @@
 package vn.theagency.getpregnant;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
@@ -13,6 +15,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,8 +33,12 @@ import android.widget.CalendarView.OnDateChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class DeineSamlung extends Activity implements OnClickListener,OnScrollListener {
+public class DeineSamlung extends Activity implements OnClickListener,
+		OnScrollListener, OnPreparedListener, OnCompletionListener {
 
 	private Helper mHelper;
 	public UI_Deneine mDeine;
@@ -42,12 +51,18 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 	public ListView list;
 	public FrameLayout initUIDeineSamlung;
 	Audios audios;
-	View btn_play,back,hinzu;
+	View btn_play, back, hinzu;
 	ArrayList<Audios> arrAudios;
 
-	
-
 	boolean isPlay = false;
+	//
+	MediaPlayer player;
+	SeekBar musik_line;
+	int positionSong = 0;
+	private TimerTask task;
+	private Timer timer = null;
+	int progresss = 0;
+	TextView timeStart, timeEnd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +81,8 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 		this.initUIList = this.mDeine.initUIList();
 		this.initUIDeineSamlung = this.mDeine.initUIDeineSamlung();
 		initUI();
+		// player = new MediaPlayer();
+
 		list = (ListView) findViewById(Key.LISTVIEW_LIBRARY);
 		list.setScrollbarFadingEnabled(true);
 		list.setHorizontalScrollBarEnabled(false);
@@ -79,9 +96,9 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 		list.setDividerHeight(1);
 		list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		list.setOnScrollListener(this);
-		
-		int height =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
-		int rowSize = (int) (mHelper.getAppHeight()-height)/3;
+
+		int height = (int) (this.mDeine.bottom + this.mDeine.bottom_down + this.mDeine.header_height);
+		int rowSize = (int) (mHelper.getAppHeight() - height) / 3;
 		SQliteData data = new SQliteData(getApplicationContext());
 		data.open();
 		arrAudios = data.getAllAudiosCollections();
@@ -110,8 +127,21 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 
 		btn_play = findViewById(Key.PLAY);
 		btn_play.setOnClickListener(this);
+		SQliteData data = new SQliteData(getApplicationContext());
+		data.open();
+		if(data.getAllAudiosCollections().size()==0){
+			btn_play.setEnabled(false);
+		}
+		data.close();
+		musik_line = (SeekBar) findViewById(Key.SEEKBAR_LINE);
+		timeStart = (TextView) findViewById(Key.START);
+
+		timeStart.setText("00:00");
+		timeEnd = (TextView) findViewById(Key.End);
+		timeEnd.setText("00:00");
 
 	}
+
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
@@ -120,10 +150,39 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 		hinzu.setOnClickListener(this);
 	}
 
-	
-	
+	private String getDurationLength() {
+		int pos;
+		String number;
+		String timePhut = null;
+		String timeGiay = null;
+		if (arrAudios.get(positionSong).mID.equalsIgnoreCase("1")) {
+			pos = R.raw.wen;
+		} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("2")) {
+			pos = R.raw.lie;
+		} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("3")) {
+			pos = R.raw.zuru;
+		} else {
+			pos = R.raw.gen;
+		}
+		MediaPlayer mp = MediaPlayer.create(getApplicationContext(), pos);
 
-	
+		int phut = (int) ((mp.getDuration() / 60000) % 60);
+		if (phut < 10) {
+			timePhut = "0" + String.valueOf(phut);
+		} else {
+			timePhut = String.valueOf(phut);
+		}
+
+		int giay = (int) (((mp.getDuration() - (phut * 60000)) / 1000) % 60);
+		if (giay < 10) {
+			timeGiay = "0" + String.valueOf(giay);
+		} else {
+			timeGiay = String.valueOf(giay);
+		}
+		number = timePhut + ":" + timeGiay;
+
+		return number;
+	}
 
 	@Override
 	public void onClick(View v) {
@@ -135,31 +194,88 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 		case Key.btn_deine_musik:
 			this.onBackPressed();
 			break;
+		case Key.PLAY:
+			boolean sizeArr = true;
+			SQliteData data = new SQliteData(getApplicationContext());
+			data.open();
+			if(data.getAllAudiosCollections().size()==0){
+				sizeArr = false;
+			}
+			data.close();
+			if(sizeArr){
+				if (player != null) {
+					if (player.isPlaying()) {
+						btn_play.setBackgroundResource(R.drawable.btn_playaudio);
+						player.pause();
+
+					} else {
+						btn_play.setBackgroundResource(R.drawable.btn_pause);
+						player.start();
+
+					}
+				} else {
+
+					btn_play.setBackgroundResource(R.drawable.btn_pause);
+					if (arrAudios.get(positionSong).mID.equalsIgnoreCase("1")) {
+						player = MediaPlayer.create(getApplicationContext(),
+								R.raw.wen);
+						player.start();
+						// positionSong = R.raw.wen;
+					} else if (arrAudios.get(positionSong).mID
+							.equalsIgnoreCase("2")) {
+						player = MediaPlayer.create(getApplicationContext(),
+								R.raw.lie);
+						player.start();
+
+					} else if (arrAudios.get(positionSong).mID
+							.equalsIgnoreCase("3")) {
+						player = MediaPlayer.create(getApplicationContext(),
+								R.raw.zuru);
+						player.start();
+					} else {
+						player = MediaPlayer.create(getApplicationContext(),
+								R.raw.gen);
+						player.start();
+					}
+					timeEnd.setText(getDurationLength());
+
+					// PlayResource(positionSong);
+					player.setOnPreparedListener(this);
+					player.setOnCompletionListener(this);
+				}
+
+			}
+			
+			break;
 		default:
 			break;
 		}
 	}
-	public void clearMemory(){
+
+	public void clearMemory() {
 		back.setOnClickListener(null);
 		back.setOnClickListener(null);
 	}
+
 	@Override
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
 		clearMemory();
-		Intent intent = new Intent(getApplicationContext(),
-				Deine_Titel.class);
+		
+		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 		startActivity(intent);
 		finish();
-		overridePendingTransition(R.anim.slide_right_in,R.anim.slide_right_out);
+		System.gc();
+		System.exit(0);
+
 	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -167,10 +283,112 @@ public class DeineSamlung extends Activity implements OnClickListener,OnScrollLi
 			int visibleItemCount, int totalItemCount) {
 		// TODO Auto-generated method stub
 		this.initUIDown.setVisibility(View.VISIBLE);
-		if((firstVisibleItem+visibleItemCount)== totalItemCount){
+		if ((firstVisibleItem + visibleItemCount) == totalItemCount) {
 			this.initUIDown.setVisibility(View.GONE);
 		}
-		
+
 	}
-	
+
+	@Override
+	public void onPrepared(MediaPlayer mp) {
+		// TODO Auto-generated method stub
+		mp.start();
+		musik_line.setProgress(0);
+
+		int duration = mp.getDuration();
+		musik_line.setMax((int) (duration / 1000));
+		final int period = duration / 1000;
+		task = new TimerTask() {
+
+			@Override
+			public void run() {
+				musik_line.post(new Runnable() {
+					@Override
+					public void run() {
+						if (player.isPlaying()) {
+							progresss++;
+							musik_line.setProgress(progresss);
+							timeStart.setText(mHelper.count(progresss));
+							timeEnd.setText(mHelper.count(period - progresss));
+							if (progresss == (period-1)) {
+								progresss = 0;
+								SQliteData data = new SQliteData(getApplicationContext());
+								data.open();
+								if (data.getAllAudiosCollections() == null) {
+									onBackPressed();
+									
+								}
+								data.close();
+							}
+							// timeStart.setText(count(progresss));
+							// timeEnd.setText(count(period-progresss));
+						}
+					}
+				});
+			}
+		};
+		timer = new Timer();
+		timer.schedule(task, 0, 1000);
+	}
+
+	@Override
+	public void onCompletion(MediaPlayer mp) {
+		try{
+		mp.stop();
+		mp.release();
+		
+		SQliteData data = new SQliteData(getApplicationContext());
+		data.open();
+		
+		if (data.getAllAudiosCollections().size() != 0) {
+			if (data.getAllAudiosCollections().size() == 1) {
+
+				positionSong = 0;
+
+			}
+			if (data.getAllAudiosCollections().size() > 1) {
+				for (int i = 0; i < data.getAllAudiosCollections().size(); i++) {
+					if (arrAudios.get(positionSong).getmID() == data
+							.getAllAudiosCollections().get(i).getmID()) {
+						if (i != data.getAllAudiosCollections().size()) {
+							positionSong++;
+						} else {
+							positionSong = 0;
+						}
+					}
+				}
+			}
+
+		}
+		
+
+			timeEnd.setText(getDurationLength());
+			btn_play.setBackgroundResource(R.drawable.btn_pause);
+			if (arrAudios.get(positionSong).mID.equalsIgnoreCase("1")) {
+				player = MediaPlayer.create(getApplicationContext(), R.raw.wen);
+				player.start();
+				// positionSong = R.raw.wen;
+			} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("2")) {
+				player = MediaPlayer.create(getApplicationContext(), R.raw.lie);
+				player.start();
+
+			} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("3")) {
+				player = MediaPlayer
+						.create(getApplicationContext(), R.raw.zuru);
+				player.start();
+			} else {
+				player = MediaPlayer.create(getApplicationContext(), R.raw.gen);
+				player.start();
+			}
+			timeEnd.setText(getDurationLength());
+
+			player.setOnCompletionListener(this);
+
+		
+		data.close();
+		}catch(Exception ex){
+			this.onBackPressed();
+		}
+	}
+
 }

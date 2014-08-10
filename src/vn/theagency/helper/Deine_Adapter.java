@@ -2,6 +2,7 @@ package vn.theagency.helper;
 
 import java.util.ArrayList;
 
+import vn.theagency.getpregnant.Cover;
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
 
@@ -21,6 +22,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressLint("InflateParams")
 public class Deine_Adapter extends BaseAdapter {
@@ -98,6 +100,7 @@ public class Deine_Adapter extends BaseAdapter {
 	    			@Override
 	    			public void onClick(View v) {
 	    				// TODO Auto-generated method stub
+	    				try{
 	    				Intent intent = new Intent(mContext, Musik.class);
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -108,6 +111,14 @@ public class Deine_Adapter extends BaseAdapter {
 	    				intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(position).getmImageURL()));
 	    				intent.putExtra(Audios.ID, String.valueOf(arr.get(position).getmID()));
 	    				mContext.startActivity(intent);
+	    				//System.gc();
+	    				//System.exit(0);
+	    				}catch(Exception ex){
+	    					Toast.makeText(mContext, "This Function", Toast.LENGTH_LONG).show();
+	    					Intent intent = new Intent(mContext,Cover.class);
+	    					mContext.startActivity(intent);
+	    					System.exit(0);
+	    				}
 	    				
 	    			}
 	    		});
@@ -118,12 +129,13 @@ public class Deine_Adapter extends BaseAdapter {
 						// TODO Auto-generated method stub
 						SQliteData data = new SQliteData(mContext);
 						data.open();
-						Log.i("LTH", "ID OF AUDIOS:" + arr.get(position).getmID());
+						
 						audios = new Audios(arr.get(position).getmID(),arr.get(position).getmTitle()
 								, arr.get(position).getmDecription()
 								, arr.get(position).getmPrice()
 								, arr.get(position).getmImageURL());
 						data.putAudiosCollections(audios);
+						data.removeAudios(audios.getmID());
 						data.close();
 						arr.remove(position);
 						notifyDataSetChanged();

@@ -24,7 +24,7 @@ public class Store {
 	}
 	
 	
-	public static Store shareIns(Context _context, ArrayList<Songs> arr){
+	public static Store shareIns(Context _context, ArrayList<Songs> arr,int a){
 		if(Store._ins==null){
 			Store._ins = new Store(_context,null);
 			

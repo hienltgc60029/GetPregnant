@@ -91,7 +91,30 @@ public class Helper {
 	public int getNumberCharTextView(int width,int textsize){
 		return (int)(width/textsize);
 	}
-	
+	public String count(int process){
+		String number = null;
+		String timePhut = null;
+		String timeGiay = null;
+		
+		
+
+			int phut = (int) (process / 60);
+			if (phut < 10) {
+				timePhut = "0" + String.valueOf(phut);
+			} else {
+				timePhut = String.valueOf(phut);
+			}
+
+			int giay = (int) (process - (phut * 60));
+			if (giay < 10) {
+				timeGiay = "0" + String.valueOf(giay);
+			} else {
+				timeGiay = String.valueOf(giay);
+			}
+			number = timePhut+ ":"+timeGiay;
+		
+		return number;
+	}
 
 	
 	 

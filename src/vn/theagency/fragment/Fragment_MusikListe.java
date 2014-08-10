@@ -1,6 +1,8 @@
 package vn.theagency.fragment;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import vn.theagency.bussiness.Store;
 import vn.theagency.getpregnant.Musik;
@@ -13,12 +15,15 @@ import vn.theagency.layout.UI_Musik;
 import vn.theagency.objects.Songs;
 import android.app.Fragment;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
@@ -57,17 +62,19 @@ public class Fragment_MusikListe extends Fragment implements
 	SeekBar seekLine, seekVolume;
 	public int mPosition;
 	int mMaxVolume = 20;
-	int curVolume;
+	int curVolume=10;
 	Messenger messenger;
 	Message mg;
 	TextView start,end;
 	
-
+	private TimerTask task;
+	private Timer timer = null;
+	int progresss = 0;
 	private static Fragment_MusikListe _ins;
 
 	public Fragment_MusikListe(ArrayList<Songs> arr){
 		this.arr = arr;
-		curVolume = 10;
+		
 		
 	}
 
@@ -201,7 +208,7 @@ public class Fragment_MusikListe extends Fragment implements
 					
 				}
 			}else{
-				Log.i("LTH", "2");
+				
 				play.setVisibility(View.VISIBLE);
 				play.setEnabled(true);
 				pause.setVisibility(View.GONE);
@@ -218,7 +225,7 @@ public class Fragment_MusikListe extends Fragment implements
 				
 			}
 		}else{
-			Log.i("LTH", "3");
+			
 			play.setVisibility(View.VISIBLE);
 			play.setEnabled(false);
 			pause.setVisibility(View.GONE);
@@ -230,17 +237,7 @@ public class Fragment_MusikListe extends Fragment implements
 		
 	
 	}
-	/*public void destroyListenner(){
-		list.setOnItemClickListener(null);
-		header.setOnClickListener(null);
-		shuffer.setOnClickListener(null);
-		repeat.setOnClickListener(null);
-		volume.setOnClickListener(null);
-		pause.setOnClickListener(null);
-		play.setOnClickListener(null);
-		next.setOnClickListener(null);
-		prev.setOnClickListener(null);
-	}*/
+	
 	
 	public void createListenner(){
 		list.setOnItemClickListener(this);
@@ -255,14 +252,35 @@ public class Fragment_MusikListe extends Fragment implements
 	}
 
 	
-	
+	Thread thread = new Thread(new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				list.setOnItemClickListener(null);
+				thread.sleep(500);
+				list.setOnItemClickListener(Fragment_MusikListe._ins);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}) ;
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Log.i("LTH", String.valueOf(position));
-		// setListviewSelection(this.list, position);
+		
 		try {
+			if(media!=null){
+				if(media.isPlaying()){
+					media.stop();
+				//	media.release();
+				}
+			}
+			progresss = 0;
+			this.mMusik.mLine.setProgress(0);
 			play.setEnabled(true);
 			mPosition = position;
 			if (mPosition == 0) {
@@ -275,9 +293,9 @@ public class Fragment_MusikListe extends Fragment implements
 			} else {
 				next.setEnabled(true);
 			}
+			PlayLocalUrl(arr.get(mPosition).getmURL());
 
-			MusikAsyntask asyntask = new MusikAsyntask(null,curVolume,mMaxVolume);
-			asyntask.execute(arr.get(mPosition).getmURL());
+			
 
 			for (int i = 0; i < arr.size(); i++) {
 				arr.get(i).setmStatus(false);
@@ -287,7 +305,7 @@ public class Fragment_MusikListe extends Fragment implements
 
 			play.setVisibility(View.GONE);
 			pause.setVisibility(View.VISIBLE);
-			
+			thread.start();
 
 		} catch (Exception ex) {
 			Log.i("LTH", "Listview error");
@@ -335,11 +353,11 @@ public class Fragment_MusikListe extends Fragment implements
 			if (mPosition > 0) {
 				media.stop();
 				mPosition = mPosition - 1;
-				MusikAsyntask asyntask = new MusikAsyntask(null,curVolume,mMaxVolume);
-				asyntask.execute(arr.get(mPosition).getmURL());
+			
+				
 				
 
-				media.start();
+				
 				if (media.isPlaying()) {
 					play.setVisibility(View.GONE);
 					pause.setVisibility(View.VISIBLE);
@@ -401,20 +419,9 @@ public class Fragment_MusikListe extends Fragment implements
 		switch (seekBar.getId()) {
 		case Key.SEEKBAR_VOLUME:
 			curVolume = progress;
-			if(media!=null){
-				if(media.isPlaying()){
-					media.setVolume((float) progress / mMaxVolume, (float) progress
-							/ mMaxVolume);
-				}
-			}
-			
-			
-			break;
-
-		default:
 			break;
 		}
-	}
+	 }
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
@@ -429,44 +436,7 @@ public class Fragment_MusikListe extends Fragment implements
 	}
 
 
-	public class MusikAsyntask extends AsyncTask<String, Integer, Integer> {
-		
-		SeekBar mLime;
-		int curVolume;
-		int maxVolume;
-		
-		
-		
-
-		public MusikAsyntask(SeekBar mLime, int curVolume, int maxVolume) {
-			super();
-			this.mLime = mLime;
-			this.curVolume = curVolume;
-			this.maxVolume = maxVolume;
-		}
-
-
-
-
-		@Override
-		protected Integer doInBackground(String... params) {
-			try {
-				if (media!=null) {
-					media.stop();
-					media.release();
-				}
-				media = MediaPlayer.create(getActivity(), Uri.parse(params[0]));
-				media.start();
-				media.setVolume((float) curVolume / maxVolume, (float) curVolume
-						/ maxVolume);
-		//		setVolume(mMaxVolume);
-			} catch (Exception ex) {
-				Toast.makeText(getActivity(), "Musik cann't start",
-						Toast.LENGTH_SHORT).show();
-			}
-			return null;
-		}
-	}
+	
 
 	public void deleteMusik(){
 		if(media!=null){
@@ -476,6 +446,85 @@ public class Fragment_MusikListe extends Fragment implements
 			}		
 		}
 	}
+	
+	
+	private void PlayLocalUrl(String url) {
+		
+		if(media!=null){
+			if(media.isPlaying()){
+				media.stop();
+			}
+		}
+		
+		media = new MediaPlayer();
+		media.setAudioStreamType(AudioManager.STREAM_MUSIC);
+		try {
+			media.setDataSource(url);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		media.prepareAsync();
+		// You can show progress dialog here untill it prepared to play
+		media.setOnPreparedListener(new OnPreparedListener() {
+			@Override
+			public void onPrepared(MediaPlayer mp) {
+				
+				mp.start();
+				int duration = mp.getDuration();
+				int period = duration / 1000;
+				task = new TimerTask() {
+
+					@Override
+					public void run() {
+						mMusik.mLine.post(new Runnable() {
+							@Override
+							public void run() {
+								if (media.isPlaying()) {
+									progresss++;
+									mMusik.mLine.setProgress(progresss);
+									media.setVolume((float) curVolume / mMaxVolume, (float) curVolume
+											/ mMaxVolume);
+								}
+							}
+						});
+					}
+				};
+				timer = new Timer();
+				timer.schedule(task, 0, period * 10);
+			}
+		});
+		media.setOnErrorListener(new OnErrorListener() {
+			@Override
+			public boolean onError(MediaPlayer mp, int what, int extra) {
+				// dissmiss progress bar here. It will come here when
+				// MediaPlayer
+				// is not able to play file. You can show error message to user
+				return false;
+			}
+		});
+		media.setOnCompletionListener(new OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				// TODO Auto-generated method stub
+				if (mPosition < arr.size()) {
+					
+					media.stop();
+					mPosition = mPosition + 1;
+					if (media.isPlaying()) {
+						play.setVisibility(View.GONE);
+						pause.setVisibility(View.VISIBLE);
+					}
+					list.performItemClick(list.getChildAt(mPosition), mPosition,
+							list.getAdapter().getItemId(mPosition));
+					adapter.notifyDataSetChanged();
+
+					
+				}
+			}
+		});
+	}
+
 
 
 }

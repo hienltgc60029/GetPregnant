@@ -13,7 +13,8 @@ public class SQliteData {
 	Context oucontext;
 	private SQdata ouSQdata;
 	SQLiteDatabase ouDatabase;
-	public static final String AUDIOS_COLLECTIONS = "tblaudio";
+	public static final String AUDIOS_COLLECTIONS = "tblcollections";
+	public static final String AUDIOS = "tblaudio";
 	
 
 	public static class SQdata extends SQLiteOpenHelper {
@@ -43,6 +44,18 @@ public class SQliteData {
 					+ Audios.IMAGEURL 
 					+ " text );";
 			db.execSQL(order);
+			String order1 = "CREATE TABLE " + AUDIOS + " ("
+					+ Audios.ID
+					+ " text,"
+					+ Audios.TITLE
+					+ " text," 
+					+ Audios.DECRIPTION
+					+ " text," 
+					+ Audios.PRICE 
+					+ " text,"
+					+ Audios.IMAGEURL 
+					+ " text );";
+			db.execSQL(order1);
 			
 			
 		}
@@ -51,6 +64,7 @@ public class SQliteData {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			// TODO Auto-generated method stub
 			db.execSQL("DROP TABLE IF EXISTS " + AUDIOS_COLLECTIONS);
+			db.execSQL("DROP TABLE IF EXISTS " + AUDIOS);
 			
 			onCreate(db);
 
@@ -83,6 +97,7 @@ public void putAudiosCollections(Audios detail){
 public ArrayList<Audios> getAllAudiosCollections(){
 	ArrayList<Audios> audios = new ArrayList<Audios>();
 	Cursor c = ouDatabase.rawQuery("SELECT * FROM " + AUDIOS_COLLECTIONS, null);
+	
 	int cusID = c.getColumnIndex(Audios.ID);
 	int cusTitle = c.getColumnIndex(Audios.TITLE);
 	int cusDecription = c.getColumnIndex(Audios.DECRIPTION);
@@ -99,6 +114,40 @@ public ArrayList<Audios> getAllAudiosCollections(){
 public void removeAudiosCollections(String ID) {
 	ouDatabase.delete(AUDIOS_COLLECTIONS, Audios.ID+"='"+ID+"'" , null);
 }
+public void removeAllAudiosCollections() {
+	ouDatabase.delete(AUDIOS_COLLECTIONS, null, null);
+}
+
+//
+public void putAudios(Audios detail){		
+	ContentValues cv = new ContentValues();
+	cv.put(Audios.ID, detail.getmID());
+	cv.put(Audios.TITLE, detail.getmTitle());
+	cv.put(Audios.DECRIPTION, detail.getmDecription());
+	cv.put(Audios.PRICE, detail.getmPrice());
+	cv.put(Audios.IMAGEURL, String.valueOf(detail.getmImageURL()));
+	ouDatabase.insert(AUDIOS, null, cv);	
+}
+public ArrayList<Audios> getAllAudios(){
+ArrayList<Audios> audios = new ArrayList<Audios>();
+Cursor c = ouDatabase.rawQuery("SELECT * FROM " + AUDIOS, null);
+int cusID = c.getColumnIndex(Audios.ID);
+int cusTitle = c.getColumnIndex(Audios.TITLE);
+int cusDecription = c.getColumnIndex(Audios.DECRIPTION);
+int cusPrice = c.getColumnIndex(Audios.PRICE);
+int cusImageUrl = c.getColumnIndex(Audios.IMAGEURL);
+for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+	Audios detail = new Audios(c.getString(cusID),c.getString(cusTitle), c.getString(cusDecription),
+			c.getString(cusPrice),Integer.parseInt(c.getString(cusImageUrl)));
+	audios.add(detail);
+}
+
+return audios;
+}
+public void removeAudios(String ID) {
+ouDatabase.delete(AUDIOS, Audios.ID+"='"+ID+"'" , null);
+}
+
 
 	
 }

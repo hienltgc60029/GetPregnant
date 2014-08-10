@@ -158,12 +158,7 @@ public class Home extends Activity {
 			Intent intent = new Intent(getApplicationContext(),
 					Audios_Library.class);
 			intent.putExtra("Audios", String.valueOf(index));
-		
-			
-			startActivity(intent);
-			
-			
-			
+			startActivity(intent);		
 			finish();
 			break;
 		case 7:
@@ -171,7 +166,8 @@ public class Home extends Activity {
 			Intent intent1 = new Intent(getApplicationContext(), Cover.class);
 			startActivity(intent1);
 			finish();
-
+			System.gc();
+			System.exit(0);
 			break;
 
 		default:
@@ -208,7 +204,8 @@ public class Home extends Activity {
 	public void finish() {
 		// TODO Auto-generated method stub
 		super.finish();
-		//overridePendingTransition(R.anim.slide_up_in, R.anim.slide_up_out);
+		
+	
 		
 	}
 

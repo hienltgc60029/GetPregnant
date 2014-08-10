@@ -257,6 +257,7 @@ public class UI_Deneine {
 		startPara.gravity = Gravity.CENTER_VERTICAL;
 		timeStart.setLayoutParams(startPara);
 		timeStart.setText("25:58");
+		timeStart.setId(Key.START);
 
 		TextView timeEnd = new TextView(this.context);
 		FrameLayout.LayoutParams endPara = new FrameLayout.LayoutParams(
@@ -266,6 +267,7 @@ public class UI_Deneine {
 		endPara.gravity = Gravity.CENTER_VERTICAL;
 		timeEnd.setLayoutParams(endPara);
 		timeEnd.setText("57:30");
+		timeEnd.setId(Key.End);
 
 		SeekBar mDec = new SeekBar(this.context);
 		FrameLayout.LayoutParams decPara = new FrameLayout.LayoutParams(
@@ -277,6 +279,7 @@ public class UI_Deneine {
 				R.drawable.seekbar_process));
 		mDec.setThumb(this.context.getResources().getDrawable(
 				R.drawable.thumbler_small));
+		mDec.setId(Key.SEEKBAR_LINE);
 
 		playLayout.addView(timeStart);
 		playLayout.addView(timeEnd);

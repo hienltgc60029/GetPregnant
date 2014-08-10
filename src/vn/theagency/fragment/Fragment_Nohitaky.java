@@ -1,22 +1,18 @@
 package vn.theagency.fragment;
 
-import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import vn.theagency.getpregnant.Audios_Library;
-import vn.theagency.getpregnant.Deine_Titel;
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
+import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Nohitaky;
 import vn.theagency.objects.Audios;
-import android.app.AlarmManager;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
@@ -25,21 +21,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Fragment_Nohitaky extends Fragment implements OnClickListener,
-		OnCheckedChangeListener {
+		OnCheckedChangeListener, OnSeekBarChangeListener {
 	private Helper mHelper;
 	public UI_Nohitaky mNohitaky;
 
@@ -60,20 +56,35 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 	MediaPlayer player;
 	SeekBar musik_line;
 	private static Fragment_Nohitaky _ins;
-	MusikAsyntask asyntask = null;
+	TextView timeStart,timeEnd;
+	//
 	int positionSong;
-	
+	private TimerTask task;
+	private Timer timer = null;
+	int progresss = 0;
 	public Fragment_Nohitaky(Audios pAudio){
 		this.audio = pAudio;
 	}
 
-	public static Fragment_Nohitaky newInstance(Audios pAudio) {
+	public static Fragment_Nohitaky newInstance(Audios pAudio, boolean isActive) {
 		if (Fragment_Nohitaky._ins == null) {
 			Fragment_Nohitaky._ins = new Fragment_Nohitaky(pAudio);
 		}
-		if(pAudio!=null){
-			Fragment_Nohitaky._ins.audio = pAudio;
+		if(isActive){
+			if(pAudio!=null){
+				Fragment_Nohitaky._ins.audio = pAudio;
+				
+			}
+		}else{
+			if(Fragment_Nohitaky._ins.player!=null){
+			
+					Fragment_Nohitaky._ins.player.stop();
+						
+			}
+			Fragment_Nohitaky._ins = null;
+			
 		}
+		
 		return Fragment_Nohitaky._ins;
 	}
 
@@ -96,6 +107,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		preference();
 		Musik musik = (Musik) getActivity();
 		messenger = musik.getMessenger();
+		
 		msg = new Message();
 		Message.obtain();
 		return wrapper;
@@ -114,7 +126,8 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		wecker = (ImageView) this.wrapper.findViewById(Key.NOHITAKI_Wecker);
 		wecker.setOnClickListener(this);
 		this.musik_line = (SeekBar) this.wrapper.findViewById(Key.SEEKBAR_LINE);
-
+//		this.musik_line.setOnSeekBarChangeListener(this);
+		
 		changeBg = (Switch) this.wrapper.findViewById(Key.NOHITAKI_ChangeBg);
 		changeBg.setChecked(true);
 		changeBg.setOnCheckedChangeListener(this);
@@ -122,7 +135,54 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		back.setOnClickListener(this);
 		play_audio = this.wrapper.findViewById(Key.PLAYAUDIO);
 		play_audio.setOnClickListener(this);
+		
+		timeStart = (TextView) this.wrapper.findViewById(Key.START);
+		timeEnd = (TextView) this.wrapper.findViewById(Key.End);
+		timeEnd.setText(String.valueOf(getDurationLength(Integer.parseInt(audio.mID))));
+		
+		if(player!=null){
+			if(player.isPlaying()){
+				play_audio.setBackgroundResource(R.drawable.btn_pause);
+			}else {
+				play_audio.setBackgroundResource(R.drawable.btn_playaudio);
+			}
+		}
 	}
+	private String getDurationLength(int id) {
+		int pos;
+		String number;
+		String timePhut = null;
+		String timeGiay = null;
+		if (audio.mID.equalsIgnoreCase("1")) {
+			pos = R.raw.wen;	
+		} else if (audio.mID.equalsIgnoreCase("2")) {
+			pos = R.raw.lie;			
+		} else if (audio.mID.equalsIgnoreCase("3")) {
+			pos = R.raw.zuru;	
+		} else {
+			pos = R.raw.gen;
+		}
+	    MediaPlayer mp = MediaPlayer.create(getActivity(), pos);
+	   
+
+			int phut = (int) ((mp.getDuration() / 60000) % 60);
+			if (phut < 10) {
+				timePhut = "0" + String.valueOf(phut);
+			} else {
+				timePhut = String.valueOf(phut);
+			}
+
+			int giay = (int) (((mp.getDuration() - (phut * 60000)) / 1000) % 60);
+			if (giay < 10) {
+				timeGiay = "0" + String.valueOf(giay);
+			} else {
+				timeGiay = String.valueOf(giay);
+			}
+			number = timePhut+":"+timeGiay;
+			
+	    return number;
+	}
+	
 
 	public void initUI() {
 		this.wrapper = new FrameLayout(this.getActivity());
@@ -172,39 +232,29 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 				if(player.isPlaying()){
 					play_audio.setBackgroundResource(R.drawable.btn_playaudio);
 					player.pause();
-					this.musik_line.setProgress(player.getCurrentPosition());
-					asyntask.cancel(true);
+					
+					
+					
 				}else{
 					play_audio.setBackgroundResource(R.drawable.btn_pause);
-			//		player.start();
-					asyntask.execute(positionSong);
+					player.start();
+					
+					
 				}
 			}else{
 				
 
 				play_audio.setBackgroundResource(R.drawable.btn_pause);
 				if (audio.mID.equalsIgnoreCase("1")) {
-					positionSong = R.raw.wen;
-					asyntask = new MusikAsyntask(this.musik_line);
-					asyntask.execute(positionSong);
-					
-					
+					positionSong = R.raw.wen;	
 				} else if (audio.mID.equalsIgnoreCase("2")) {
-					positionSong = R.raw.lie;
-					asyntask = new MusikAsyntask(this.musik_line);
-					asyntask.execute(positionSong);
-					
+					positionSong = R.raw.lie;			
 				} else if (audio.mID.equalsIgnoreCase("3")) {
-					positionSong = R.raw.zuru;
-					asyntask = new MusikAsyntask(this.musik_line);
-					asyntask.execute(R.raw.zuru);
-					
+					positionSong = R.raw.zuru;	
 				} else {
 					positionSong = R.raw.gen;
-					asyntask = new MusikAsyntask( this.musik_line);
-					asyntask.execute(R.raw.gen);
-					
 				}
+				PlayResource(positionSong);
 				
 				
 			}
@@ -247,48 +297,105 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 			
 		}
 	}
-public class MusikAsyntask extends AsyncTask<Integer, Integer, Integer> {
-		
-		
-		SeekBar line;
-
-		
 
 
-		public MusikAsyntask(SeekBar line) {
-			super();
-			
-			this.line = line;
-		}
+
+
+
+
+
+
+private void PlayResource(int res) {
+	player = MediaPlayer.create(getActivity(), res);
+	player.start();
+	player.setOnPreparedListener(new OnPreparedListener() {
 		@Override
-		protected Integer doInBackground(Integer... params) {
-			try {
-				if(player==null){
-					player = MediaPlayer.create(getActivity(), R.raw.lie);
+		public void onPrepared(MediaPlayer mp) {
+			// Now dismis progress dialog, Media palyer will start playing
+			mp.start();
+			musik_line.setProgress(0);
+			
+			int duration = mp.getDuration();
+			musik_line.setMax((int)(duration/1000));
+			final int period = duration / 1000;
+			task = new TimerTask() {
+
+				@Override
+				public void run() {
+					musik_line.post(new Runnable() {
+						@Override
+						public void run() {
+							if (player.isPlaying()) {
+								progresss++;
+								musik_line.setProgress(progresss);
+								
+								timeStart.setText(count(progresss));
+								timeEnd.setText(count(period-progresss));
+							}
+						}
+					});
 				}
-				
-					
-					player.start();
-					this.line.setMax(player.getDuration());
-					for(int i = player.getCurrentPosition() ; i < player.getDuration();i++){
-						publishProgress(i);
-					}
-				
-				
-				
-			} catch (Exception ex) {
-				Toast.makeText(getActivity(), "Musik cann't start",
-						Toast.LENGTH_SHORT).show();
-			}
-			return null;
+			};
+			timer = new Timer();
+			timer.schedule(task, 0, 1000);
+
 		}
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-		// TODO Auto-generated method stub
-			
-		super.onProgressUpdate(values[0]);
-		Log.i("LTH", String.valueOf(values[0]));
-		 this.line.setProgress(values[0]);
-		}
-	}
+	});
 }
+
+public String count(int process){
+	String number = null;
+	String timePhut = null;
+	String timeGiay = null;
+	
+	
+
+		int phut = (int) (process / 60);
+		if (phut < 10) {
+			timePhut = "0" + String.valueOf(phut);
+		} else {
+			timePhut = String.valueOf(phut);
+		}
+
+		int giay = (int) (process - (phut * 60));
+		if (giay < 10) {
+			timeGiay = "0" + String.valueOf(giay);
+		} else {
+			timeGiay = String.valueOf(giay);
+		}
+		number = timePhut+ ":"+timeGiay;
+	
+	return number;
+}
+
+@Override
+public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+	// TODO Auto-generated method stub
+	 if(fromUser){
+	        player.seekTo(progress);
+	        musik_line.setProgress(progress);
+	        this.progresss = progress;
+	        }
+}
+
+@Override
+public void onStartTrackingTouch(SeekBar seekBar) {
+	// TODO Auto-generated method stub
+	
+}
+
+@Override
+public void onStopTrackingTouch(SeekBar seekBar) {
+	// TODO Auto-generated method stub
+	
+}
+
+}
+
+
+
+
+
+
+
+

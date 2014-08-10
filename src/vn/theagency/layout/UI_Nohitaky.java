@@ -171,6 +171,8 @@ public class UI_Nohitaky {
 		title.setTextColor(Color.WHITE);
 		title.setAlpha(0.8f);
 		title.setText(pTitle);
+		title.setLines(1);
+		
 
 		TextView dec = new TextView(this.context);
 		dec.setId(Key.AUDIOS_DECRIPTION);
@@ -329,14 +331,14 @@ public class UI_Nohitaky {
 		TextView timeStart = new TextView(this.context);
 		timeStart.setTextColor(Color.WHITE);
 		timeStart.setAlpha(0.5f);
-		timeStart.setText("25:58");
-		timeStart.setId(Key.HEADER);
+		timeStart.setText("00:00");
+		timeStart.setId(Key.START);
 		// time end
 		TextView timeEnd = new TextView(this.context);
 		timeEnd.setText("57:30");
 		timeEnd.setAlpha(0.5f);
 		timeEnd.setTextColor(Color.WHITE);
-		timeEnd.setId(Key.AUDIOS_NAME);
+		timeEnd.setId(Key.End);
 		//
 		SeekBar mLine = new SeekBar(this.context);
 		mLine.setProgressDrawable(this.context.getResources().getDrawable(

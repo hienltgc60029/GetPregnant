@@ -8,6 +8,7 @@ import vn.theagency.helper.Deine_Adapter;
 import vn.theagency.helper.Helper;
 import vn.theagency.layout.UI_Deneine;
 import vn.theagency.objects.Audios;
+import vn.theagency.sqlite.SQliteData;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -30,7 +31,7 @@ import android.widget.ListView;
 public class Deine_Titel extends Activity implements OnClickListener,OnScrollListener {
 
 	private Helper mHelper;
-	private Store mStore;
+	
 	public UI_Deneine mDeine;
 	public FrameLayout initUIHeader;
 	public FrameLayout wrapper;
@@ -42,6 +43,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 	public FrameLayout initUIText;
 	Audios audios;
 	View deine,back;
+	ArrayList<Audios> arr;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.mHelper = Helper.shareIns(getApplicationContext());
-		this.mStore = Store.shareIns(getApplicationContext(), null);
+		
 		this.mDeine = UI_Deneine.shareIns(getApplicationContext());
 		
 		this.initUIHeader = this.mDeine.initUIHeader();
@@ -78,7 +80,12 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		int height01 =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
 		int height = (int) (mHelper.getAppHeight()-height01)/3;
 		String indexHome = getIntent().getExtras().getString("Audios");
-		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), this.mStore.audiosList,height,indexHome);
+		SQliteData data = new SQliteData(getApplicationContext());
+		data.open();
+		arr =data.getAllAudios();
+		data.close();
+		
+		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), arr,height,indexHome);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
 		
@@ -110,13 +117,14 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case Key.btn_deine_musik:
+			Log.i("LTH", "Deine Title");
 			Intent intent = new Intent(getApplicationContext(),DeineSamlung.class);
 			intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 			clearMemory();
 			startActivity(intent);
 			finish();
-			Log.i("LTH", "Finish");
-			overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
+			
+		
 			break;
 		case Key.btn_back:
 			this.onBackPressed();
@@ -147,7 +155,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 		startActivity(intent);
 		finish();
-		overridePendingTransition(R.anim.slide_right_in,R.anim.slide_right_out);
+	
 	}
 	@Override
 	public void finish() {

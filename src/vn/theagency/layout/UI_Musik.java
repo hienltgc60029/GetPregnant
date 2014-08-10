@@ -164,7 +164,7 @@ public class UI_Musik {
 
 		TextView timeStart = new TextView(this.context);
 		timeStart.setAlpha(0.8f);
-		timeStart.setText("25:58");
+		timeStart.setText("00:00");
 		timeStart.setTextColor(Color.parseColor("#fffac2"));
 		timeStart.setGravity(Gravity.RIGHT);
 		timeStart.setId(Key.START);
@@ -179,7 +179,7 @@ public class UI_Musik {
 		endPara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
 		
 		
-		timeEnd.setText("57:30");
+		timeEnd.setText("00:00");
 		timeEnd.setAlpha(0.8f);
 		timeEnd.setTextColor(Color.parseColor("#fffac2"));
 		timeEnd.setGravity(Gravity.LEFT);

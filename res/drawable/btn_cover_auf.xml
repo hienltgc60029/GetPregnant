@@ -4,7 +4,7 @@
     <item android:state_pressed="true"
         android:drawable="@drawable/btn_auf_cover_active" />
     <item android:state_focused="true"
-        android:drawable="@drawable/btn_auf_cover_active" />
+        android:drawable="@drawable/btn_auf_cover_normal" />
     <item
-         android:drawable="@drawable/btn_auf_cover_normal" />
+         android:drawable="@drawable/cover_auf" />
 </selector>

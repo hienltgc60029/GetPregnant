@@ -2,13 +2,12 @@ package vn.theagency.helper;
 
 import java.util.ArrayList;
 
-import vn.theagency.customlayout.LetterSpacingTextView;
 import vn.theagency.getpregnant.R;
 import vn.theagency.objects.Audios;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
+import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +109,13 @@ public class Audios_Adapter extends BaseAdapter {
 			final float size = paint.measureText(arr.get(position).getmTitle());
 			Log.i("LTH", String.valueOf(mHelper.DpToPixel(214))+"="+String.valueOf(size));
 			int testLenght = (int) (size/mHelper.DpToPixel(214));*/
-			
+
+
+			if(testLenght(23, arr.get(position).getmTitle())>1){
+				mViewHolder.mDec.setLines(1);
+			}else{
+				mViewHolder.mDec.setLines(2);
+			}
 			
 			
 			
@@ -121,6 +126,15 @@ public class Audios_Adapter extends BaseAdapter {
 		}
 
 		return view;
+	}
+	public int testLenght(int textSize, String text){
+		Paint paint = new Paint();
+		final float densityMultiplier = mContext.getResources().getDisplayMetrics().density;
+		final float scaledPx = mHelper.DpToPixel(textSize) * densityMultiplier;
+		paint.setTextSize(scaledPx);
+		final float size = paint.measureText(text);
+		int testLenght = (int) (size/mHelper.DpToPixel(220));
+		return testLenght;
 	}
 
 	private class MyViewHolder {

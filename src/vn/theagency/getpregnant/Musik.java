@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 @SuppressLint("HandlerLeak")
 public class Musik extends Activity {
@@ -45,6 +46,7 @@ public class Musik extends Activity {
 	Audios audio;
 	int sliteVolume = 10;
 	FragmentTransaction transaction;
+	
 
 	Handler handler = new Handler() {
 		@Override
@@ -64,24 +66,34 @@ public class Musik extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.musik);
+		try{
+			getArray();
+			if(getIntent().getExtras().getString(Audios.TITLE)!=null){
+				String mTitle = getIntent().getExtras().getString(Audios.TITLE);
+				String mDecription = getIntent().getExtras().getString(
+						Audios.DECRIPTION);
+				String mImage = getIntent().getExtras().getString(Audios.IMAGEURL);
+				String mID = getIntent().getExtras().getString(Audios.ID);
+				
+				audio = new Audios(mID, mTitle, mDecription, "",
+						Integer.parseInt(mImage));
 
-		getArray();
-		String mTitle = getIntent().getExtras().getString(Audios.TITLE);
-		String mDecription = getIntent().getExtras().getString(
-				Audios.DECRIPTION);
-		String mImage = getIntent().getExtras().getString(Audios.IMAGEURL);
-		String mID = getIntent().getExtras().getString(Audios.ID);
+				FragmentTransaction transaction = getFragmentManager()
+						.beginTransaction();
+				transaction.add(R.id.musik, Fragment_Nohitaky.newInstance(audio,true));
+				transaction.commit();
+		}
+		}catch(Exception ex){
+			Toast.makeText(getApplicationContext(), "This Function", Toast.LENGTH_LONG).show();
+			Intent intent = new Intent(getApplicationContext(),Cover.class);
+			startActivity(intent);
+			System.exit(0);
+		}
 		
-		audio = new Audios(mID, mTitle, mDecription, "",
-				Integer.parseInt(mImage));
-
-		FragmentTransaction transaction = getFragmentManager()
-				.beginTransaction();
-		transaction.add(R.id.musik, Fragment_Nohitaky.newInstance(audio));
-		transaction.commit();
+		
+		
 
 	}
-
 	public void actionClickHander(int action) {
 		switch (action) {
 		case 1:
@@ -96,7 +108,7 @@ public class Musik extends Activity {
 			FragmentTransaction transaction = getFragmentManager()
 					.beginTransaction();
 			transaction.replace(R.id.musik,
-					Fragment_Nohitaky.newInstance(audio));
+					Fragment_Nohitaky.newInstance(audio,true));
 			transaction.commit();
 
 			break;
@@ -117,8 +129,8 @@ public class Musik extends Activity {
 	protected void onStop() {
 		// TODO Auto-generated method stub
 		super.onStop();
-
-		Fragment_MusikListe.newInstance(true, arr).returnFalseStatus();
+		
+		
 
 	}
 
@@ -151,8 +163,7 @@ public class Musik extends Activity {
 	public void onBackPressed() {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
-		Log.i("LTH", "Media: " + getIntent().getExtras().getString("Audios"));
-
+		Fragment_Nohitaky.newInstance(null,false);
 		// clearMemory();
 		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
@@ -160,13 +171,7 @@ public class Musik extends Activity {
 		finish();
 	}
 
-	private void clearMemory() {
-		// TODO Auto-generated method stub
-		getFragmentManager().beginTransaction()
-				.remove(Fragment_Nohitaky.newInstance(audio)).commit();
-		getFragmentManager().beginTransaction()
-				.remove(Fragment_MusikListe.newInstance(false, arr)).commit();
-	}
+	
 
 	@Override
 	protected void onDestroy() {

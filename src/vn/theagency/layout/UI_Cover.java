@@ -1,5 +1,6 @@
 package vn.theagency.layout;
 
+import vn.theagency.customlayout.PhotoView;
 import vn.theagency.getpregnant.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
@@ -24,7 +25,7 @@ public class UI_Cover {
 	int text_width;
 	int text_heigt;
 	int warning_height,warning_width;
-	int marginTop2;
+	
 
 	private Helper mHelper;
 	private Context context;
@@ -49,10 +50,6 @@ public class UI_Cover {
 		text_heigt= (int) mHelper.DpToPixel(84);
 		icon_top = (int) mHelper.DpToPixel(400);
 		icon_width = (int) mHelper.DpToPixel(95);
-		/*int icon = (int) (this.mHelper.getAppWidth()/4);
-		icon_width = icon;
-		int iconH = (403-(384 - icon));
-		icon_height = iconH;*/
 		icon_height = (int) mHelper.DpToPixel(101);
 		icon_left = (int) mHelper.DpToPixel(12);
 		icon_left_parent =(int) mHelper.DpToPixel(25);
@@ -61,6 +58,8 @@ public class UI_Cover {
 		icon_info = (int) mHelper.DpToPixel(31);
 		warning_height =(int) mHelper.DpToPixel(411);
 		warning_width = (int) mHelper.DpToPixel(324);
+		
+		
 		
 			
 	}
@@ -124,95 +123,86 @@ public class UI_Cover {
 		return view;
 	}
 	public FrameLayout initUIBottom() {
+		int leftAusg = (int) ((this.mHelper.getAppWidth()/2)-icon_width-(icon_left/2));
+		int leftAuf =leftAusg+icon_left+icon_width;
+		int leftVer = (int) ((this.mHelper.getAppWidth()/2)-icon_left-(3*icon_width/2));
+		int leftVor = leftVer+icon_left+icon_width;
+		int leftUnt = leftVor+icon_left+icon_width;
+		//
+		int marginTop1 = (int) ((63*mHelper.getAppHeight())/100);
+		int marginTop2 = marginTop1+icon_height+icon_left;
+		//
 		
 		FrameLayout layout = new FrameLayout(this.context);
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
-		marginTop2 = (int) ((63*mHelper.getAppHeight())/100);
-		params.topMargin =(int) marginTop2+icon_height+icon_left;
-		params.gravity = Gravity.CENTER_HORIZONTAL;
+				FrameLayout.LayoutParams.MATCH_PARENT,
+				FrameLayout.LayoutParams.MATCH_PARENT);
 		layout.setLayoutParams(params);
 		//
 		
-		View view = new View(this.context);
-		FrameLayout.LayoutParams viewParams = new FrameLayout.LayoutParams(
+		View ver = new View(this.context);
+		FrameLayout.LayoutParams verParams = new FrameLayout.LayoutParams(
 				icon_width,
 				icon_height);
 		
-		
-		view.setLayoutParams(viewParams);
-		view.setBackgroundResource(R.drawable.btn_cover_ver);
-		view.setId(Key.linearVerbessern);
+		verParams.topMargin = marginTop2;
+		verParams.leftMargin = leftVer;
+		ver.setLayoutParams(verParams);
+		ver.setBackgroundResource(R.drawable.btn_cover_ver);
+		ver.setId(Key.linearVerbessern);
 		//
 		
 		
-		View view1 = new View(this.context);
-		FrameLayout.LayoutParams viewParams1 = new FrameLayout.LayoutParams(
+		View vor = new View(this.context);
+		FrameLayout.LayoutParams vorParams = new FrameLayout.LayoutParams(
 				icon_width,
 				icon_height);
-		viewParams1.leftMargin = icon_left+icon_width;
-		view1.setLayoutParams(viewParams1);
-		view1.setBackgroundResource(R.drawable.btn_cover_vor);
-		view1.setId(Key.linearVorbereiten);
+		vorParams.topMargin = marginTop2;
+		vorParams.leftMargin = leftVor;
+		vor.setLayoutParams(vorParams);
+		vor.setBackgroundResource(R.drawable.btn_cover_vor);
+		vor.setId(Key.linearVorbereiten);
 		//
-		View view2 = new View(this.context);
-		FrameLayout.LayoutParams viewParams2 = new FrameLayout.LayoutParams(
+		View unt = new View(this.context);
+		FrameLayout.LayoutParams untParams = new FrameLayout.LayoutParams(
 				icon_width,
 				icon_height);
-		viewParams2.leftMargin = 2*(icon_left+icon_width);
-		view2.setLayoutParams(viewParams2);
-		view2.setBackgroundResource(R.drawable.btn_cover_unt);
-		view2.setId(Key.linearUnterstutzen);
+		untParams.topMargin = marginTop2;
+		untParams.leftMargin = leftUnt;
+		unt.setLayoutParams(untParams);
+		unt.setBackgroundResource(R.drawable.btn_cover_unt);
+		unt.setId(Key.linearUnterstutzen);
 		//
 		
+		View ausg = new View(this.context);
+		FrameLayout.LayoutParams ausParams = new FrameLayout.LayoutParams(
+				icon_width,
+				icon_height);
 		
-		layout.addView(view);
-		layout.addView(view1);
-		layout.addView(view2);
+		ausParams.topMargin = marginTop1;
+		ausParams.leftMargin = leftAusg;
+		ausg.setLayoutParams(ausParams);
+		ausg.setBackgroundResource(R.drawable.btn_cover_aus);
+		ausg.setId(Key.linearAusgleichen);
+		//
+		PhotoView auf = new PhotoView(this.context);
+		FrameLayout.LayoutParams aufParams = new FrameLayout.LayoutParams(
+				icon_width,
+				icon_height);
+		aufParams.topMargin = marginTop1;
+		aufParams.leftMargin = leftAuf;
+		auf.setLayoutParams(aufParams);
+		auf.setId(Key.linearAuflosen);
+		//
+		
+		layout.addView(ausg);
+		layout.addView(auf);
+		layout.addView(ver);
+		layout.addView(vor);
+		layout.addView(unt);
 		
 		
 		return layout;
 	}
-	public FrameLayout initUIBottom2() {
-		
-		FrameLayout layout = new FrameLayout(this.context);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
-		marginTop2 = (int) ((63*mHelper.getAppHeight())/100);
-		params.topMargin =marginTop2;
-		params.gravity = Gravity.CENTER_HORIZONTAL;
-		layout.setLayoutParams(params);
-		
-		
-		View view = new View(this.context);
-		FrameLayout.LayoutParams viewParams = new FrameLayout.LayoutParams(
-				icon_width,
-				icon_height);
-		
-		
-		view.setLayoutParams(viewParams);
-		view.setBackgroundResource(R.drawable.btn_cover_aus);
-		view.setId(Key.linearAusgleichen);
-		//
-		View view1 = new View(this.context);
-		FrameLayout.LayoutParams viewParams1 = new FrameLayout.LayoutParams(
-				icon_width,
-				icon_height);
 	
-		viewParams1.leftMargin =icon_width+icon_left;
-		view1.setLayoutParams(viewParams1);
-		view1.setBackgroundResource(R.drawable.btn_cover_auf);
-		view1.setId(Key.linearAuflosen);
-		
-		
-		layout.addView(view);
-		layout.addView(view1);
-	
-		
-		
-		return layout;
-	}
-
 }

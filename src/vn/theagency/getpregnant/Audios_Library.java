@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Audios_Library extends Activity implements OnClickListener, AnimationListener,OnScrollListener {
+public class Audios_Library extends Activity implements OnClickListener,OnScrollListener {
 
 	private Helper mHelper;
 	public UI_Audios mAudios;
@@ -56,9 +56,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.down_in);
-		
-		animation.setAnimationListener(this);
+
 		
 		this.mHelper = Helper.shareIns(getApplicationContext());
 		this.mAudios = UI_Audios.shareIns(getApplicationContext());
@@ -99,8 +97,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		deine = findViewById(Key.btn_deine_musik);
 		audio = findViewById(Key.AUDIOS_NAME);
 		
-		initUIBgView.startAnimation(animation);
-		initUIListView.startAnimation(animation);
+	
 		
 		
 		
@@ -169,7 +166,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		overridePendingTransition(0, 0);
+		
 	}
 	
 	private ArrayList<Audios> audiosAusgchen() {
@@ -199,12 +196,12 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 				"3,8$", R.drawable.kon);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Gelassenheit als Hilfsmittel",
+				"Gelassenheit \nals Hilfsmittel",
 				"Blindtext orRovid moluptat mi",
 				"", R.drawable.gela);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Heilendes weisses Licht",
+				"Heilendes\nweisses Licht",
 				"Blindtext orRovid moluptat mi",
 				"2.99$", R.drawable.hei);
 		audiosList.add(audios);
@@ -227,20 +224,20 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		audios = new Audios("",
 				"Türe der Erkenntnis",
 				"Realisiere, dass nur Du entscheidest, wie Du.",
-				"2sFr/1.50", R.drawable.ture);
+				"2sFr/1.50", R.drawable.tur);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Grenzen stärken",
-				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter zu fühlen.",
+				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter...",
 				"4sFr", R.drawable.gre);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Zoo der Emotionen",
-				"Lass deinen Selbstzweifel und deinen Stress eingesperrt im Zoo zurück.",
+				"Lass deinen Selbstzweifel und deinen Stress eingesperrt...",
 				"4sFr", R.drawable.zoo);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Heilendes weisses Licht",
+				"Heilendes \nweisses Licht",
 				"Blindtext orRovid moluptat mi",
 				"4sFr", R.drawable.hei02);
 		audiosList.add(audios);
@@ -268,7 +265,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		audios = new Audios("",
 				"Sturmwolken",
 				"Egal, wie das Ergebnis wird, das Leben geht weiter.",
-				"3sFr", R.drawable.stur);
+				"3sFr", R.drawable.stue);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -296,7 +293,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 				"3sFr", R.drawable.fru);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Heilendes weisses Licht",
+				"Heilendes \nweisses Licht",
 				"Pis ratur a del iniate necepera...",
 				"3,8$", R.drawable.hei);
 		audiosList.add(audios);
@@ -337,7 +334,7 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 			intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 			startActivity(intent);
 			finish();
-			overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
+			
 			break;
 		case Key.AUDIOS_NAME:
 			onBackPressed();
@@ -369,27 +366,11 @@ public class Audios_Library extends Activity implements OnClickListener, Animati
 		intent3.putExtra("HomeBG", getIntent().getExtras().getString("Audios"));
 		startActivity(intent3);
 		finish();
-		overridePendingTransition(R.anim.down_in,R.anim.down_out);
+		
 		
 	}
 
-	@Override
-	public void onAnimationStart(Animation animation) {
-		textView.setVisibility(View.VISIBLE);
-	}
-
-	@Override
-	public void onAnimationEnd(Animation animation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onAnimationRepeat(Animation animation) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub
