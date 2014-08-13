@@ -63,7 +63,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 	private Timer timer = null;
 	int progresss = 0;
 	TextView timeStart, timeEnd;
-
+	SammlungAdapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -103,7 +103,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 		data.open();
 		arrAudios = data.getAllAudiosCollections();
 		data.close();
-		SammlungAdapter adapter = new SammlungAdapter(R.layout.items,
+		adapter = new SammlungAdapter(R.layout.items,
 				getApplicationContext(), arrAudios, rowSize);
 		list.setAdapter(adapter);
 	}
@@ -190,9 +190,11 @@ public class DeineSamlung extends Activity implements OnClickListener,
 		switch (v.getId()) {
 		case Key.btn_back:
 			this.onBackPressed();
+			overridePendingTransition(R.anim.cover_alpha_in, R.anim.cover_alpha_out);
 			break;
 		case Key.btn_deine_musik:
 			this.onBackPressed();
+			overridePendingTransition(R.anim.cover_alpha_in, R.anim.cover_alpha_out);
 			break;
 		case Key.PLAY:
 			boolean sizeArr = true;
@@ -220,6 +222,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 						player = MediaPlayer.create(getApplicationContext(),
 								R.raw.wen);
 						player.start();
+						
 						// positionSong = R.raw.wen;
 					} else if (arrAudios.get(positionSong).mID
 							.equalsIgnoreCase("2")) {
@@ -237,11 +240,13 @@ public class DeineSamlung extends Activity implements OnClickListener,
 								R.raw.gen);
 						player.start();
 					}
+					
 					timeEnd.setText(getDurationLength());
 
 					// PlayResource(positionSong);
 					player.setOnPreparedListener(this);
 					player.setOnCompletionListener(this);
+					
 				}
 
 			}
@@ -290,8 +295,14 @@ public class DeineSamlung extends Activity implements OnClickListener,
 	}
 
 	@Override
-	public void onPrepared(MediaPlayer mp) {
+	public void onPrepared(final MediaPlayer mp) {
 		// TODO Auto-generated method stub
+		Log.i("LTH", ":"+String.valueOf(positionSong));
+		for(int i = 0; i < arrAudios.size() ; i++){
+			arrAudios.get(i).setActive(false);
+		}
+		arrAudios.get(positionSong).setActive(true);
+		adapter.notifyDataSetChanged();
 		mp.start();
 		musik_line.setProgress(0);
 
@@ -305,7 +316,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 				musik_line.post(new Runnable() {
 					@Override
 					public void run() {
-						if (player.isPlaying()) {
+						if (mp.isPlaying()) {
 							progresss++;
 							musik_line.setProgress(progresss);
 							timeStart.setText(mHelper.count(progresss));
@@ -330,62 +341,69 @@ public class DeineSamlung extends Activity implements OnClickListener,
 		timer = new Timer();
 		timer.schedule(task, 0, 1000);
 	}
+	
 
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		try{
 		mp.stop();
-		mp.release();
 		
+		Log.i("LTH", "current: "+ String.valueOf(positionSong));
 		SQliteData data = new SQliteData(getApplicationContext());
 		data.open();
 		
-		if (data.getAllAudiosCollections().size() != 0) {
-			if (data.getAllAudiosCollections().size() == 1) {
+		arrAudios = data.getAllAudiosCollections();
+		
+		if (arrAudios.size() != 0) {
+			if (arrAudios.size() == 1) {
 
 				positionSong = 0;
 
 			}
-			if (data.getAllAudiosCollections().size() > 1) {
-				for (int i = 0; i < data.getAllAudiosCollections().size(); i++) {
-					if (arrAudios.get(positionSong).getmID() == data
-							.getAllAudiosCollections().get(i).getmID()) {
-						if (i != data.getAllAudiosCollections().size()) {
+			if (arrAudios.size() > 1) {
+				Log.i("LTH", ">1");
+				
+						if (positionSong < arrAudios.size()) {
 							positionSong++;
+							Log.i("LTH", "=1");
 						} else {
+							Log.i("LTH", "<1");
 							positionSong = 0;
 						}
-					}
-				}
 			}
 
 		}
 		
-
+		
+		
+		Log.i("LTH", "next song: "+ String.valueOf(positionSong));
 			timeEnd.setText(getDurationLength());
 			btn_play.setBackgroundResource(R.drawable.btn_pause);
 			if (arrAudios.get(positionSong).mID.equalsIgnoreCase("1")) {
-				player = MediaPlayer.create(getApplicationContext(), R.raw.wen);
-				player.start();
+				mp = MediaPlayer.create(getApplicationContext(), R.raw.wen);
+				mp.start();
 				// positionSong = R.raw.wen;
 			} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("2")) {
-				player = MediaPlayer.create(getApplicationContext(), R.raw.lie);
-				player.start();
+				mp = MediaPlayer.create(getApplicationContext(), R.raw.lie);
+				mp.start();
 
 			} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("3")) {
-				player = MediaPlayer
+				mp = MediaPlayer
 						.create(getApplicationContext(), R.raw.zuru);
-				player.start();
+				mp.start();
 			} else {
-				player = MediaPlayer.create(getApplicationContext(), R.raw.gen);
-				player.start();
+				mp = MediaPlayer.create(getApplicationContext(), R.raw.gen);
+				mp.start();
 			}
+			
 			timeEnd.setText(getDurationLength());
-
-			player.setOnCompletionListener(this);
-
+			mp.setOnPreparedListener(this);
+			mp.setOnCompletionListener(this);
+			
+			
 		
 		data.close();
+		
 		}catch(Exception ex){
 			this.onBackPressed();
 		}

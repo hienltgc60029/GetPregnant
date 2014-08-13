@@ -1,11 +1,13 @@
 package vn.theagency.getpregnant;
 
+import vn.theagency.customlayout.PhotoView;
 import vn.theagency.fragment.Fragment_Home;
 import vn.theagency.helper.Helper;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -158,8 +160,10 @@ public class Home extends Activity {
 			Intent intent = new Intent(getApplicationContext(),
 					Audios_Library.class);
 			intent.putExtra("Audios", String.valueOf(index));
+			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(intent);		
 			finish();
+			overridePendingTransition(0, 0);
 			break;
 		case 7:
 			handler = null;
@@ -203,10 +207,8 @@ public class Home extends Activity {
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
-		super.finish();
-		
-	
-		
+		super.finish();		
 	}
+	
 
 }

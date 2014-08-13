@@ -1,8 +1,10 @@
 package vn.theagency.fragment;
 
+import vn.theagency.customlayout.PhotoView;
 import vn.theagency.getpregnant.Cover;
 import vn.theagency.getpregnant.Home;
 import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnant.Cover.CoverAnimation;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Home;
@@ -12,7 +14,9 @@ import android.animation.AnimatorInflater;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
@@ -23,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,7 +48,8 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 	private Helper mHelper;
 	LinearLayout linearLayout;
 	ImageView imgAusgleichen, imgAuflosen, imgVerbessern, imgVorbereiten,
-			imgUnterstutzen, initUIHome, plus;
+			imgUnterstutzen, initUIHome;
+	PhotoView plus;
 	ImageView home;
 	Messenger messenger;
 	Message msg;
@@ -157,8 +163,9 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		// getActivity().setContentView(this.wrapper);
 		preference();
 
-		plus = (ImageView) wrapper.findViewById(Key.AUSWAHL);
+		plus = (PhotoView) wrapper.findViewById(Key.AUSWAHL);
 		plus.setOnClickListener(this);
+		plus.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.home_move_right50));
 		plusText.setOnClickListener(this);
 
 		imgAuflosen.setOnClickListener(this);
@@ -232,6 +239,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		case Key.AUSWAHL:
 			try {
 				//plus.setText("AUDIOS LIBRARY");
+		//		plus.animate().setDuration(500).scaleX(500).scaleY(500).alpha(0).setInterpolator(new LinearInterpolator()).start();
 				clearMemory();
 
 				switch (getArguments().getInt("background")) {
@@ -294,14 +302,15 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			}
 			break;
 		case Key.HOME:
-			try {
+			
+			/*try {
 				clearMemory();
 				msg.arg1 = 7;
 				msg.arg2 = 0;
 				messenger.send(msg);
 			} catch (Exception ex) {
 				ex.printStackTrace();
-			}
+			}*/
 			break;
 
 		default:
@@ -319,8 +328,55 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		imgVorbereiten.setOnClickListener(null);
 		plus.setOnClickListener(null);
 	}
-
 	
+	Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case R.anim.cover_move_left:
+				break;
+			case R.anim.cover_move_right:
+				
+			default:
+				break;
+			}
+			
+			
+		}
+		
+	};
+
+	public class HomeAnimation extends AsyncTask<Void, Integer, Void>{
+
+		PhotoView viewAnimation;
+		Animation anim;
+		int animRes;
+		
+		
+		public HomeAnimation(PhotoView viewAnimation, int animRes) {
+			super();
+			this.viewAnimation = viewAnimation;
+			this.animRes = animRes;
+			anim = AnimationUtils.loadAnimation(getActivity(),
+					animRes);
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+			
+					viewAnimation.clearAnimation();
+					viewAnimation.setAnimation(anim);
+					viewAnimation.startAnimation(anim);	
+					handler.sendEmptyMessageDelayed(animRes, anim.getDuration());
+				
+			
+			return null;
+		}				
+	}
 
 	
 	

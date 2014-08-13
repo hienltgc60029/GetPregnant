@@ -1,5 +1,6 @@
 package vn.theagency.layout;
 
+import vn.theagency.customlayout.PhotoView;
 import vn.theagency.getpregnant.R;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
@@ -210,27 +211,27 @@ public class UI_Home {
 	}
 
 	public FrameLayout initUIAddition(int imgTitle) {	
-		LayoutTransition lt = new LayoutTransition();
-	    lt.disableTransitionType(LayoutTransition.DISAPPEARING);
+		
+	    
 		
 		
 
 		FrameLayout main = new FrameLayout(this.context);
-		
+		int topMargin = (int) ((84*mHelper.getAppHeight())/100);
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-		mainFrame.topMargin = (int) ((84*mHelper.getAppHeight())/100);
-		mainFrame.gravity = Gravity.CENTER_HORIZONTAL;
+				FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+		
 		main.setLayoutParams(mainFrame);
-		main.setLayoutTransition(lt);
+
 		
 		//===
 		
-		ImageView audios = new ImageView(this.context);
+		PhotoView audios = new PhotoView(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
-		
-		
+		int leftPlus = (int) (this.mHelper.getAppWidth()/2 - plusTextMargin- this.mHelper.DpToPixel(20));
+		audiosPara.leftMargin = leftPlus;
+		audiosPara.topMargin = topMargin;
 		audios.setLayoutParams(audiosPara);
 		audios.setImageResource(R.drawable.plus);
 		audios.setId(Key.AUSWAHL);
@@ -247,9 +248,9 @@ public class UI_Home {
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
 				textAddition,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		textPara.leftMargin = plusTextMargin;
-		textPara.gravity = Gravity.CENTER_VERTICAL;
+		textPara.leftMargin = plusTextMargin+leftPlus;
 		
+		textPara.topMargin = (int) (topMargin+(plus/4));
 		text.setLayoutParams(textPara);
 		
 		

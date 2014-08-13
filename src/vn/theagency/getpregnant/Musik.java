@@ -169,17 +169,12 @@ public class Musik extends Activity {
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 		startActivity(intent);
 		finish();
+		System.gc();
+		System.exit(0);
 	}
 
 	
 
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-
-		System.gc();
-		// System.exit(0);
-	}
+	
 
 }

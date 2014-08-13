@@ -97,7 +97,7 @@ public class UI_Nohitaky {
 
 		avartaHeight = (int)this.mHelper.DpToPixel(137);
 		avartaWidth = (int) this.mHelper.DpToPixel(137);
-		mTitleSize = (int) this.mHelper.DpToSp(30);
+		mTitleSize = (int) this.mHelper.DpToSp(25);
 		mDecSize = (int) this.mHelper.DpToSp(15);
 		
 		
@@ -171,7 +171,7 @@ public class UI_Nohitaky {
 		title.setTextColor(Color.WHITE);
 		title.setAlpha(0.8f);
 		title.setText(pTitle);
-		title.setLines(1);
+		
 		
 
 		TextView dec = new TextView(this.context);

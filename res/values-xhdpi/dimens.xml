@@ -15,6 +15,7 @@
 	    <!--  Deine Titel -->
 	   <dimen name="AVARTA_WIDTH">105dp</dimen>
 	   <dimen name="AVARTA_HEIGHT">105dp</dimen>
+	   <dimen name="AVARTA_PRICE_HEIGHT">30dp</dimen>
 	   <dimen name="Item_HEIGHT">108dp</dimen>
 	   <dimen name="ROW_BUTTON_WIDTH">102dp</dimen>
 	   <dimen name="ROW_BUTTON_HEIGHT">29dp</dimen> 

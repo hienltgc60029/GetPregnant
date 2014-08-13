@@ -172,38 +172,40 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 	private ArrayList<Audios> audiosAusgchen() {
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("","Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen...",
-				"", R.drawable.zur);
+				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Farben atmen",
-				"Blindtext orRovid moluptat mi, offictorro dolupta",
-				"", R.drawable.far);
+				"Perfekt für all die, welche Entspannung brauchen und...",
+				"Gratis", R.drawable.far01);
+		audiosList.add(audios);
+		audios = new Audios("",
+				"Fühle deine eigene Gelassenheit wieder",
+				"",
+				"Gratis", R.drawable.gel01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Lieblingsplatz",
-				"Blindtext orRovid moluptat mi, offictorro dolupta ",
-				"2,99$", R.drawable.lie);
+				"Ein geheimer Platz, an welchem  man vor allen Problemen...\n geschützt ist.",
+				"4CHF/3€", R.drawable.lie01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Kontrollzentrale",
-				"Blindtext elitis endiatiu sincil lue mol est Uciam ipita int.",
-				"3,8$", R.drawable.kon);
+				"In deiner persönlichen Kontrollzentrale kannst Du alles...\n so einstellen, wie es sein sollte.",
+				"4CHF/3€", R.drawable.kon01);
 		audiosList.add(audios);
+		
 		audios = new Audios("",
-				"Gelassenheit \nals Hilfsmittel",
-				"Blindtext orRovid moluptat mi",
-				"", R.drawable.gela);
-		audiosList.add(audios);
-		audios = new Audios("",
-				"Heilendes\nweisses Licht",
-				"Blindtext orRovid moluptat mi",
-				"2.99$", R.drawable.hei);
+				"Heilendes  \nweisses Licht",
+				"Eine wunderbare Hypnose um...",
+				"4CHF/3€",
+			 R.drawable.hei01);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -213,33 +215,34 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen...",
-				"", R.drawable.zur);
+				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Türe der Erkenntnis",
 				"Realisiere, dass nur Du entscheidest, wie Du.",
-				"2sFr/1.50", R.drawable.tur);
+				"2CHF/1.50€", R.drawable.ture);
 		audiosList.add(audios);
+		
 		audios = new Audios("",
 				"Grenzen stärken",
 				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter...",
-				"4sFr", R.drawable.gre);
+				"4CHF/3€", R.drawable.gre01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Zoo der Emotionen",
 				"Lass deinen Selbstzweifel und deinen Stress eingesperrt...",
-				"4sFr", R.drawable.zoo);
+				"4CHF/3€", R.drawable.zoo01);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Heilendes \nweisses Licht",
-				"Blindtext orRovid moluptat mi",
-				"4sFr", R.drawable.hei02);
+				"Heilendes  \nweisses Licht",
+				"Eine wunderbare Hypnose um...",
+				"4CHF/3€", R.drawable.hei01);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -249,23 +252,23 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "",R.drawable.wen);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis",R.drawable.wen01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen...",
-				"", R.drawable.zur);
+				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Einnistung",
-				"Unterstütze deinen Körper und deinen Geist nach einem Transfer...",
-				"3sFr", R.drawable.ein);
+				"Unterstütze deinen Körper und deinen Geist nach einem...",
+				"3CHF/2€", R.drawable.ein01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Sturmwolken",
 				"Egal, wie das Ergebnis wird, das Leben geht weiter.",
-				"3sFr", R.drawable.stue);
+				"3CHF/2€", R.drawable.stu01);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -275,27 +278,27 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen...",
-				"", R.drawable.zur);
+				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Gegensätze",
-				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung...",
-				"3sFr", R.drawable.ver03);
+				"Spüre körperlich, wie sich negative Gedanken auf...",
+				"3CHF/2€", R.drawable.geg01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Fruchtbarkeitsgarten",
 				"Bereite alles so in deinem Fruchtbarkeitsgarten vor...",
-				"3sFr", R.drawable.fru);
+				"3CHF/2€", R.drawable.fru01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Heilendes \nweisses Licht",
-				"Pis ratur a del iniate necepera...",
-				"3,8$", R.drawable.hei);
+				"Eine wunderbare Hypnose um...",
+				"4CHF/3€", R.drawable.hei01);
 		audiosList.add(audios);
 		
 		
@@ -305,22 +308,22 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst", "", R.drawable.wen);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Zurückkommen",
 				"Sollte nach jeder Hypnose als Abschluss folgen...",
-				"", R.drawable.zur);
+				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"IVF Vorbereitung",
 				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
-				"4sFr", R.drawable.ivf);
+				"4CHF/3€", R.drawable.ivf01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Kontrollzentrale",
-				"Id modion nonet idipitis doluptatur mo cus corrum solorib ",
-				"2,99",R.drawable.kon02);
+				"In deiner persönlichen Kontrollzentrale kannst Du alles...",
+				"4CHF/3€",R.drawable.kon01);
 		audiosList.add(audios);		
 		return audiosList;
 	}
@@ -334,6 +337,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 			intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 			startActivity(intent);
 			finish();
+			overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
 			
 			break;
 		case Key.AUDIOS_NAME:

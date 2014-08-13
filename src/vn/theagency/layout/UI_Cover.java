@@ -185,7 +185,7 @@ public class UI_Cover {
 		ausg.setBackgroundResource(R.drawable.btn_cover_aus);
 		ausg.setId(Key.linearAusgleichen);
 		//
-		PhotoView auf = new PhotoView(this.context);
+		View auf = new View(this.context);
 		FrameLayout.LayoutParams aufParams = new FrameLayout.LayoutParams(
 				icon_width,
 				icon_height);
@@ -194,8 +194,15 @@ public class UI_Cover {
 		auf.setLayoutParams(aufParams);
 		auf.setId(Key.linearAuflosen);
 		//
+		View auf1 = new View(this.context);
+		auf1.setBackgroundResource(R.drawable.bg_btn_auf);
+		auf1.setLayoutParams(aufParams);
+		
+		//
 		
 		layout.addView(ausg);
+		
+		layout.addView(auf1);
 		layout.addView(auf);
 		layout.addView(ver);
 		layout.addView(vor);

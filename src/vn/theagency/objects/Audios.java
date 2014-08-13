@@ -14,6 +14,7 @@ public class Audios {
 	public String mDecription;
 	public String mPrice;
 	public int mImageURL;
+	public boolean isActive;
 	public String getmID() {
 		return mID;
 	}
@@ -52,6 +53,13 @@ public class Audios {
 		this.mDecription = mDecription;
 		this.mPrice = mPrice;
 		this.mImageURL = mImageURL;
+		this.isActive = false;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 }

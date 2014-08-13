@@ -61,7 +61,7 @@ public class UI_Audios {
 		bottom = (int) this.mHelper.DpToPixel(52);
 		bottom_down = (int) this.mHelper.DpToPixel(40);
 		plusMargin = (int) mHelper.DpToPixel(70);
-		plusTextMargin= (int) mHelper.DpToPixel(125);
+		plusTextMargin= (int) mHelper.DpToPixel(50);
 	}
 
 	public ListView initUIListView() {
@@ -78,11 +78,10 @@ public class UI_Audios {
 	}
 
 	public FrameLayout initUIHeader() {
-		LayoutTransition lt = new LayoutTransition();
-	    lt.disableTransitionType(LayoutTransition.DISAPPEARING);
+		
 
 		FrameLayout main = new FrameLayout(this.context);
-		main.setLayoutTransition(lt);
+		
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT, header_height);
@@ -95,7 +94,8 @@ public class UI_Audios {
 		View audios = new View(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus_width, plus_height);
-		audiosPara.leftMargin =this.plusMargin;
+		int leftPlus = (int) (this.mHelper.getAppWidth()/2 - plusTextMargin- this.mHelper.DpToPixel(20));
+		audiosPara.leftMargin =leftPlus;
 		audiosPara.gravity = Gravity.CENTER_VERTICAL;
 		audios.setLayoutParams(audiosPara);
 
@@ -111,12 +111,12 @@ public class UI_Audios {
 		
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),"museosans_300.otf");
 		text.setTypeface(type);
-		text.setText("AUDIOS LIBRARY");
+		text.setText("AUSWAHL");
 		text.setId(Key.AUSWAHL);
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		textPara.leftMargin= this.plusTextMargin;
+		textPara.leftMargin= plusTextMargin+leftPlus;;
 		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
 		

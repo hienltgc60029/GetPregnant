@@ -7,6 +7,7 @@ import vn.theagency.objects.Audios;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +65,7 @@ public class Audios_Adapter extends BaseAdapter {
 		if (view == null) {
 			LayoutInflater inflater = (LayoutInflater) mContext
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.items, null);
+			view = inflater.inflate(R.layout.audios_items, null);
 			mViewHolder = new MyViewHolder();
 			view.setTag(mViewHolder);
 			//
@@ -86,12 +88,15 @@ public class Audios_Adapter extends BaseAdapter {
 			mViewHolder.mTitle = mTextView(view, R.id.txtTitle,
 					arr.get(position).getmTitle());
 			
+			mViewHolder.mPrice = mTextView(view, R.id.txtprice, arr.get(position).getmPrice());
+			 Typeface type = Typeface.createFromAsset(mContext.getAssets(),"helveticaheue_light.ttf");
+			 mViewHolder.mPrice.setTypeface(type);
 			mViewHolder.imageView = mImage(view, R.id.img, arr.get(position).mImageURL);
 			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
 					.getmDecription());
 			mViewHolder.btnView = mButton(view, R.id.btnView,
 					R.drawable.btn_view);
-			if(arr.get(position).getmPrice().equalsIgnoreCase("")){
+			if(arr.get(position).getmPrice().equalsIgnoreCase("Gratis")){
 				mViewHolder.btnDownload = mButton(view, R.id.btn,
 						R.drawable.btn_download);
 			}else{
@@ -102,13 +107,7 @@ public class Audios_Adapter extends BaseAdapter {
 			//
 			
 			
-			/*Paint paint = new Paint();
-			final float densityMultiplier = mContext.getResources().getDisplayMetrics().density;
-			final float scaledPx = mHelper.DpToPixel(23) * densityMultiplier;
-			paint.setTextSize(scaledPx);
-			final float size = paint.measureText(arr.get(position).getmTitle());
-			Log.i("LTH", String.valueOf(mHelper.DpToPixel(214))+"="+String.valueOf(size));
-			int testLenght = (int) (size/mHelper.DpToPixel(214));*/
+			
 
 
 			if(testLenght(23, arr.get(position).getmTitle())>1){
@@ -138,9 +137,10 @@ public class Audios_Adapter extends BaseAdapter {
 	}
 
 	private class MyViewHolder {
-		TextView mTitle, mDec;
-		ImageView imageView;
+		TextView mTitle, mDec, mPrice;
+		FrameLayout imageView;
 		Button btnView, btnDownload;
+		
 	}
 
 	private TextView mTextView(View v, int resId, String textview) {
@@ -148,12 +148,6 @@ public class Audios_Adapter extends BaseAdapter {
 		tv.setText(textview);
 		return tv;
 	}
-	/*private LetterSpacingTextView mTextTitle(View v, int resId, String textview) {
-		LetterSpacingTextView tv = (LetterSpacingTextView) v.findViewById(resId);
-		tv.setLetterSpacing(-2);
-		tv.setText(textview);
-		return tv;
-	}*/
 
 	private Button mButton(View v, int resId, int button) {
 		Button btn = (Button) v.findViewById(resId);
@@ -161,9 +155,9 @@ public class Audios_Adapter extends BaseAdapter {
 		return btn;
 	}
 
-	private ImageView mImage(View v, int resId, int image) {
-		ImageView iv = (ImageView) v.findViewById(resId);
-		iv.setImageResource(image); //
+	private FrameLayout mImage(View v, int resId, int image) {
+		FrameLayout iv = (FrameLayout) v.findViewById(resId);
+		iv.setBackgroundResource(image); //
 
 		return iv;
 	}

@@ -123,7 +123,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 			clearMemory();
 			startActivity(intent);
 			finish();
-			
+			overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
 		
 			break;
 		case Key.btn_back:

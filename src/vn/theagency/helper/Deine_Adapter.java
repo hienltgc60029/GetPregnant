@@ -10,8 +10,10 @@ import vn.theagency.objects.Audios;
 import vn.theagency.sqlite.SQliteData;
 import vn.theagency.sqlite.SQliteData.SQdata;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,9 +110,10 @@ public class Deine_Adapter extends BaseAdapter {
 	    				intent.putExtra(Audios.TITLE, arr.get(position).getmTitle());
 	    				intent.putExtra(Audios.DECRIPTION, arr.get(position).getmDecription());
 	    				intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(position).getmImageURL()));
-	    				intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(position).getmImageURL()));
+	
 	    				intent.putExtra(Audios.ID, String.valueOf(arr.get(position).getmID()));
 	    				mContext.startActivity(intent);
+	    				
 	    				//System.gc();
 	    				//System.exit(0);
 	    				}catch(Exception ex){
@@ -145,8 +148,22 @@ public class Deine_Adapter extends BaseAdapter {
 		if ((position % 2) != 0) {
 			view.setBackgroundResource(R.drawable.bg_library);
 		}
+		if(testLenght(23, arr.get(position).getmTitle())>1){
+			mViewHolder.mDec.setLines(1);
+		}else{
+			mViewHolder.mDec.setLines(2);
+		}
 
 		return view;
+	}
+	public int testLenght(int textSize, String text){
+		Paint paint = new Paint();
+		final float densityMultiplier = mContext.getResources().getDisplayMetrics().density;
+		final float scaledPx = mHelper.DpToPixel(textSize) * densityMultiplier;
+		paint.setTextSize(scaledPx);
+		final float size = paint.measureText(text);
+		int testLenght = (int) (size/mHelper.DpToPixel(220));
+		return testLenght;
 	}
 	private class MyViewHolder {
 		TextView mTitle, mDec;

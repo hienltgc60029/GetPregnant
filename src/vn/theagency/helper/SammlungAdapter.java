@@ -9,6 +9,7 @@ import vn.theagency.objects.Audios;
 import vn.theagency.sqlite.SQliteData;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -81,7 +82,11 @@ public class SammlungAdapter extends BaseAdapter {
 			view.setPadding(30, 0, 30, 0);
 		}
 			mViewHolder = (MyViewHolder) view.getTag();
-			
+			if(arr.get(position).isActive){
+				view.setBackgroundColor(Color.WHITE);
+			}else{
+				view.setBackgroundResource(android.R.color.transparent);
+			}
 			
 			
 			
@@ -161,6 +166,7 @@ public class SammlungAdapter extends BaseAdapter {
 					mViewHolder.btnDownload.setEnabled(true);
 				}
 			}
+			
 
 			
 

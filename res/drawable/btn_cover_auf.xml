@@ -6,5 +6,5 @@
     <item android:state_focused="true"
         android:drawable="@drawable/btn_auf_cover_normal" />
     <item
-         android:drawable="@drawable/cover_auf" />
+         android:drawable="@drawable/btn_auf_cover_normal" />
 </selector>
