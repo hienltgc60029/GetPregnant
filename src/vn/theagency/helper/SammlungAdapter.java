@@ -85,7 +85,7 @@ public class SammlungAdapter extends BaseAdapter {
 			if(arr.get(position).isActive){
 				view.setBackgroundColor(Color.WHITE);
 			}else{
-				view.setBackgroundResource(android.R.color.transparent);
+				view.setBackgroundColor(Color.TRANSPARENT);
 			}
 			
 			

@@ -45,8 +45,8 @@ public class Home extends Activity {
 			if (status) {
 				FragmentTransaction ausg = getFragmentManager()
 						.beginTransaction();
-				ausg.setCustomAnimations(R.animator.alpha_up,
-						R.animator.alpha_down);
+				/*ausg.setCustomAnimations(R.animator.alpha_up,
+						R.animator.alpha_down);*/
 				ausg.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((19 * mHelper.getAppHeight()) / 30)),
 						R.drawable.text, R.drawable.bg, 0));
@@ -67,8 +67,8 @@ public class Home extends Activity {
 			if (status) {
 				FragmentTransaction auf = getFragmentManager()
 						.beginTransaction();
-				auf.setCustomAnimations(R.animator.alpha_up,
-						R.animator.alpha_down);
+				/*auf.setCustomAnimations(R.animator.alpha_up,
+						R.animator.alpha_down);*/
 				auf.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((4 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_auflosen, R.drawable.bg_auf,
@@ -90,8 +90,8 @@ public class Home extends Activity {
 			if (status) {
 				FragmentTransaction unt = getFragmentManager()
 						.beginTransaction();
-				unt.setCustomAnimations(R.animator.alpha_up,
-						R.animator.alpha_down);
+				/*unt.setCustomAnimations(R.animator.alpha_up,
+						R.animator.alpha_down);*/
 				unt.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((4 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_unterstutzen, R.drawable.bg_unt,
@@ -113,8 +113,8 @@ public class Home extends Activity {
 			if (status) {
 				FragmentTransaction ver = getFragmentManager()
 						.beginTransaction();
-				ver.setCustomAnimations(R.animator.alpha_up,
-						R.animator.alpha_down);
+				/*ver.setCustomAnimations(R.animator.alpha_up,
+						R.animator.alpha_down);*/
 				ver.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((25 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_verbessern, R.drawable.bg_ver,
@@ -136,8 +136,8 @@ public class Home extends Activity {
 			if (status) {
 				FragmentTransaction vor = getFragmentManager()
 						.beginTransaction();
-				vor.setCustomAnimations(R.animator.alpha_up,
-						R.animator.alpha_down);
+				/*vor.setCustomAnimations(R.animator.alpha_up,
+						R.animator.alpha_down);*/
 				vor.replace(R.id.container, Fragment_Home.newInstance(
 						(int) (((25 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_vorbereiten, R.drawable.bg_vor,

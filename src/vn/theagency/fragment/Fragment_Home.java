@@ -164,8 +164,31 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		preference();
 
 		plus = (PhotoView) wrapper.findViewById(Key.AUSWAHL);
+		plus.setVisibility(View.GONE);
 		plus.setOnClickListener(this);
-		plus.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.home_move_right50));
+		Animation plusMove = AnimationUtils.loadAnimation(getActivity(), R.anim.home_move_right50);
+		plusMove.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				plus.setVisibility(View.VISIBLE);
+				plus.setBackgroundResource(R.drawable.animation_plus);
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		plus.startAnimation(plusMove);
 		plusText.setOnClickListener(this);
 
 		imgAuflosen.setOnClickListener(this);
@@ -186,7 +209,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		case Key.auflosen:
 
 			try {
-
+				plus.setVisibility(View.GONE);
 				clearMemory();
 				msg.arg1 = 2;
 				msg.arg2 = 0;
@@ -198,6 +221,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.ausgleichen:
 			try {
+				plus.setVisibility(View.GONE);
 				clearMemory();
 				msg.arg1 = 1;
 				msg.arg2 = 0;
@@ -208,6 +232,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.unterstutzen:
 			try {
+				plus.setVisibility(View.GONE);
 				clearMemory();
 				msg.arg1 = 3;
 				msg.arg2 = 0;
@@ -218,6 +243,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.verbessern:
 			try {
+				plus.setVisibility(View.GONE);
 				clearMemory();
 				msg.arg1 = 4;
 				msg.arg2 = 0;
@@ -228,6 +254,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.vorbereiten:
 			try {
+				plus.setVisibility(View.GONE);
 				clearMemory();
 				msg.arg1 = 5;
 				msg.arg2 = 0;

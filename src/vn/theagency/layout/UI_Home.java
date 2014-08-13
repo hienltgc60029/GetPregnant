@@ -233,7 +233,7 @@ public class UI_Home {
 		audiosPara.leftMargin = leftPlus;
 		audiosPara.topMargin = topMargin;
 		audios.setLayoutParams(audiosPara);
-		audios.setImageResource(R.drawable.plus);
+		audios.setVisibility(View.GONE);
 		audios.setId(Key.AUSWAHL);
 		
 
