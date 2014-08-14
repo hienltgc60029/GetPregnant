@@ -302,6 +302,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 			arrAudios.get(i).setActive(false);
 		}
 		arrAudios.get(positionSong).setActive(true);
+		
 		adapter.notifyDataSetChanged();
 		mp.start();
 		musik_line.setProgress(0);

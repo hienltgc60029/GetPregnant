@@ -5,18 +5,23 @@ import java.util.TimerTask;
 
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
-import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Nohitaky;
 import vn.theagency.objects.Audios;
 import android.app.Fragment;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Messenger;
-import android.util.Log;
+import android.provider.AlarmClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +37,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		OnCheckedChangeListener, OnSeekBarChangeListener {
@@ -214,10 +218,9 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 			}
 			break;
 		case Key.NOHITAKI_Wecker:
-			Toast.makeText(getActivity(),
-					"This function isn't reponding. Coming soon",
-					Toast.LENGTH_LONG).show();
-			break;
+			Intent openClockIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
+			openClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			getActivity().startActivity(openClockIntent);
 		case Key.btn_back:
 			try {
 				msg.arg1 = 3;

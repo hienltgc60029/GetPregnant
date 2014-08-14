@@ -41,6 +41,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	public View initUIText;
 
 	View aus, unt, vor, ver, home, hide,auf;
+	View aus1, unt1, vor1, ver1, auf1;
 
 	View initUIWarning, initUIHideBackGround;
 	Animation animDown, animDownLeft, animDownRight, animLeft,
@@ -54,17 +55,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		
-		//set frist start application
-		
-		
-		
-		//
-		
-		
-		
-		
-		
+
 		this.mHelper = Helper.shareIns(getApplicationContext());
 		this.mCover = UI_Cover.shareIns(getApplicationContext());
 
@@ -103,21 +94,21 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		/*aus.setOnClickListener(this);
+	//	aus.setOnClickListener(this);
 		 auf.setOnClickListener(this);
-		unt.setOnClickListener(this);
-		vor.setOnClickListener(this);
-		ver.setOnClickListener(this);
-		home.setOnClickListener(this);
-		hide.setOnClickListener(this);*/
-		auf.setOnTouchListener(this);
+	//	unt.setOnClickListener(this);
+	//	vor.setOnClickListener(this);
+	//	ver.setOnClickListener(this);
+	//	home.setOnClickListener(this);
+	//	hide.setOnClickListener(this);
+	//	auf.setOnTouchListener(this);
 
 	}
 
 	public void preference() {
 		aus = findViewById(Key.linearAusgleichen);
 		auf = findViewById(Key.linearAuflosen);
-		auf.setBackgroundResource(R.drawable.btn_cover_auf);
+		auf1 = findViewById(Key.auflosen);
 	
 		unt = findViewById(Key.linearUnterstutzen);
 		vor = findViewById(Key.linearVorbereiten);
@@ -160,12 +151,11 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case Key.linearAuflosen:		
-			Intent intent = new Intent(getApplicationContext(), Home.class);
-			clearMemory(); 
-			 intent.putExtra("HomeBG", String.valueOf(2));
-			 startActivity(intent); 		 
-			 finish();
+		case Key.linearAuflosen:	
+			auf.setBackgroundResource(R.drawable.icon_btn_auf_active);
+			new CoverAnimation(auf, R.anim.cover_flip_right).execute(0);
+			
+			
 			break;
 		case Key.linearAusgleichen:
 			Intent intent4 = new Intent(getApplicationContext(), Home.class);
@@ -216,7 +206,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 
 	public void clearMemory() {
 		aus.setOnClickListener(null);
-		// auf.setOnClickListener(null);
+		 auf.setOnClickListener(null);
 		unt.setOnClickListener(null);
 		vor.setOnClickListener(null);
 		ver.setOnClickListener(null);
@@ -240,14 +230,18 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			switch (msg.what) {
+			case R.anim.cover_flip_right:
+				new CoverAnimation(auf,R.anim.cover_flip_left).execute(0);
+				break;
 			case R.anim.cover_move_left:
-				new CoverAnimation(ver,R.anim.cover_move_right).execute();
-				new CoverAnimation(vor,R.anim.cover_move_right).execute();
-				new CoverAnimation(unt,R.anim.cover_move_right).execute();
+				new CoverAnimation(ver,R.anim.cover_move_right).execute(0);
+				new CoverAnimation(vor,R.anim.cover_move_right).execute(0);
+				new CoverAnimation(unt,R.anim.cover_move_right).execute(0);
 				break;
 			case R.anim.cover_move_right:
-				new CoverAnimation(auf, R.anim.cover_zoom_out).execute();
-				new CoverAnimation(wrapper, R.anim.cover_alpha_out).execute();
+				auf1.setVisibility(View.GONE);
+				new CoverAnimation(auf, R.anim.cover_zoom_out).execute(250);
+				new CoverAnimation(wrapper, R.anim.cover_alpha_out).execute(0);
 				break;
 			case R.anim.cover_zoom_out:
 				Intent intent = new Intent(getApplicationContext(), Home.class);
@@ -259,7 +253,8 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 				 overridePendingTransition(0,0);
 				break;
 			case R.anim.cover_flip_left:
-				new CoverAnimation(aus,R.anim.cover_move_left).execute();
+				
+				new CoverAnimation(aus,R.anim.cover_move_left).execute(0);
 				break;
 			default:
 				break;
@@ -270,7 +265,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		
 	};
 	
-	public class CoverAnimation extends AsyncTask<Void, Integer, Void>{
+	public class CoverAnimation extends AsyncTask<Integer, Integer, Void>{
 
 		View viewAnimation;
 		Animation anim;
@@ -286,7 +281,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected Void doInBackground(final Integer... params) {
 			// TODO Auto-generated method stub
 			runOnUiThread(new Runnable() {
 				
@@ -296,7 +291,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 					viewAnimation.clearAnimation();
 					viewAnimation.setAnimation(anim);
 					viewAnimation.startAnimation(anim);	
-					handler.sendEmptyMessageDelayed(animRes, (anim.getDuration()));
+					handler.sendEmptyMessageDelayed(animRes, (anim.getDuration()-params[0]));
 				}
 			});
 			return null;
@@ -307,19 +302,11 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	public boolean onTouch(View v, MotionEvent event) {
 		switch (v.getId()) {
 		case Key.linearAuflosen:	
-			
-			auf.setBackgroundResource(R.drawable.icon_btn_auf_active);
-			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN:
-				Log.i("LTH", "Down");
+			if(event.getAction() == MotionEvent.ACTION_DOWN){
 				
-				return true;
-			case MotionEvent.ACTION_UP:
-				new CoverAnimation(auf,R.anim.cover_flip_left).execute();
-				return true;
-			default:
-				break;
+				
 			}
+			
 			return true;
 		//	new CoverAnimation(aus,R.anim.cover_move_left).execute();
 			

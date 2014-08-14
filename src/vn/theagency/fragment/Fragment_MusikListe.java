@@ -333,7 +333,7 @@ public class Fragment_MusikListe extends Fragment implements
 			break;
 		case Key.NEXTAUDIO:
 
-			if (mPosition < arr.size()) {
+			if (mPosition < (arr.size()-1)) {
 				
 				media.stop();
 				mPosition = mPosition + 1;
@@ -507,7 +507,8 @@ public class Fragment_MusikListe extends Fragment implements
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				// TODO Auto-generated method stub
-				if (mPosition < arr.size()) {
+				
+				if (mPosition < (arr.size()-1)) {
 					
 					media.stop();
 					mPosition = mPosition + 1;

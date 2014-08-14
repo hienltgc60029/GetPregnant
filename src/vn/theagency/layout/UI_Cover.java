@@ -193,10 +193,12 @@ public class UI_Cover {
 		aufParams.leftMargin = leftAuf;
 		auf.setLayoutParams(aufParams);
 		auf.setId(Key.linearAuflosen);
+		auf.setBackgroundResource(R.drawable.btn_cover_auf);
 		//
 		View auf1 = new View(this.context);
 		auf1.setBackgroundResource(R.drawable.bg_btn_auf);
 		auf1.setLayoutParams(aufParams);
+		auf1.setId(Key.auflosen);
 		
 		//
 		

@@ -57,7 +57,7 @@ public class UI_Home {
 		icon_home = (int) mHelper.DpToPixel(40) ;
 		icon_home_aligh = (int) mHelper.DpToPixel(12) ;
 		plus = (int) mHelper.DpToPixel(55);
-		plusMargin = (int) mHelper.getAppWidth()/4;
+		plusMargin = (int) mHelper.getAppWidth()/3;
 		textAddition = (int) mHelper.DpToPixel(100);
 		plusTextMargin= (int)mHelper.DpToPixel(50);
 		textsize = (int) mHelper.DpToSp(20);
@@ -219,7 +219,9 @@ public class UI_Home {
 		FrameLayout main = new FrameLayout(this.context);
 		int topMargin = (int) ((84*mHelper.getAppHeight())/100);
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		mainFrame.topMargin = topMargin;
+		int leftPlus = (int) (this.mHelper.getAppWidth()/2 - plusTextMargin- this.mHelper.DpToPixel(20));
 		
 		main.setLayoutParams(mainFrame);
 
@@ -229,11 +231,10 @@ public class UI_Home {
 		PhotoView audios = new PhotoView(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
-		int leftPlus = (int) (this.mHelper.getAppWidth()/2 - plusTextMargin- this.mHelper.DpToPixel(20));
-		audiosPara.leftMargin = leftPlus;
-		audiosPara.topMargin = topMargin;
+		
+		audiosPara.leftMargin = plusMargin;
 		audios.setLayoutParams(audiosPara);
-		audios.setVisibility(View.GONE);
+		audios.setBackgroundResource(R.drawable.animation_plus);
 		audios.setId(Key.AUSWAHL);
 		
 
@@ -248,9 +249,9 @@ public class UI_Home {
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
 				textAddition,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		textPara.leftMargin = plusTextMargin+leftPlus;
+		textPara.leftMargin = plusTextMargin+plusMargin;
 		
-		textPara.topMargin = (int) (topMargin+(plus/4));
+		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
 		
 		

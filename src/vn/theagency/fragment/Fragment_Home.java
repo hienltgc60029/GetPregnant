@@ -5,6 +5,7 @@ import vn.theagency.getpregnant.Cover;
 import vn.theagency.getpregnant.Home;
 import vn.theagency.getpregnant.R;
 import vn.theagency.getpregnant.Cover.CoverAnimation;
+import vn.theagency.getpregnant.R.anim;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Home;
@@ -35,7 +36,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Fragment_Home extends Fragment implements OnClickListener{
+public class Fragment_Home extends Fragment implements OnClickListener,
+		AnimationListener {
 
 	View view = null;
 	public String textTitle, textDec;
@@ -55,14 +57,17 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 	Message msg;
 	TextView plusText;
 	View bg, frist;
-	
+	Animation plusMove, plusUp,homeUp,zoomIn,plusFlip;
+	boolean isFrist;
 
 	public static Fragment_Home newInstance(int pTop, int bg, int background,
-			int pTitle) {
+			int pTitle, boolean isFrist) {
+		
 		Fragment_Home f = new Fragment_Home();
 		Bundle args = new Bundle();
 		args.putInt("TOP", pTop);
 		args.putInt("BG", bg);
+		args.putBoolean("Animation", isFrist);
 		args.putInt("background", background);
 		args.putInt("pTitle", pTitle);
 		f.setArguments(args);
@@ -88,7 +93,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 	}
 
 	public void preference() {
-		
+
 		linearAuflosen = (FrameLayout) wrapper.findViewById(Key.linearAuflosen);
 		linearAusgleichen = (FrameLayout) wrapper
 				.findViewById(Key.linearAusgleichen);
@@ -159,36 +164,22 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 
 		this.wrapper.addView(layoutTitles);
 		this.wrapper.addView(initUIAddition);
-
+		setMyAnimation();
 		// getActivity().setContentView(this.wrapper);
-		preference();
+		this.isFrist = getArguments().getBoolean("Animation");
 
+	
+		
+		preference();
+		
 		plus = (PhotoView) wrapper.findViewById(Key.AUSWAHL);
-		plus.setVisibility(View.GONE);
+		if(isFrist){
+			
+			plus.startAnimation(plusMove);
+		}
 		plus.setOnClickListener(this);
-		Animation plusMove = AnimationUtils.loadAnimation(getActivity(), R.anim.home_move_right50);
-		plusMove.setAnimationListener(new AnimationListener() {
-			
-			@Override
-			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
-				plus.setVisibility(View.VISIBLE);
-				plus.setBackgroundResource(R.drawable.animation_plus);
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		plus.startAnimation(plusMove);
+
+		
 		plusText.setOnClickListener(this);
 
 		imgAuflosen.setOnClickListener(this);
@@ -202,6 +193,18 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 
 	}
 
+	public void setMyAnimation() {
+		plusMove = AnimationUtils.loadAnimation(getActivity(),
+				R.anim.home_move_right50);
+		plusUp = AnimationUtils.loadAnimation(getActivity(),
+				R.anim.home_plus_up);
+		homeUp = AnimationUtils.loadAnimation(getActivity(), R.anim.home_up);
+		zoomIn = AnimationUtils.loadAnimation(getActivity(), R.anim.home_zoom_in);
+		plusFlip = AnimationUtils.loadAnimation(getActivity(), R.anim.home_plus_flip);
+		plusUp.setAnimationListener(this);
+		plusMove.setAnimationListener(this);
+	}
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -209,7 +212,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		case Key.auflosen:
 
 			try {
-				plus.setVisibility(View.GONE);
+				
 				clearMemory();
 				msg.arg1 = 2;
 				msg.arg2 = 0;
@@ -221,7 +224,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.ausgleichen:
 			try {
-				plus.setVisibility(View.GONE);
+				
 				clearMemory();
 				msg.arg1 = 1;
 				msg.arg2 = 0;
@@ -232,7 +235,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.unterstutzen:
 			try {
-				plus.setVisibility(View.GONE);
+				
 				clearMemory();
 				msg.arg1 = 3;
 				msg.arg2 = 0;
@@ -243,7 +246,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.verbessern:
 			try {
-				plus.setVisibility(View.GONE);
+				
 				clearMemory();
 				msg.arg1 = 4;
 				msg.arg2 = 0;
@@ -254,7 +257,7 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			break;
 		case Key.vorbereiten:
 			try {
-				plus.setVisibility(View.GONE);
+				
 				clearMemory();
 				msg.arg1 = 5;
 				msg.arg2 = 0;
@@ -264,80 +267,23 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			}
 			break;
 		case Key.AUSWAHL:
-			try {
-				//plus.setText("AUDIOS LIBRARY");
-		//		plus.animate().setDuration(500).scaleX(500).scaleY(500).alpha(0).setInterpolator(new LinearInterpolator()).start();
-				clearMemory();
-
-				switch (getArguments().getInt("background")) {
-				case R.drawable.bg:
-					msg.arg2 = 1;
-					break;
-				case R.drawable.bg_auf:
-					msg.arg2 = 2;
-					break;
-				case R.drawable.bg_unt:
-					msg.arg2 = 3;
-					break;
-				case R.drawable.bg_ver:
-					msg.arg2 = 4;
-					break;
-				case R.drawable.bg_vor:
-					msg.arg2 = 5;
-					break;
-
-				default:
-					break;
-				}
-
-				msg.arg1 = 6;
-				messenger.send(msg);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			// try {
+			
+			
+			
 			break;
 		case Key.AUDIOS_NAME:
-			try {
-				//plus.setText("AUDIOS LIBRARY");
-				clearMemory();
+			this.initUIAddition.startAnimation(plusUp);
+			
 
-				switch (getArguments().getInt("background")) {
-				case R.drawable.bg:
-					msg.arg2 = 1;
-					break;
-				case R.drawable.bg_auf:
-					msg.arg2 = 2;
-					break;
-				case R.drawable.bg_unt:
-					msg.arg2 = 3;
-					break;
-				case R.drawable.bg_ver:
-					msg.arg2 = 4;
-					break;
-				case R.drawable.bg_vor:
-					msg.arg2 = 5;
-					break;
-
-				default:
-					break;
-				}
-
-				msg.arg1 = 6;
-				messenger.send(msg);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
 			break;
 		case Key.HOME:
-			
-			/*try {
-				clearMemory();
-				msg.arg1 = 7;
-				msg.arg2 = 0;
-				messenger.send(msg);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}*/
+
+			/*
+			 * try { clearMemory(); msg.arg1 = 7; msg.arg2 = 0;
+			 * messenger.send(msg); } catch (Exception ex) {
+			 * ex.printStackTrace(); }
+			 */
 			break;
 
 		default:
@@ -345,8 +291,6 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		}
 	}
 
-	
-	
 	public void clearMemory() {
 		imgAuflosen.setOnClickListener(null);
 		imgAusgleichen.setOnClickListener(null);
@@ -355,8 +299,8 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 		imgVorbereiten.setOnClickListener(null);
 		plus.setOnClickListener(null);
 	}
-	
-	Handler handler = new Handler(){
+
+	Handler handler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
@@ -366,45 +310,71 @@ public class Fragment_Home extends Fragment implements OnClickListener{
 			case R.anim.cover_move_left:
 				break;
 			case R.anim.cover_move_right:
-				
+
 			default:
 				break;
 			}
-			
-			
+
 		}
-		
+
 	};
 
-	public class HomeAnimation extends AsyncTask<Void, Integer, Void>{
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
 
-		PhotoView viewAnimation;
-		Animation anim;
-		int animRes;
-		
-		
-		public HomeAnimation(PhotoView viewAnimation, int animRes) {
-			super();
-			this.viewAnimation = viewAnimation;
-			this.animRes = animRes;
-			anim = AnimationUtils.loadAnimation(getActivity(),
-					animRes);
+		if(animation == plusUp){
+			this.initUIHome.startAnimation(homeUp);
+			this.initUIText.startAnimation(homeUp);
+			this.bg.startAnimation(homeUp);
 		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			// TODO Auto-generated method stub
-			
-					viewAnimation.clearAnimation();
-					viewAnimation.setAnimation(anim);
-					viewAnimation.startAnimation(anim);	
-					handler.sendEmptyMessageDelayed(animRes, anim.getDuration());
-				
-			
-			return null;
-		}				
 	}
 
-	
-	
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		// TODO Auto-generated method stub
+		if(animation == plusMove){
+			plus.startAnimation(plusFlip);
+		}
+		if (animation == plusUp) {
+			try {
+				Log.i("LTH", "plusUp");
+				clearMemory();
+
+				switch (getArguments().getInt("background")) {
+				case R.drawable.bg:
+					msg.arg2 = 1;
+					break;
+				case R.drawable.bg_auf:
+					msg.arg2 = 2;
+					break;
+				case R.drawable.bg_unt:
+					msg.arg2 = 3;
+					break;
+				case R.drawable.bg_ver:
+					msg.arg2 = 4;
+					break;
+				case R.drawable.bg_vor:
+					msg.arg2 = 5;
+					break;
+
+				default:
+					break;
+				}
+
+				msg.arg1 = 6;
+				messenger.send(msg);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		}
+	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

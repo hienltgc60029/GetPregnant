@@ -31,7 +31,7 @@ public class Home extends Activity {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			doAction(msg.arg1, msg.arg2);
+			doAction(msg.arg1, msg.arg2,true);
 		}
 	};
 
@@ -39,7 +39,7 @@ public class Home extends Activity {
 		return new Messenger(handler);
 	}
 
-	private void doAction(int action, int index) {
+	private void doAction(int action, int index, boolean isFrist) {
 		switch (action) {
 		case 1:
 			if (status) {
@@ -49,7 +49,7 @@ public class Home extends Activity {
 						R.animator.alpha_down);*/
 				ausg.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((19 * mHelper.getAppHeight()) / 30)),
-						R.drawable.text, R.drawable.bg, 0));
+						R.drawable.text, R.drawable.bg, 0,isFrist));
 				ausg.commit();
 			} else {
 				status = true;
@@ -58,7 +58,7 @@ public class Home extends Activity {
 
 				ausg.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((19 * mHelper.getAppHeight()) / 30)),
-						R.drawable.text, R.drawable.bg, 0));
+						R.drawable.text, R.drawable.bg, 0,isFrist));
 				ausg.commit();
 			}
 
@@ -72,7 +72,7 @@ public class Home extends Activity {
 				auf.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((4 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_auflosen, R.drawable.bg_auf,
-						(int) mHelper.getAppWidth()));
+						(int) mHelper.getAppWidth(),isFrist));
 				auf.commit();
 			} else {
 				status = true;
@@ -82,7 +82,7 @@ public class Home extends Activity {
 				auf.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((4 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_auflosen, R.drawable.bg_auf,
-						(int) mHelper.getAppWidth()));
+						(int) mHelper.getAppWidth(),isFrist));
 				auf.commit();
 			}
 			break;
@@ -95,7 +95,7 @@ public class Home extends Activity {
 				unt.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((4 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_unterstutzen, R.drawable.bg_unt,
-						(int) (mHelper.getAppWidth() / 2)));
+						(int) (mHelper.getAppWidth() / 2),isFrist));
 				unt.commit();
 			} else {
 				status = true;
@@ -105,7 +105,7 @@ public class Home extends Activity {
 				unt.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((4 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_unterstutzen, R.drawable.bg_unt,
-						(int) (mHelper.getAppWidth() / 2)));
+						(int) (mHelper.getAppWidth() / 2),isFrist));
 				unt.commit();
 			}
 			break;
@@ -118,7 +118,7 @@ public class Home extends Activity {
 				ver.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((25 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_verbessern, R.drawable.bg_ver,
-						(int) (3 * mHelper.getAppWidth() / 4)));
+						(int) (3 * mHelper.getAppWidth() / 4),isFrist));
 				ver.commit();
 			} else {
 				status = true;
@@ -128,7 +128,7 @@ public class Home extends Activity {
 				ver.replace(R.id.container, Fragment_Home.newInstance(
 						((int) ((25 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_verbessern, R.drawable.bg_ver,
-						(int) (3 * mHelper.getAppWidth() / 4)));
+						(int) (3 * mHelper.getAppWidth() / 4),isFrist));
 				ver.commit();
 			}
 			break;
@@ -141,7 +141,7 @@ public class Home extends Activity {
 				vor.replace(R.id.container, Fragment_Home.newInstance(
 						(int) (((25 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_vorbereiten, R.drawable.bg_vor,
-						(int) mHelper.getAppWidth() / 4));
+						(int) mHelper.getAppWidth() / 4,isFrist));
 				vor.commit();
 			} else {
 				status = true;
@@ -151,7 +151,7 @@ public class Home extends Activity {
 				vor.replace(R.id.container, Fragment_Home.newInstance(
 						(int) (((25 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_vorbereiten, R.drawable.bg_vor,
-						(int) mHelper.getAppWidth() / 4));
+						(int) mHelper.getAppWidth() / 4,isFrist));
 				vor.commit();
 			}
 			break;
@@ -190,7 +190,7 @@ public class Home extends Activity {
 		this.mHelper = Helper.shareIns(getApplicationContext());
 		setContentView(R.layout.home);
 		doAction(Integer.parseInt(getIntent().getExtras().getString("HomeBG")),
-				0);
+				0,true);
 
 	}
 
