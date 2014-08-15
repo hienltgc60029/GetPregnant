@@ -13,6 +13,7 @@ public class Key {
 	public static final int linearVerbessern = 1002;
 	public static final int linearVorbereiten = 1001;
 	public static final int linearUnterstutzen = 1000;
+	public static final int TITLE = 1005;
 	
 	public static final int AUSWAHL = 200;
 	

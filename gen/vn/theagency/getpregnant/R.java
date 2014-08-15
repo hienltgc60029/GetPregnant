@@ -9,25 +9,35 @@ package vn.theagency.getpregnant;
 
 public final class R {
     public static final class anim {
-        public static final int cover_alpha_in=0x7f040000;
-        public static final int cover_alpha_out=0x7f040001;
-        public static final int cover_flip_left=0x7f040002;
-        public static final int cover_flip_right=0x7f040003;
-        public static final int cover_main_in=0x7f040004;
-        public static final int cover_main_out=0x7f040005;
-        public static final int cover_move_down=0x7f040006;
-        public static final int cover_move_downleft=0x7f040007;
-        public static final int cover_move_downright=0x7f040008;
-        public static final int cover_move_left=0x7f040009;
-        public static final int cover_move_right=0x7f04000a;
-        public static final int cover_zoom_out=0x7f04000b;
-        public static final int home_move_right50=0x7f04000c;
-        public static final int home_plus_flip=0x7f04000d;
-        public static final int home_plus_up=0x7f04000e;
-        public static final int home_up=0x7f04000f;
-        public static final int home_zoom_in=0x7f040010;
-        public static final int slide_left_in=0x7f040011;
-        public static final int slide_left_out=0x7f040012;
+        public static final int alpha_in=0x7f040000;
+        public static final int alpha_out=0x7f040001;
+        public static final int auswahl_down=0x7f040002;
+        public static final int auswahl_down_head=0x7f040003;
+        public static final int cover_alpha_in=0x7f040004;
+        public static final int cover_alpha_out=0x7f040005;
+        public static final int cover_flip_left=0x7f040006;
+        public static final int cover_flip_right=0x7f040007;
+        public static final int cover_main_in=0x7f040008;
+        public static final int cover_main_out=0x7f040009;
+        public static final int cover_move_down=0x7f04000a;
+        public static final int cover_move_downleft=0x7f04000b;
+        public static final int cover_move_downright=0x7f04000c;
+        public static final int cover_move_left=0x7f04000d;
+        public static final int cover_move_right=0x7f04000e;
+        public static final int cover_move_right01=0x7f04000f;
+        public static final int cover_move_right02=0x7f040010;
+        public static final int cover_title_sldeup=0x7f040011;
+        public static final int cover_zoom_out=0x7f040012;
+        public static final int home_bounce=0x7f040013;
+        public static final int home_move_plustext=0x7f040014;
+        public static final int home_move_right50=0x7f040015;
+        public static final int home_plus_flip=0x7f040016;
+        public static final int home_plus_up=0x7f040017;
+        public static final int home_slideup=0x7f040018;
+        public static final int home_up=0x7f040019;
+        public static final int home_zoom_in=0x7f04001a;
+        public static final int slide_left_in=0x7f04001b;
+        public static final int slide_left_out=0x7f04001c;
     }
     public static final class animator {
         public static final int alpha_down=0x7f050000;
@@ -44,33 +54,33 @@ public final class R {
     }
     public static final class dimen {
         public static final int AUSWAHL=0x7f070007;
-        public static final int AVARTA_HEIGHT=0x7f070009;
-        public static final int AVARTA_PRICE_HEIGHT=0x7f07000a;
+        public static final int AVARTA_HEIGHT=0x7f07000a;
+        public static final int AVARTA_PRICE_HEIGHT=0x7f07000b;
         /**   Deine Titel 
          */
-        public static final int AVARTA_WIDTH=0x7f070008;
-        public static final int BOTTOM=0x7f07000f;
-        public static final int BOTTOM_DOWN=0x7f070010;
+        public static final int AVARTA_WIDTH=0x7f070009;
+        public static final int BOTTOM=0x7f070010;
+        public static final int BOTTOM_DOWN=0x7f070011;
         public static final int DP_10=0x7f070004;
         public static final int DP_20=0x7f070005;
         public static final int DP_40=0x7f070006;
-        public static final int ItemText_Width=0x7f070011;
-        public static final int Item_HEIGHT=0x7f07000b;
+        public static final int ItemText_Width=0x7f070012;
+        public static final int Item_HEIGHT=0x7f07000c;
         /**  Adapter 
          */
-        public static final int MarginLeft=0x7f070016;
-        public static final int MarginTextImage=0x7f070017;
-        public static final int PaddingLeft=0x7f070018;
-        public static final int PaddingRight=0x7f070019;
-        public static final int ROW_BTN_DOWN_WIDTH=0x7f070013;
-        public static final int ROW_BTN_HEIGHT=0x7f070015;
+        public static final int MarginLeft=0x7f070017;
+        public static final int MarginTextImage=0x7f070018;
+        public static final int PaddingLeft=0x7f070019;
+        public static final int PaddingRight=0x7f07001a;
+        public static final int ROW_BTN_DOWN_WIDTH=0x7f070014;
+        public static final int ROW_BTN_HEIGHT=0x7f070016;
         /**  sammlung 
          */
-        public static final int ROW_BTN_LOS_WIDTH=0x7f070012;
-        public static final int ROW_BTN_UP_WIDTH=0x7f070014;
-        public static final int ROW_BUTTON_HEIGHT=0x7f07000d;
-        public static final int ROW_BUTTON_WIDTH=0x7f07000c;
-        public static final int ROW_PADDING=0x7f07000e;
+        public static final int ROW_BTN_LOS_WIDTH=0x7f070013;
+        public static final int ROW_BTN_UP_WIDTH=0x7f070015;
+        public static final int ROW_BUTTON_HEIGHT=0x7f07000e;
+        public static final int ROW_BUTTON_WIDTH=0x7f07000d;
+        public static final int ROW_PADDING=0x7f07000f;
         /**  Default screen margins, per the Android Design guidelines. 
 
          Example customization of dimensions originally defined in res/values/dimens.xml
@@ -80,6 +90,9 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f070000;
         public static final int activity_vertical_margin=0x7f070001;
+        /**  Audios Item 
+         */
+        public static final int plusMarginLeft=0x7f070008;
         public static final int row_height=0x7f070003;
         public static final int size_text_10=0x7f070002;
     }
@@ -281,22 +294,24 @@ public final class R {
         public static final int sw_bg=0x7f0200c2;
         public static final int sw_press=0x7f0200c3;
         public static final int text=0x7f0200c4;
-        public static final int thumbler_small=0x7f0200c5;
-        public static final int ture=0x7f0200c6;
-        public static final int txt_auflosen=0x7f0200c7;
-        public static final int txt_unterstutzen=0x7f0200c8;
-        public static final int txt_verbessern=0x7f0200c9;
-        public static final int txt_vorbereiten=0x7f0200ca;
-        public static final int up_button_active=0x7f0200cb;
-        public static final int up_button_deactive=0x7f0200cc;
-        public static final int up_button_normal=0x7f0200cd;
-        public static final int volume_bar_level=0x7f0200ce;
-        public static final int volume_border=0x7f0200cf;
-        public static final int volume_button_normal=0x7f0200d0;
-        public static final int warning_popup=0x7f0200d1;
-        public static final int wen01=0x7f0200d2;
-        public static final int zoo01=0x7f0200d3;
-        public static final int zur01=0x7f0200d4;
+        public static final int text_minus=0x7f0200c5;
+        public static final int text_plus=0x7f0200c6;
+        public static final int thumbler_small=0x7f0200c7;
+        public static final int ture=0x7f0200c8;
+        public static final int txt_auflosen=0x7f0200c9;
+        public static final int txt_unterstutzen=0x7f0200ca;
+        public static final int txt_verbessern=0x7f0200cb;
+        public static final int txt_vorbereiten=0x7f0200cc;
+        public static final int up_button_active=0x7f0200cd;
+        public static final int up_button_deactive=0x7f0200ce;
+        public static final int up_button_normal=0x7f0200cf;
+        public static final int volume_bar_level=0x7f0200d0;
+        public static final int volume_border=0x7f0200d1;
+        public static final int volume_button_normal=0x7f0200d2;
+        public static final int warning_popup=0x7f0200d3;
+        public static final int wen01=0x7f0200d4;
+        public static final int zoo01=0x7f0200d5;
+        public static final int zur01=0x7f0200d6;
     }
     public static final class id {
         public static final int action_settings=0x7f0b001a;

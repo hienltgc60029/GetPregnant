@@ -44,8 +44,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	View aus1, unt1, vor1, ver1, auf1;
 
 	View initUIWarning, initUIHideBackGround;
-	Animation animDown, animDownLeft, animDownRight, animLeft,
-	animZoom, animAlpha, animFlipLeft, animFlipRight, animMoveRight;
+	
 	AnimationDrawable frameAnimation;
 
 	@Override
@@ -68,27 +67,11 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		this.initUIHideBackGround = this.mCover.initUIHideBackGround();
 
 		initUI();
-		activeAnimation();
+		
 		preference();
 	}
 
-	public void activeAnimation() {
-		animDown = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.cover_move_down);
-		animDownLeft = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.cover_move_downleft);
-		animDownRight = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.cover_move_downright);
-		animLeft = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.cover_move_left);
-		
-		animZoom = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.cover_zoom_out);
-		animAlpha = AnimationUtils.loadAnimation(getApplicationContext(),
-				R.anim.cover_alpha_out);
-		
-		
-	}
+	
 
 	@Override
 	protected void onResume() {
@@ -154,7 +137,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		case Key.linearAuflosen:	
 			auf.setBackgroundResource(R.drawable.icon_btn_auf_active);
 			new CoverAnimation(auf, R.anim.cover_flip_right).execute(0);
-			
+			new CoverAnimation(aus,R.anim.cover_move_left).execute(0);
 			
 			break;
 		case Key.linearAusgleichen:
@@ -235,15 +218,17 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 				break;
 			case R.anim.cover_move_left:
 				new CoverAnimation(ver,R.anim.cover_move_right).execute(0);
-				new CoverAnimation(vor,R.anim.cover_move_right).execute(0);
-				new CoverAnimation(unt,R.anim.cover_move_right).execute(0);
+				new CoverAnimation(vor,R.anim.cover_move_right01).execute(0);
+				new CoverAnimation(unt,R.anim.cover_move_right02).execute(0);
 				break;
 			case R.anim.cover_move_right:
 				auf1.setVisibility(View.GONE);
+				//new CoverAnimation(initUIText, R.anim.cover_title_sldeup);
 				new CoverAnimation(auf, R.anim.cover_zoom_out).execute(250);
 				new CoverAnimation(wrapper, R.anim.cover_alpha_out).execute(0);
 				break;
 			case R.anim.cover_zoom_out:
+				
 				Intent intent = new Intent(getApplicationContext(), Home.class);
 				 intent.putExtra("HomeBG", String.valueOf(2));
 				 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -254,7 +239,7 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 				break;
 			case R.anim.cover_flip_left:
 				
-				new CoverAnimation(aus,R.anim.cover_move_left).execute(0);
+				
 				break;
 			default:
 				break;

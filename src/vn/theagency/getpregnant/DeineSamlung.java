@@ -34,11 +34,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class DeineSamlung extends Activity implements OnClickListener,
-		OnScrollListener, OnPreparedListener, OnCompletionListener {
+		OnScrollListener, OnPreparedListener, OnCompletionListener, OnSeekBarChangeListener {
 
 	private Helper mHelper;
 	public UI_Deneine mDeine;
@@ -99,9 +100,16 @@ public class DeineSamlung extends Activity implements OnClickListener,
 
 		int height = (int) (this.mDeine.bottom + this.mDeine.bottom_down + this.mDeine.header_height);
 		int rowSize = (int) (mHelper.getAppHeight() - height) / 3;
+		arrAudios = new ArrayList<Audios>();
 		SQliteData data = new SQliteData(getApplicationContext());
 		data.open();
-		arrAudios = data.getAllAudiosCollections();
+		
+		for(int i = 0 ; i < data.getAllAudiosCollections().size();i++){
+			arrAudios.add(data.getAllAudiosCollections().get(i));
+		}
+		if(arrAudios== null){
+			btn_play.setOnClickListener(null);
+		}
 		data.close();
 		adapter = new SammlungAdapter(R.layout.items,
 				getApplicationContext(), arrAudios, rowSize);
@@ -134,6 +142,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 		}
 		data.close();
 		musik_line = (SeekBar) findViewById(Key.SEEKBAR_LINE);
+		musik_line.setOnSeekBarChangeListener(this);
 		timeStart = (TextView) findViewById(Key.START);
 
 		timeStart.setText("00:00");
@@ -197,14 +206,6 @@ public class DeineSamlung extends Activity implements OnClickListener,
 			overridePendingTransition(R.anim.cover_alpha_in, R.anim.cover_alpha_out);
 			break;
 		case Key.PLAY:
-			boolean sizeArr = true;
-			SQliteData data = new SQliteData(getApplicationContext());
-			data.open();
-			if(data.getAllAudiosCollections().size()==0){
-				sizeArr = false;
-			}
-			data.close();
-			if(sizeArr){
 				if (player != null) {
 					if (player.isPlaying()) {
 						btn_play.setBackgroundResource(R.drawable.btn_playaudio);
@@ -247,7 +248,7 @@ public class DeineSamlung extends Activity implements OnClickListener,
 					player.setOnPreparedListener(this);
 					player.setOnCompletionListener(this);
 					
-				}
+				
 
 			}
 			
@@ -295,19 +296,23 @@ public class DeineSamlung extends Activity implements OnClickListener,
 	}
 
 	@Override
-	public void onPrepared(final MediaPlayer mp) {
+	public void onPrepared(MediaPlayer mp) {
 		// TODO Auto-generated method stub
 		Log.i("LTH", ":"+String.valueOf(positionSong));
 		for(int i = 0; i < arrAudios.size() ; i++){
 			arrAudios.get(i).setActive(false);
 		}
-		arrAudios.get(positionSong).setActive(true);
+		
+			arrAudios.get(positionSong).setActive(true);
+		
+		
+		
 		
 		adapter.notifyDataSetChanged();
-		mp.start();
+		player.start();
 		musik_line.setProgress(0);
 
-		int duration = mp.getDuration();
+		int duration = player.getDuration();
 		musik_line.setMax((int) (duration / 1000));
 		final int period = duration / 1000;
 		task = new TimerTask() {
@@ -317,12 +322,12 @@ public class DeineSamlung extends Activity implements OnClickListener,
 				musik_line.post(new Runnable() {
 					@Override
 					public void run() {
-						if (mp.isPlaying()) {
+						if (player.isPlaying()) {
 							progresss++;
 							musik_line.setProgress(progresss);
-							timeStart.setText(mHelper.count(progresss));
-							timeEnd.setText(mHelper.count(period - progresss));
+							
 							if (progresss == (period-1)) {
+								
 								progresss = 0;
 								SQliteData data = new SQliteData(getApplicationContext());
 								data.open();
@@ -347,13 +352,19 @@ public class DeineSamlung extends Activity implements OnClickListener,
 	@Override
 	public void onCompletion(MediaPlayer mp) {
 		try{
-		mp.stop();
+			timer.cancel();
+			timer = null;
+			progresss = 0;
+			player.stop();
+			player.release();
 		
 		Log.i("LTH", "current: "+ String.valueOf(positionSong));
 		SQliteData data = new SQliteData(getApplicationContext());
 		data.open();
-		
-		arrAudios = data.getAllAudiosCollections();
+		arrAudios.clear();
+		for(int i = 0 ; i < data.getAllAudiosCollections().size();i++){
+			arrAudios.add(data.getAllAudiosCollections().get(i));
+		}
 		
 		if (arrAudios.size() != 0) {
 			if (arrAudios.size() == 1) {
@@ -365,7 +376,12 @@ public class DeineSamlung extends Activity implements OnClickListener,
 				Log.i("LTH", ">1");
 				
 						if (positionSong < arrAudios.size()) {
-							positionSong++;
+							if(positionSong == (arrAudios.size()-1)){
+								positionSong=0;
+							}else{
+								positionSong++;	
+							}
+							
 							Log.i("LTH", "=1");
 						} else {
 							Log.i("LTH", "<1");
@@ -381,25 +397,25 @@ public class DeineSamlung extends Activity implements OnClickListener,
 			timeEnd.setText(getDurationLength());
 			btn_play.setBackgroundResource(R.drawable.btn_pause);
 			if (arrAudios.get(positionSong).mID.equalsIgnoreCase("1")) {
-				mp = MediaPlayer.create(getApplicationContext(), R.raw.wen);
-				mp.start();
+				player = MediaPlayer.create(getApplicationContext(), R.raw.wen);
+				player.start();
 				// positionSong = R.raw.wen;
 			} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("2")) {
-				mp = MediaPlayer.create(getApplicationContext(), R.raw.lie);
-				mp.start();
+				player = MediaPlayer.create(getApplicationContext(), R.raw.lie);
+				player.start();
 
 			} else if (arrAudios.get(positionSong).mID.equalsIgnoreCase("3")) {
-				mp = MediaPlayer
+				player = MediaPlayer
 						.create(getApplicationContext(), R.raw.zuru);
-				mp.start();
+				player.start();
 			} else {
-				mp = MediaPlayer.create(getApplicationContext(), R.raw.gen);
-				mp.start();
+				player = MediaPlayer.create(getApplicationContext(), R.raw.gen);
+				player.start();
 			}
 			
 			timeEnd.setText(getDurationLength());
-			mp.setOnPreparedListener(this);
-			mp.setOnCompletionListener(this);
+			player.setOnPreparedListener(this);
+			player.setOnCompletionListener(this);
 			
 			
 		
@@ -408,6 +424,32 @@ public class DeineSamlung extends Activity implements OnClickListener,
 		}catch(Exception ex){
 			this.onBackPressed();
 		}
+	}
+
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		// TODO Auto-generated method stub
+		if(progress!=progresss){
+			progresss = progress;
+			player.seekTo(progresss*1000);
+		}
+		timeStart.setText(mHelper.count(progress));
+		timeEnd.setText(mHelper.count((player.getDuration() - (progress*1000))/1000));
+		
+		
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

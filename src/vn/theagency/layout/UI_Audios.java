@@ -84,30 +84,35 @@ public class UI_Audios {
 		
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, header_height);
+				(int) this.mHelper.getAppWidth(), header_height);
 		main.setLayoutParams(mainFrame);
 		main.setBackgroundResource(R.drawable.library_header);
+		//
+		FrameLayout layout = new FrameLayout(this.context);
+		layout.setId(Key.AUDIOS_NAME);
 		
+		FrameLayout.LayoutParams layoutFrame = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		layoutFrame.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
+		layout.setLayoutParams(layoutFrame);
 		
 		
 
 		View audios = new View(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus_width, plus_height);
-		int leftPlus = (int) (this.mHelper.getAppWidth()/2 - plusTextMargin- this.mHelper.DpToPixel(20));
-		audiosPara.leftMargin =leftPlus;
-		audiosPara.gravity = Gravity.CENTER_VERTICAL;
 		audios.setLayoutParams(audiosPara);
 
 		audios.setBackgroundResource(R.drawable.btn_slip);
-		audios.setId(Key.AUDIOS_NAME);
+		
 		audios.setVisibility(View.VISIBLE);
+		audios.setId(Key.HEADER);
 		
 
 		TextView text = new TextView(this.context);
 		
 		text.setAlpha(0.5f);		
-		text.setTextSize(this.textsize);
+		text.setTextSize(textsize);
 		
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),"museosans_300.otf");
 		text.setTypeface(type);
@@ -116,31 +121,30 @@ public class UI_Audios {
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		textPara.leftMargin= plusTextMargin+leftPlus;;
+		textPara.leftMargin= plusTextMargin;
+		textPara.rightMargin= (int) this.mHelper.DpToPixel(5);
 		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
 		
-		main.addView(audios);
-		main.addView(text);
+		layout.addView(audios);
+		layout.addView(text);
+		main.addView(layout);
 		return main;
 	}
 
 	public View initUIBgView() {
-		BitmapDrawable drawable = (BitmapDrawable) this.context.getResources()
-				.getDrawable(R.drawable.library_header);
-		int h = (int) ((2 * drawable.getBitmap().getHeight()) / 3);
+		
 		View header = new View(this.context);
 		FrameLayout.LayoutParams para = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
-		para.topMargin = h;
+		para.topMargin = header_height;
 		header.setLayoutParams(para);
 		header.setBackgroundResource(R.drawable.bg_list);
 		return header;
 	}
 
 	public View initUIBottom() {
-		
 		int hieght = (int) (mHelper.getAppHeight() - bottom);
 		View view = new View(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
@@ -153,10 +157,7 @@ public class UI_Audios {
 		return view;
 	}
 
-	public ImageView initUIDown() {
-		
-
-		
+	public ImageView initUIDown() {	
 		int hieght = (int) (mHelper.getAppHeight() - bottom - (bottom_down/2)-10);
 		ImageView view = new ImageView(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);

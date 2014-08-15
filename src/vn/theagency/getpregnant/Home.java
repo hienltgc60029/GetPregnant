@@ -160,10 +160,10 @@ public class Home extends Activity {
 			Intent intent = new Intent(getApplicationContext(),
 					Audios_Library.class);
 			intent.putExtra("Audios", String.valueOf(index));
-			intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			//intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(intent);		
 			finish();
-			overridePendingTransition(0, 0);
+			overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
 			break;
 		case 7:
 			handler = null;
@@ -189,8 +189,13 @@ public class Home extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		this.mHelper = Helper.shareIns(getApplicationContext());
 		setContentView(R.layout.home);
+		if(getIntent().getExtras().getString("Home")==null){
 		doAction(Integer.parseInt(getIntent().getExtras().getString("HomeBG")),
 				0,true);
+		}else{
+			doAction(Integer.parseInt(getIntent().getExtras().getString("HomeBG")),
+					0,false);
+		}
 
 	}
 

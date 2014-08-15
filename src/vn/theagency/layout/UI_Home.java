@@ -221,25 +221,25 @@ public class UI_Home {
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		mainFrame.topMargin = topMargin;
-		int leftPlus = (int) (this.mHelper.getAppWidth()/2 - plusTextMargin- this.mHelper.DpToPixel(20));
+		mainFrame.gravity =Gravity.CENTER_HORIZONTAL;
 		
 		main.setLayoutParams(mainFrame);
 
 		
 		//===
 		
-		PhotoView audios = new PhotoView(this.context);
+		View audios = new View(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
 		
-		audiosPara.leftMargin = plusMargin;
+		
 		audios.setLayoutParams(audiosPara);
-		audios.setBackgroundResource(R.drawable.animation_plus);
+		audios.setBackgroundResource(R.drawable.plus);
 		audios.setId(Key.AUSWAHL);
 		
 
 		TextView text = new TextView(this.context);
-		text.setText("AUSWAHL");
+	//	text.setText("AUSWAHL");
 		text.setTextSize(textsize);
 		text.setTextColor(Color.parseColor("#5c5c5c"));
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),"museosans_300.otf");
@@ -249,7 +249,7 @@ public class UI_Home {
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
 				textAddition,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		textPara.leftMargin = plusTextMargin+plusMargin;
+		textPara.leftMargin = plusTextMargin;
 		
 		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
@@ -271,18 +271,19 @@ public class UI_Home {
 		
 	FrameLayout layout = new FrameLayout(this.context);
 	FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-			FrameLayout.LayoutParams.WRAP_CONTENT,
-			FrameLayout.LayoutParams.WRAP_CONTENT);
+			titleWidth,
+			titleHeight);
 	params.topMargin = (int)pTop;
 	params.gravity = Gravity.CENTER_HORIZONTAL;
 	layout.setLayoutParams(params);
 
 	ImageView mTitle1 = new ImageView(this.context);
-	LinearLayout.LayoutParams mLayoutTitle1 = new LinearLayout.LayoutParams(
-			titleWidth, titleHeight);
-	mLayoutTitle1.gravity = Gravity.CENTER;
+	FrameLayout.LayoutParams mLayoutTitle1 = new FrameLayout.LayoutParams(
+			FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+	
 	mTitle1.setLayoutParams(mLayoutTitle1);
 	mTitle1.setBackgroundResource(bgText);
+	mTitle1.setId(Key.TITLE);
 
 	layout.addView(mTitle1);
 

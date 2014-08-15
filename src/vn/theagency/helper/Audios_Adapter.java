@@ -74,9 +74,9 @@ public class Audios_Adapter extends BaseAdapter {
 			
 			view.setLayoutParams(params);
 			int widthImage = (int)this.mContext.getResources().getDimension(R.dimen.AVARTA_WIDTH);
-			int widthBtn = (int)this.mContext.getResources().getDimension(R.dimen.ROW_BUTTON_WIDTH);
+			int widthBtn = (int)this.mContext.getResources().getDimension(R.dimen.ItemText_Width);
 			int margin = (int)this.mContext.getResources().getDimension(R.dimen.MarginLeft);
-			int widthRow =(int) (this.mHelper.getAppWidth()-((widthBtn*2)+(margin*2)+widthImage));
+			int widthRow =(int) (this.mHelper.getAppWidth()-widthBtn-margin-widthImage);
 			view.setPadding((int)widthRow/2, 0, 0, 0);
 			
 			
@@ -89,8 +89,10 @@ public class Audios_Adapter extends BaseAdapter {
 					arr.get(position).getmTitle());
 			
 			mViewHolder.mPrice = mTextView(view, R.id.txtprice, arr.get(position).getmPrice());
-			 Typeface type = Typeface.createFromAsset(mContext.getAssets(),"helveticaheue_light.ttf");
-			 mViewHolder.mPrice.setTypeface(type);
+			 Typeface type = Typeface.createFromAsset(mContext.getAssets(),"MuseoSans_500.otf");
+			 
+			 mViewHolder.mPrice.setTypeface(type, Typeface.NORMAL);
+			
 			mViewHolder.imageView = mImage(view, R.id.img, arr.get(position).mImageURL);
 			mViewHolder.mDec = mTextView(view, R.id.txtDec, arr.get(position)
 					.getmDecription());
@@ -103,18 +105,30 @@ public class Audios_Adapter extends BaseAdapter {
 				mViewHolder.btnDownload = mButton(view, R.id.btn,
 						R.drawable.btn_buy);
 			}
-			
 			//
-			
-			
-			
 
-
-			if(testLenght(23, arr.get(position).getmTitle())>1){
+		/*	if(testLenght(23, arr.get(position).getmTitle())>1){
 				mViewHolder.mDec.setLines(1);
+				 if(testLenght(14, arr.get(position).getmDecription())>1){
+						Log.i("LTH", ">1");
+						mViewHolder.mIcon.setVisibility(View.VISIBLE);
+						String a = (String) arr.get(position).getmDecription().substring(0, 25)+"...";
+						Log.i("LTH", a);
+						mViewHolder.mDec.setText(a);
+					}else{
+						mViewHolder.mIcon.setVisibility(View.GONE);
+					}
 			}else{
 				mViewHolder.mDec.setLines(2);
-			}
+				if(testLenght(14, arr.get(position).getmDecription())>2){
+					mViewHolder.mIcon.setVisibility(View.VISIBLE);
+					String a = arr.get(position).getmDecription().substring(0, 50)+"...";
+					Log.i("LTH", a);
+					mViewHolder.mDec.setText(a);
+				}else{
+					mViewHolder.mIcon.setVisibility(View.GONE);
+				}
+			}*/
 			
 			
 			
@@ -133,6 +147,7 @@ public class Audios_Adapter extends BaseAdapter {
 		paint.setTextSize(scaledPx);
 		final float size = paint.measureText(text);
 		int testLenght = (int) (size/mHelper.DpToPixel(220));
+		Log.i("LTH", String.valueOf(textSize)+":"+String.valueOf(size)+"-"+String.valueOf(testLenght));
 		return testLenght;
 	}
 
@@ -140,6 +155,7 @@ public class Audios_Adapter extends BaseAdapter {
 		TextView mTitle, mDec, mPrice;
 		FrameLayout imageView;
 		Button btnView, btnDownload;
+		ImageView mIcon;
 		
 	}
 
@@ -158,7 +174,11 @@ public class Audios_Adapter extends BaseAdapter {
 	private FrameLayout mImage(View v, int resId, int image) {
 		FrameLayout iv = (FrameLayout) v.findViewById(resId);
 		iv.setBackgroundResource(image); //
-
+		return iv;
+	}
+	private ImageView mImageIcon(View v, int resId, int image) {
+		ImageView iv = (ImageView) v.findViewById(resId);
+		iv.setBackgroundResource(image); //
 		return iv;
 	}
 }

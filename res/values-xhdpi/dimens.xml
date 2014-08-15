@@ -12,17 +12,20 @@
     <dimen name="AUSWAHL">220dp</dimen>
     
 
+    <!-- Audios Item -->
+    <dimen name="plusMarginLeft">150dp</dimen>
+    
 	    <!--  Deine Titel -->
-	   <dimen name="AVARTA_WIDTH">105dp</dimen>
-	   <dimen name="AVARTA_HEIGHT">105dp</dimen>
+	   <dimen name="AVARTA_WIDTH">108dp</dimen>
+	   <dimen name="AVARTA_HEIGHT">112dp</dimen>
 	   <dimen name="AVARTA_PRICE_HEIGHT">30dp</dimen>
-	   <dimen name="Item_HEIGHT">108dp</dimen>
+	   <dimen name="Item_HEIGHT">117dp</dimen>
 	   <dimen name="ROW_BUTTON_WIDTH">102dp</dimen>
 	   <dimen name="ROW_BUTTON_HEIGHT">29dp</dimen> 
 	   <dimen name="ROW_PADDING">20dp</dimen> 
 	    <dimen name="BOTTOM">52dp</dimen>
 	     <dimen name="BOTTOM_DOWN">39dp</dimen> 
-	     <dimen name="ItemText_Width">220dp</dimen>   
+	     <dimen name="ItemText_Width">210dp</dimen>   
 	   <!-- sammlung -->
      <dimen name="ROW_BTN_LOS_WIDTH">92dp</dimen>
      <dimen name="ROW_BTN_DOWN_WIDTH">71dp</dimen>

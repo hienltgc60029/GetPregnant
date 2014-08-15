@@ -6,21 +6,25 @@ import vn.theagency.helper.Audios_Adapter;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Audios;
+import vn.theagency.layout.UI_Home;
 import vn.theagency.objects.Audios;
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -28,7 +32,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +47,14 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 	View initUIBgView,initUIBottom;
 	ImageView initUIDown; 
 	FrameLayout initUIHeader;
-	View deine,audio;
+	View deine,plus;
+	FrameLayout audio;
 	int pos;
 	TextView textView;
 	ArrayList<Audios> audiosList;
+	//
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -59,6 +66,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 
 		
 		this.mHelper = Helper.shareIns(getApplicationContext());
+		
 		this.mAudios = UI_Audios.shareIns(getApplicationContext());
 
 		initUIListView = this.mAudios.initUIListView();
@@ -68,7 +76,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		initUIBgView = this.mAudios.initUIBgView();
 		initUIBottom = this.mAudios.initUIBottom();
 		initUIDown = this.mAudios.initUIDown();
-		
+		 
 		
 		
 		initUI();
@@ -95,14 +103,33 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		libraries.setDividerHeight(1);
 		
 		deine = findViewById(Key.btn_deine_musik);
-		audio = findViewById(Key.AUDIOS_NAME);
-		
-	
-		
-		
-		
-		
+		audio = (FrameLayout) findViewById(Key.AUDIOS_NAME);
+		plus = findViewById(Key.HEADER);	
+		plus.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.home_plus_flip));
 	}
+	
+	public void setbackgroungHome(int action,View view){
+		switch (action) {
+		case 1:
+			view.setBackgroundResource(R.drawable.bg);
+			break;
+		case 2:
+			view.setBackgroundResource(R.drawable.bg_auf);
+			break;
+		case 3:
+			view.setBackgroundResource(R.drawable.bg_unt);
+			break;
+		case 4:
+			view.setBackgroundResource(R.drawable.bg_ver);
+			break;
+		case 5:
+			view.setBackgroundResource(R.drawable.bg_vor);
+			break;
+		default:
+			break;
+		}
+	}
+	
 	public void getArrayFormHome(int posi){
 		switch (posi) {
 		case 1:
@@ -143,7 +170,8 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		FrameLayout.LayoutParams paraBg = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
-		frist.setBackgroundColor(Color.BLACK);
+		setbackgroungHome(Integer.parseInt(getIntent().getExtras().getString("Audios")), frist);
+	
 		frist.setLayoutParams(paraBg);
 		
 		this.wrapper.addView(frist);
@@ -155,7 +183,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		this.wrapper.addView(this.initUIBottom);
 		this.wrapper.addView(this.initUIHeader);
 		setContentView(this.wrapper);
-		
+		new AuswahlAnimation(this.initUIListView, R.anim.auswahl_down).execute(0);
 		textView = (TextView) findViewById(Key.AUSWAHL);
 	
 		
@@ -172,39 +200,39 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 	private ArrayList<Audios> audiosAusgchen() {
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("","Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benÃ¶tigst jedoch mehr Zeit.", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
-				"Zurückkommen",
-				"Sollte nach jeder Hypnose als Abschluss folgen...",
+				"ZurÃ¼ckkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen, ausser Du mÃ¶chtest nachher schlafen.",
 				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Farben atmen",
-				"Perfekt für all die, welche Entspannung brauchen und...",
+				"Perfekt fÃ¼r all die, welche Entspannung brauchen und Farben mÃ¶gen.",
 				"Gratis", R.drawable.far01);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Fühle deine eigene Gelassenheit wieder",
+				"FÃ¼hle deine eigene Gelassenheit wieder",
 				"",
 				"Gratis", R.drawable.gel01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Lieblingsplatz",
-				"Ein geheimer Platz, an welchem  man vor allen Problemen...\n geschützt ist.",
-				"4CHF/3€", R.drawable.lie01);
+				"Ein geheimer Platz, an welchem  man vor allen Problemen geschÃ¼tzt ist.",
+				"4CHF/3â‚¬", R.drawable.lie01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Kontrollzentrale",
-				"In deiner persönlichen Kontrollzentrale kannst Du alles...\n so einstellen, wie es sein sollte.",
-				"4CHF/3€", R.drawable.kon01);
+				"In deiner persÃ¶nlichen Kontrollzentrale kannst Du alles so einstellen, wie es sein sollte.",
+				"4CHF/3â‚¬", R.drawable.kon01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
 				"Heilendes  \nweisses Licht",
-				"Eine wunderbare Hypnose um...",
-				"4CHF/3€",
+				"Eine wunderbare Hypnose um Stress abzubauen.",
+				"4CHF/3â‚¬",
 			 R.drawable.hei01);
 		audiosList.add(audios);
 		
@@ -215,34 +243,34 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benÃ¶tigst jedoch mehr Zeit.", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
-				"Zurückkommen",
-				"Sollte nach jeder Hypnose als Abschluss folgen...",
+				"ZurÃ¼ckkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen, ausser Du mÃ¶chtest nachher schlafen.",
 				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Türe der Erkenntnis",
+				"TÃ¼re der Erkenntnis",
 				"Realisiere, dass nur Du entscheidest, wie Du.",
-				"2CHF/1.50€", R.drawable.ture);
+				"2CHF/1.50â‚¬", R.drawable.ture);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
-				"Grenzen stärken",
-				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter...",
-				"4CHF/3€", R.drawable.gre01);
+				"Grenzen stÃ¤rken",
+				"SpÃ¼re kÃ¶rperlich, wie sich negative Gedanken auf deineStimmung auswirken und was Du dagegen tun kannst.",
+				"4CHF/3â‚¬", R.drawable.gre01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Zoo der Emotionen",
-				"Lass deinen Selbstzweifel und deinen Stress eingesperrt...",
-				"4CHF/3€", R.drawable.zoo01);
+				"Lass deinen Selbstzweifel und deinen Stress eingesperrt im Zoo zurÃ¼ck.",
+				"4CHF/3â‚¬", R.drawable.zoo01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Heilendes  \nweisses Licht",
-				"Eine wunderbare Hypnose um...",
-				"4CHF/3€", R.drawable.hei01);
+				"Eine wunderbare Hypnose um Stress abzubauen.",
+				"4CHF/3â‚¬", R.drawable.hei01);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -252,23 +280,23 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis",R.drawable.wen01);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benÃ¶tigst jedoch mehr Zeit.", "Gratis",R.drawable.wen01);
 		audiosList.add(audios);
 		
 		audios = new Audios("",
-				"Zurückkommen",
-				"Sollte nach jeder Hypnose als Abschluss folgen...",
+				"ZurÃ¼ckkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen, ausser Du mÃ¶chtest nachher schlafen.",
 				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Einnistung",
-				"Unterstütze deinen Körper und deinen Geist nach einem...",
-				"3CHF/2€", R.drawable.ein01);
+				"unterstÃ¼tze deinen KÃ¶rper und deinen Geist nach einem Transfer oder einer IUI.",
+				"3CHF/2â‚¬", R.drawable.ein01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Sturmwolken",
 				"Egal, wie das Ergebnis wird, das Leben geht weiter.",
-				"3CHF/2€", R.drawable.stu01);
+				"3CHF/2â‚¬", R.drawable.stu01);
 		audiosList.add(audios);
 		
 		return audiosList;
@@ -278,27 +306,27 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benÃ¶tigst jedoch mehr Zeit.", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Zurückkommen",
-				"Sollte nach jeder Hypnose als Abschluss folgen...",
+				"ZurÃ¼ckkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen, ausser Du mÃ¶chtest nachher schlafen.",
 				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Gegensätze",
-				"Spüre körperlich, wie sich negative Gedanken auf...",
-				"3CHF/2€", R.drawable.geg01);
+				"GegensÃ¤tze",
+				"SpÃ¼re kÃ¶rperlich, wie sich negative Gedanken auf deineStimmung auswirken und was Du dagegen tun kannst.",
+				"3CHF/2â‚¬", R.drawable.geg01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Fruchtbarkeitsgarten",
-				"Bereite alles so in deinem Fruchtbarkeitsgarten vor...",
-				"3CHF/2€", R.drawable.fru01);
+				"Bereite alles so in deinem Fruchtbarkeitsgarten vor, dass Du nur noch anzupï¬‚anzen brauchst.",
+				"3CHF/2â‚¬", R.drawable.fru01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Heilendes \nweisses Licht",
-				"Eine wunderbare Hypnose um...",
-				"4CHF/3€", R.drawable.hei01);
+				"Eine wunderbare Hypnose um Stress abzubauen.",
+				"4CHF/3â‚¬", R.drawable.hei01);
 		audiosList.add(audios);
 		
 		
@@ -308,22 +336,22 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList = new ArrayList<Audios>();
 		audios = new Audios("",
 				"Wendeltreppe",
-				"Hilft Dir dich noch tiefer zu entspannen, Du benötigst...", "Gratis", R.drawable.wen01);
+				"Hilft Dir dich noch tiefer zu entspannen, Du benÃ¶tigst jedoch mehr Zeit.", "Gratis", R.drawable.wen01);
 		audiosList.add(audios);
 		audios = new Audios("",
-				"Zurückkommen",
-				"Sollte nach jeder Hypnose als Abschluss folgen...",
+				"ZurÃ¼ckkommen",
+				"Sollte nach jeder Hypnose als Abschluss folgen, ausser Du mÃ¶chtest nachher schlafen.",
 				"Gratis", R.drawable.zur01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"IVF Vorbereitung",
-				"Hilf Dir und deinem Körper, die Behandlung optimal zu nutzen.",
-				"4CHF/3€", R.drawable.ivf01);
+				"Hilf Dir und deinem KÃ¶rper, die Behandlung optimal zu nutzen.",
+				"4CHF/3â‚¬", R.drawable.ivf01);
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Kontrollzentrale",
-				"In deiner persönlichen Kontrollzentrale kannst Du alles...",
-				"4CHF/3€",R.drawable.kon01);
+				"In deiner persÃ¶nlichen Kontrollzentrale kannst Du alles so einstellen, wie es sein sollte.",
+				"4CHF/3â‚¬",R.drawable.kon01);
 		audiosList.add(audios);		
 		return audiosList;
 	}
@@ -341,7 +369,91 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 			
 			break;
 		case Key.AUDIOS_NAME:
-			onBackPressed();
+			//onBackPressed();
+			plus.animate().rotationYBy(0).rotationY(90).setDuration(250).setListener(new AnimatorListener() {
+				
+				@Override
+				public void onAnimationStart(Animator animation) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animator animation) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					// TODO Auto-generated method stub
+					plus.setBackgroundResource(R.drawable.plus);
+					plus.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
+						
+						@Override
+						public void onAnimationStart(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void onAnimationRepeat(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							// TODO Auto-generated method stub
+								initUIBgView.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
+								initUIListView.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
+								initUIDown.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
+								initUIBottom.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
+								initUIHeader.animate().setInterpolator(new AccelerateDecelerateInterpolator()).translationYBy(0).translationY(1038).setDuration(1000).setListener(new AnimatorListener() {
+								
+								@Override
+								public void onAnimationStart(Animator animation) {
+									// TODO Auto-generated method stub
+									handler.sendEmptyMessageDelayed(1, 100);
+								}
+								
+								@Override
+								public void onAnimationRepeat(Animator animation) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onAnimationEnd(Animator animation) {
+									// TODO Auto-generated method stub
+									onBackPressed();
+									
+								}
+								
+								@Override
+								public void onAnimationCancel(Animator animation) {
+									// TODO Auto-generated method stub
+									
+								}
+							}).start();
+						}
+						
+						@Override
+						public void onAnimationCancel(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+					}).start();
+				}
+				
+				@Override
+				public void onAnimationCancel(Animator animation) {
+					// TODO Auto-generated method stub
+					
+				}
+			}).start();
+			
+			
 			break;
 		default:
 			break;
@@ -368,9 +480,10 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		Intent intent3 = new Intent(getApplicationContext(), Home.class);
 		clearMemory();
 		intent3.putExtra("HomeBG", getIntent().getExtras().getString("Audios"));
+		intent3.putExtra("Home", "Home");
 		startActivity(intent3);
 		finish();
-		
+		overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
 		
 	}
 
@@ -392,9 +505,57 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		
 	}
 	
+	Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case 1:
+				initUIHeader.setBackgroundColor(Color.TRANSPARENT);
+				break;
+
+			default:
+				break;
+			}
+		}
+		
+	};
 	
 	
-	
+	public class AuswahlAnimation extends AsyncTask<Integer, Integer, Void>{
+
+		View viewAnimation;
+		Animation anim;
+		int animRes;
+		
+		
+		public AuswahlAnimation(View viewAnimation, int animRes) {
+			super();
+			this.viewAnimation = viewAnimation;
+			this.animRes = animRes;
+			anim = AnimationUtils.loadAnimation(getApplicationContext(),
+					animRes);
+		}
+
+		@Override
+		protected Void doInBackground(final Integer... params) {
+			// TODO Auto-generated method stub
+			runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					viewAnimation.clearAnimation();
+					viewAnimation.setAnimation(anim);
+					viewAnimation.startAnimation(anim);	
+					handler.sendEmptyMessageDelayed(animRes, (anim.getDuration()-params[0]));
+				}
+			});
+			return null;
+		}				
+	}
 	
 	
 	

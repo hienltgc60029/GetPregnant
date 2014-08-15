@@ -54,13 +54,13 @@ public class SammlungAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		// TODO Auto-generated method stub
-		return arr.get(position);
+		return null;
 	}
 
 	@Override
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
-		return position;
+		return 0;
 	}
 
 	@Override
@@ -82,11 +82,7 @@ public class SammlungAdapter extends BaseAdapter {
 			view.setPadding(30, 0, 30, 0);
 		}
 			mViewHolder = (MyViewHolder) view.getTag();
-			if(arr.get(position).isActive){
-				view.setBackgroundColor(Color.WHITE);
-			}else{
-				view.setBackgroundColor(Color.TRANSPARENT);
-			}
+			
 			
 			
 			
@@ -165,6 +161,14 @@ public class SammlungAdapter extends BaseAdapter {
 				if (position == 0) {
 					mViewHolder.btnDownload.setEnabled(true);
 				}
+			}
+			if(arr.get(position).isActive){
+				mViewHolder.mTitle.setAlpha(1f);
+				mViewHolder.mDec.setAlpha(1f);
+			}else{
+				mViewHolder.mTitle.setAlpha(0.5f);
+				mViewHolder.mDec.setAlpha(0.5f);
+				
 			}
 			
 
