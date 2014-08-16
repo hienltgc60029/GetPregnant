@@ -32,6 +32,7 @@ public class UI_Audios {
 	int plus_width;
 	int plus_height;
 	int bottom,bottom_down;
+	public static int animUpPlus;
 	//
 	public static int header_width,header_height,textsize;
 
@@ -57,11 +58,15 @@ public class UI_Audios {
 		//
 		header_width = (int) this.mHelper.DpToPixel(360);
 		header_height = (int) this.mHelper.DpToPixel(92);
-		textsize = (int) this.mHelper.DpToSp(20);
+		textsize = (int)  mHelper.DpToSp(20);
 		bottom = (int) this.mHelper.DpToPixel(52);
 		bottom_down = (int) this.mHelper.DpToPixel(40);
 		plusMargin = (int) mHelper.DpToPixel(70);
 		plusTextMargin= (int) mHelper.DpToPixel(50);
+		int height = (int) this.mHelper.DpToPixel(46-(55/2));
+		int topMargin = (int) ((84*mHelper.getAppHeight())/100);
+		animUpPlus = topMargin - height+1; 
+		Log.i("LTH", "UI_AudiosAnim"+ String.valueOf(animUpPlus));
 	}
 
 	public ListView initUIListView() {
@@ -84,16 +89,17 @@ public class UI_Audios {
 		
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				(int) this.mHelper.getAppWidth(), header_height);
+				FrameLayout.LayoutParams.MATCH_PARENT, header_height);
 		main.setLayoutParams(mainFrame);
 		main.setBackgroundResource(R.drawable.library_header);
 		//
 		FrameLayout layout = new FrameLayout(this.context);
 		layout.setId(Key.AUDIOS_NAME);
 		
+		
 		FrameLayout.LayoutParams layoutFrame = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-		layoutFrame.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
+		layoutFrame.gravity = Gravity.CENTER;
 		layout.setLayoutParams(layoutFrame);
 		
 		
@@ -101,6 +107,8 @@ public class UI_Audios {
 		View audios = new View(this.context);
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus_width, plus_height);
+		audiosPara.gravity = Gravity.CENTER_VERTICAL;
+		audiosPara.leftMargin = 1;
 		audios.setLayoutParams(audiosPara);
 
 		audios.setBackgroundResource(R.drawable.btn_slip);
@@ -111,7 +119,7 @@ public class UI_Audios {
 
 		TextView text = new TextView(this.context);
 		
-		text.setAlpha(0.5f);		
+		text.setTextColor(Color.parseColor("#5c5c5c"));	
 		text.setTextSize(textsize);
 		
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),"museosans_300.otf");
@@ -122,10 +130,9 @@ public class UI_Audios {
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		textPara.leftMargin= plusTextMargin;
-		textPara.rightMargin= (int) this.mHelper.DpToPixel(5);
 		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
-		
+		//
 		layout.addView(audios);
 		layout.addView(text);
 		main.addView(layout);

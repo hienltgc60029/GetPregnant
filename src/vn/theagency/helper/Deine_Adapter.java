@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -184,7 +185,7 @@ public class Deine_Adapter extends BaseAdapter {
 
 	private ImageView mImage(View v, int resId, int image) {
 		ImageView iv = (ImageView) v.findViewById(resId);
-		iv.setImageResource(image); //
+		iv.setBackgroundResource(image); //
 
 		return iv;
 	}

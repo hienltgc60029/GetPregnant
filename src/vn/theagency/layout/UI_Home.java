@@ -2,6 +2,7 @@ package vn.theagency.layout;
 
 import vn.theagency.customlayout.PhotoView;
 import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnant.Audios_Library.AuswahlAnimation;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
 import android.animation.LayoutTransition;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -33,6 +35,8 @@ public class UI_Home {
 	
 	int titleWidth;
 	int titleHeight;
+	public static int animUpPlus;
+	int topMargin;
 	
 	
 	private UI_Home(Context _context) {
@@ -53,7 +57,7 @@ public class UI_Home {
 	/**
 	 * 
 	 */
-	private void size() {
+	public void size() {
 		icon_home = (int) mHelper.DpToPixel(40) ;
 		icon_home_aligh = (int) mHelper.DpToPixel(12) ;
 		plus = (int) mHelper.DpToPixel(55);
@@ -61,9 +65,15 @@ public class UI_Home {
 		textAddition = (int) mHelper.DpToPixel(100);
 		plusTextMargin= (int)mHelper.DpToPixel(50);
 		textsize = (int) mHelper.DpToSp(20);
+		Log.i("LTH", "textsize:" + String.valueOf(textsize));
 		
 		titleWidth =(int) (8*this.mHelper.getAppWidth()/10);
 		titleHeight =(int) this.mHelper.DpToPixel(120);
+		int header_height = (int) this.mHelper.DpToPixel(46-(55/2));
+		topMargin = (int) ((84*mHelper.getAppHeight())/100);
+		animUpPlus = topMargin - header_height+1; 
+		
+		
 	}
 
 	/**
@@ -211,13 +221,8 @@ public class UI_Home {
 	}
 
 	public FrameLayout initUIAddition(int imgTitle) {	
-		
-	    
-		
-		
-
 		FrameLayout main = new FrameLayout(this.context);
-		int topMargin = (int) ((84*mHelper.getAppHeight())/100);
+		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		mainFrame.topMargin = topMargin;
@@ -232,10 +237,11 @@ public class UI_Home {
 		FrameLayout.LayoutParams audiosPara = new FrameLayout.LayoutParams(
 				plus, plus);
 		
-		
+		audiosPara.gravity = Gravity.CENTER_VERTICAL;
 		audios.setLayoutParams(audiosPara);
 		audios.setBackgroundResource(R.drawable.plus);
 		audios.setId(Key.AUSWAHL);
+		
 		
 
 		TextView text = new TextView(this.context);
@@ -247,14 +253,14 @@ public class UI_Home {
 		
 		text.setId(Key.AUDIOS_NAME);
 		FrameLayout.LayoutParams textPara = new FrameLayout.LayoutParams(
-				textAddition,
+				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
 		textPara.leftMargin = plusTextMargin;
 		
 		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
 		
-		
+	//	main.setBackgroundColor(Color.RED);
 		main.addView(audios);
 		main.addView(text);
 		

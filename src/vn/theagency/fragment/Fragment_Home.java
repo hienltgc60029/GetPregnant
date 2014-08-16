@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -284,14 +285,16 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			break;
 		case Key.AUSWAHL:
 			clearMemory();
+			plus.clearAnimation();
 			getActivity().runOnUiThread(new Runnable() {
 				
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					plus.clearAnimation();
+					
 				//	initUIAddition.startAnimation(plusUp);
-					initUIAddition.animate().translationYBy(0).translationY(-1038).setDuration(800).setListener(new AnimatorListener() {
+					Log.i("LTH", String.valueOf(0-titles.animUpPlus)+"animUpPlus");
+					initUIAddition.animate().translationYBy(0).translationY(0-titles.animUpPlus).setDuration(800).setListener(new AnimatorListener() {
 						
 						@Override
 						public void onAnimationStart(Animator animation) {
@@ -430,148 +433,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			
 			break;
 		case Key.AUDIOS_NAME:
-			clearMemory();
-			getActivity().runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					plus.clearAnimation();
-				//	initUIAddition.startAnimation(plusUp);
-					initUIAddition.animate().translationYBy(0).translationY(-1038).setDuration(400).setListener(new AnimatorListener() {
-						
-						@Override
-						public void onAnimationStart(Animator animation) {
-							// TODO Auto-generated method stub
-							
-								getActivity().runOnUiThread(new Runnable() {
-									
-									@Override
-									public void run() {
-										// TODO Auto-generated method stub
-										initUIHome.startAnimation(homeUp);
-										initUIText.startAnimation(homeUp);
-										bg.startAnimation(homeUp);
-									
-									}
-								});
-								
-						
-						}
-						
-						@Override
-						public void onAnimationRepeat(Animator animation) {
-							// TODO Auto-generated method stub
-							
-						}
-						
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							// TODO Auto-generated method stub
-							
-								getActivity().runOnUiThread(new Runnable() {
-									
-									@Override
-									public void run() {
-										plus.animate().rotationYBy(0).rotationY(90).setDuration(250).setListener(new AnimatorListener() {
-											
-											@Override
-											public void onAnimationStart(Animator animation) {
-												// TODO Auto-generated method stub
-												
-											}
-											
-											@Override
-											public void onAnimationRepeat(Animator animation) {
-												// TODO Auto-generated method stub
-												
-											}
-											
-											@Override
-											public void onAnimationEnd(Animator animation) {
-												// TODO Auto-generated method stub
-												plus.setBackgroundResource(R.drawable.btn_slip);
-												plus.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
-													
-													@Override
-													public void onAnimationStart(Animator animation) {
-														// TODO Auto-generated method stub
-														
-													}
-													
-													@Override
-													public void onAnimationRepeat(Animator animation) {
-														// TODO Auto-generated method stub
-														
-													}
-													
-													@Override
-													public void onAnimationEnd(Animator animation) {
-														// TODO Auto-generated method stub
-														try {
-															
-															clearMemory();
-
-															switch (getArguments().getInt("background")) {
-															case R.drawable.bg:
-																msg.arg2 = 1;
-																break;
-															case R.drawable.bg_auf:
-																msg.arg2 = 2;
-																break;
-															case R.drawable.bg_unt:
-																msg.arg2 = 3;
-																break;
-															case R.drawable.bg_ver:
-																msg.arg2 = 4;
-																break;
-															case R.drawable.bg_vor:
-																msg.arg2 = 5;
-																break;
-
-															default:
-																break;
-															}
-
-															msg.arg1 = 6;
-															messenger.send(msg);
-														} catch (Exception ex) {
-															ex.printStackTrace();
-														}
-
-													}
-													
-													@Override
-													public void onAnimationCancel(Animator animation) {
-														// TODO Auto-generated method stub
-														
-													}
-												}).start();
-											}
-											
-											@Override
-											public void onAnimationCancel(Animator animation) {
-												// TODO Auto-generated method stub
-												
-											}
-										}).start();
-									}
-								});
-								
-							}
-							
-						
-						
-						@Override
-						public void onAnimationCancel(Animator animation) {
-							// TODO Auto-generated method stub
-							
-						}
-					}).start();
-				//	plus.startAnimation(plusUp);
-					
-				}
-			});
+			//clearMemory();
 			
 			
 			break;

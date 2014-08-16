@@ -26,6 +26,8 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
@@ -53,7 +55,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 	TextView textView;
 	ArrayList<Audios> audiosList;
 	//
-	
+	View frist;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -165,20 +167,23 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		this.wrapper.setLayoutParams(para);
+		this.wrapper.setBackgroundColor(Color.BLACK);
 		
-		View frist = new View(getApplicationContext());
+		frist = new View(getApplicationContext());
 		FrameLayout.LayoutParams paraBg = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		setbackgroungHome(Integer.parseInt(getIntent().getExtras().getString("Audios")), frist);
 	
 		frist.setLayoutParams(paraBg);
+		frist.setVisibility(View.GONE);
+		
 		
 		this.wrapper.addView(frist);
-		
 		this.wrapper.addView(this.initUIBgView);
 		
 		this.wrapper.addView(this.initUIListView);
+		
 		this.wrapper.addView(this.initUIDown);
 		this.wrapper.addView(this.initUIBottom);
 		this.wrapper.addView(this.initUIHeader);
@@ -370,25 +375,12 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 			break;
 		case Key.AUDIOS_NAME:
 			//onBackPressed();
-			plus.animate().rotationYBy(0).rotationY(90).setDuration(250).setListener(new AnimatorListener() {
+			runOnUiThread(new Runnable() {
 				
 				@Override
-				public void onAnimationStart(Animator animation) {
+				public void run() {
 					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animator animation) {
-					// TODO Auto-generated method stub
-					
-				}
-				
-				@Override
-				public void onAnimationEnd(Animator animation) {
-					// TODO Auto-generated method stub
-					plus.setBackgroundResource(R.drawable.plus);
-					plus.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
+					plus.animate().rotationYBy(0).rotationY(90).setDuration(250).setListener(new AnimatorListener() {
 						
 						@Override
 						public void onAnimationStart(Animator animation) {
@@ -405,16 +397,15 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 						@Override
 						public void onAnimationEnd(Animator animation) {
 							// TODO Auto-generated method stub
-								initUIBgView.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
-								initUIListView.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
-								initUIDown.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
-								initUIBottom.animate().translationYBy(0).translationY(1138).setDuration(1000).start();
-								initUIHeader.animate().setInterpolator(new AccelerateDecelerateInterpolator()).translationYBy(0).translationY(1038).setDuration(1000).setListener(new AnimatorListener() {
+							frist.setVisibility(View.VISIBLE);
+							
+							plus.setBackgroundResource(R.drawable.plus);
+							plus.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
 								
 								@Override
 								public void onAnimationStart(Animator animation) {
 									// TODO Auto-generated method stub
-									handler.sendEmptyMessageDelayed(1, 100);
+									
 								}
 								
 								@Override
@@ -426,8 +417,53 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 								@Override
 								public void onAnimationEnd(Animator animation) {
 									// TODO Auto-generated method stub
-									onBackPressed();
 									
+									runOnUiThread(new Runnable() {
+										
+										@Override
+										public void run() {
+											// TODO Auto-generated method stub
+											frist.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.auswahl_down));
+											initUIBgView.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mHelper.getAppHeight()).setDuration(1000).start();
+											initUIListView.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mHelper.getAppHeight()).setDuration(1000).start();
+											initUIDown.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(1000).start();
+											initUIBottom.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(1000).start();
+										}
+									});
+									
+										initUIHeader.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(1000).setListener(new AnimatorListener() {
+										
+										@Override
+										public void onAnimationStart(Animator animation) {
+											// TODO Auto-generated method stub
+											handler.sendEmptyMessageDelayed(1, 300);
+										}
+										
+										@Override
+										public void onAnimationRepeat(Animator animation) {
+											// TODO Auto-generated method stub
+											
+										}
+										
+										@Override
+										public void onAnimationEnd(Animator animation) {
+											// TODO Auto-generated method stub
+											Intent intent3 = new Intent(getApplicationContext(), Home.class);
+											clearMemory();
+											intent3.putExtra("HomeBG", getIntent().getExtras().getString("Audios"));
+											intent3.putExtra("Home", "Home");
+											startActivity(intent3);
+											finish();
+											overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
+											
+										}
+										
+										@Override
+										public void onAnimationCancel(Animator animation) {
+											// TODO Auto-generated method stub
+											
+										}
+									}).start();
 								}
 								
 								@Override
@@ -445,13 +481,8 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 						}
 					}).start();
 				}
-				
-				@Override
-				public void onAnimationCancel(Animator animation) {
-					// TODO Auto-generated method stub
-					
-				}
-			}).start();
+			});
+			
 			
 			
 			break;
@@ -469,9 +500,9 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 	public void clearMemory(){
 		deine.setOnClickListener(null);
 		audio.setOnClickListener(null);
-		audios = null;
-		wrapper=null;
-		libraries = null;
+	//	audios = null;
+	//	wrapper=null;
+	//	libraries = null;
 	}
 	@Override
 	public void onBackPressed() {

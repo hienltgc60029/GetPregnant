@@ -88,7 +88,7 @@ public class SammlungAdapter extends BaseAdapter {
 			
 			
 			
-			mViewHolder.imageView = mImage(view, R.id.icon, arr.get(position).getmImageURL());
+			mViewHolder.imageView = mImage(view, R.id.img, arr.get(position).getmImageURL());
 			mViewHolder.btnDownload = mButton(view, R.id.btn_down);
 			mViewHolder.btnUp = mButton(view, R.id.btn_up);
 			mViewHolder.btnLos = mButton(view, R.id.btn_los);

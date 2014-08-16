@@ -34,10 +34,11 @@ public final class R {
         public static final int home_plus_flip=0x7f040016;
         public static final int home_plus_up=0x7f040017;
         public static final int home_slideup=0x7f040018;
-        public static final int home_up=0x7f040019;
-        public static final int home_zoom_in=0x7f04001a;
-        public static final int slide_left_in=0x7f04001b;
-        public static final int slide_left_out=0x7f04001c;
+        public static final int home_slipein=0x7f040019;
+        public static final int home_up=0x7f04001a;
+        public static final int home_zoom_in=0x7f04001b;
+        public static final int slide_left_in=0x7f04001c;
+        public static final int slide_left_out=0x7f04001d;
     }
     public static final class animator {
         public static final int alpha_down=0x7f050000;

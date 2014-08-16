@@ -5,17 +5,16 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/img"
+     <ImageView 
+         android:id="@+id/img"
+         android:layout_marginTop="2dp"
+         android:layout_gravity="center_vertical"
         android:layout_width="@dimen/AVARTA_WIDTH"
         android:layout_height="@dimen/AVARTA_HEIGHT"
-        android:layout_gravity="center_vertical"
-       	android:layout_marginTop="3dp"
-        android:scaleType="fitXY"
-        android:contentDescription="@null"
-        android:src="@drawable/ic_launcher" />
+       />
 
-    <RelativeLayout
+
+     <RelativeLayout
         android:id="@+id/listContent"
         android:layout_width="@dimen/ItemText_Width"
         android:layout_gravity="center_vertical"
@@ -37,22 +36,26 @@
             android:paddingTop="0dp"
             android:text="Lieblingsplatz"
             android:textColor="#fffab2"
-            android:textSize="22dp"
+            android:textSize="21dp"
             android:alpha="0.5" />
 <FrameLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            
             android:layout_alignRight="@+id/btn"
             android:layout_below="@+id/txtTitle"
             android:gravity="top" >
+
         <TextView
             android:id="@+id/txtDec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="2"
-            android:textColor="#fffab2"
             android:alpha="0.5"
-            android:text="Blindtext elitis endiatiu sincil lue molest Uciam ipita int." />
+            android:lines="4"
+            android:text="Blindtext elitis endiatiu sincil lue molest Uciam ipita int."
+            android:textColor="#fffab2"
+            android:textSize="12dp" />
+       
 </FrameLayout>
         <Button
             android:id="@+id/btnView"
@@ -60,13 +63,14 @@
             android:layout_height="@dimen/ROW_BUTTON_HEIGHT"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true" />
+
         <Button
             android:id="@+id/btn"
             android:layout_width="@dimen/ROW_BUTTON_WIDTH"
             android:layout_height="@dimen/ROW_BUTTON_HEIGHT"
             android:layout_alignParentBottom="true"
-            android:layout_marginLeft="@dimen/MarginLeft"
-            android:layout_toRightOf="@id/btnView" />
+            android:layout_alignParentRight="true" />
+
     </RelativeLayout>
 
 </LinearLayout>
