@@ -70,7 +70,7 @@ public class Home extends Activity {
 				/*auf.setCustomAnimations(R.animator.alpha_up,
 						R.animator.alpha_down);*/
 				auf.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((4 * mHelper.getAppHeight()) / 40)),
+						((int) ((7 * mHelper.getAppHeight()) / 80)),
 						R.drawable.txt_auflosen, R.drawable.bg_auf,
 						(int) mHelper.getAppWidth(),isFrist));
 				auf.commit();
@@ -80,7 +80,7 @@ public class Home extends Activity {
 						.beginTransaction();
 
 				auf.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((4 * mHelper.getAppHeight()) / 40)),
+						((int) ((7 * mHelper.getAppHeight()) / 80)),
 						R.drawable.txt_auflosen, R.drawable.bg_auf,
 						(int) mHelper.getAppWidth(),isFrist));
 				auf.commit();
@@ -103,7 +103,7 @@ public class Home extends Activity {
 						.beginTransaction();
 
 				unt.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((4 * mHelper.getAppHeight()) / 40)),
+						((int) ((3 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_unterstutzen, R.drawable.bg_unt,
 						(int) (mHelper.getAppWidth() / 2),isFrist));
 				unt.commit();
@@ -116,7 +116,7 @@ public class Home extends Activity {
 				/*ver.setCustomAnimations(R.animator.alpha_up,
 						R.animator.alpha_down);*/
 				ver.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((25 * mHelper.getAppHeight()) / 40)),
+						((int) ((24 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_verbessern, R.drawable.bg_ver,
 						(int) (3 * mHelper.getAppWidth() / 4),isFrist));
 				ver.commit();
@@ -126,7 +126,7 @@ public class Home extends Activity {
 						.beginTransaction();
 
 				ver.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((25 * mHelper.getAppHeight()) / 40)),
+						((int) ((24 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_verbessern, R.drawable.bg_ver,
 						(int) (3 * mHelper.getAppWidth() / 4),isFrist));
 				ver.commit();
@@ -139,7 +139,7 @@ public class Home extends Activity {
 				/*vor.setCustomAnimations(R.animator.alpha_up,
 						R.animator.alpha_down);*/
 				vor.replace(R.id.container, Fragment_Home.newInstance(
-						(int) (((25 * mHelper.getAppHeight()) / 40)),
+						(int) (((24 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_vorbereiten, R.drawable.bg_vor,
 						(int) mHelper.getAppWidth() / 4,isFrist));
 				vor.commit();
@@ -149,7 +149,7 @@ public class Home extends Activity {
 						.beginTransaction();
 
 				vor.replace(R.id.container, Fragment_Home.newInstance(
-						(int) (((25 * mHelper.getAppHeight()) / 40)),
+						(int) (((24 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_vorbereiten, R.drawable.bg_vor,
 						(int) mHelper.getAppWidth() / 4,isFrist));
 				vor.commit();
@@ -160,18 +160,17 @@ public class Home extends Activity {
 			Intent intent = new Intent(getApplicationContext(),
 					Audios_Library.class);
 			intent.putExtra("Audios", String.valueOf(index));
-			//intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		//	intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(intent);		
 			finish();
-			overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
+			overridePendingTransition(R.anim.alpha_in,R.anim.alpha_in);
 			break;
 		case 7:
 			handler = null;
 			Intent intent1 = new Intent(getApplicationContext(), Cover.class);
 			startActivity(intent1);
 			finish();
-			System.gc();
-			System.exit(0);
+			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			break;
 
 		default:

@@ -6,28 +6,29 @@ import vn.theagency.helper.Audios_Adapter;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Audios;
-import vn.theagency.layout.UI_Home;
 import vn.theagency.objects.Audios;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
@@ -35,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Audios_Library extends Activity implements OnClickListener,OnScrollListener {
 
@@ -49,14 +49,14 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 	View initUIBgView,initUIBottom;
 	ImageView initUIDown; 
 	FrameLayout initUIHeader;
-	View deine,plus;
+	View deine,plus, initUIConnection;
 	FrameLayout audio;
 	int pos;
 	TextView textView;
 	ArrayList<Audios> audiosList;
 	//
 	View frist;
-	
+	Audios_Adapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -73,6 +73,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 
 		initUIListView = this.mAudios.initUIListView();
 		initUIHeader = this.mAudios.initUIHeader();
+		initUIConnection = this.mAudios.initUIConnection();
 		//initUIHeader.setClipChildren(false);
 		
 		initUIBgView = this.mAudios.initUIBgView();
@@ -89,7 +90,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		
 		int height = (int) (mHelper.getAppHeight()-(UI_Audios.header_height*2))/3;
 		
-		Audios_Adapter adapter = new Audios_Adapter(R.layout.items, getApplicationContext(), audiosList,height);
+		adapter = new Audios_Adapter(R.layout.items, getApplicationContext(), audiosList,height);
 		libraries.setAdapter(adapter);
 		//libraries.setScrollBarSize(0);
 		libraries.setScrollbarFadingEnabled(true);
@@ -106,9 +107,14 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		
 		deine = findViewById(Key.btn_deine_musik);
 		audio = (FrameLayout) findViewById(Key.AUDIOS_NAME);
+		handler.sendEmptyMessageDelayed(2, 2000);
 		plus = findViewById(Key.HEADER);	
-		plus.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.home_plus_flip));
+		deine.setEnabled(false);
+		audio.setEnabled(false);
+		libraries.setEnabled(false);
+		
 	}
+	
 	
 	public void setbackgroungHome(int action,View view){
 		switch (action) {
@@ -179,16 +185,19 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		frist.setVisibility(View.GONE);
 		
 		
-		this.wrapper.addView(frist);
-		this.wrapper.addView(this.initUIBgView);
 		
+		this.wrapper.addView(this.initUIBgView);
+		this.wrapper.addView(frist);
 		this.wrapper.addView(this.initUIListView);
+		this.wrapper.addView(this.initUIConnection);
 		
 		this.wrapper.addView(this.initUIDown);
 		this.wrapper.addView(this.initUIBottom);
 		this.wrapper.addView(this.initUIHeader);
 		setContentView(this.wrapper);
-		new AuswahlAnimation(this.initUIListView, R.anim.auswahl_down).execute(0);
+		
+		
+		
 		textView = (TextView) findViewById(Key.AUSWAHL);
 	
 		
@@ -225,7 +234,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Lieblingsplatz",
-				"Ein geheimer Platz, an welchem  man vor allen Problemen geschützt ist.",
+				"Ein geheimer Platz, an welchem man vor allen Problemen geschützt ist.",
 				"4CHF/3€", R.drawable.lie01);
 		audiosList.add(audios);
 		audios = new Audios("",
@@ -264,7 +273,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		
 		audios = new Audios("",
 				"Grenzen stärken",
-				"Spüre körperlich, wie sich negative Gedanken auf deineStimmung auswirken und was Du dagegen tun kannst.",
+				"Diese Hypnose wird Dir helfen, dich emotional abgegrenzter zu fühlen.",
 				"4CHF/3€", R.drawable.gre01);
 		audiosList.add(audios);
 		audios = new Audios("",
@@ -295,7 +304,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		audiosList.add(audios);
 		audios = new Audios("",
 				"Einnistung",
-				"unterstütze deinen Körper und deinen Geist nach einem Transfer oder einer IUI.",
+				"Unterstütze deinen Körper und deinen Geist nach einem Transfer oder einer IUI.",
 				"3CHF/2€", R.drawable.ein01);
 		audiosList.add(audios);
 		audios = new Audios("",
@@ -370,7 +379,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 			intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 			startActivity(intent);
 			finish();
-			overridePendingTransition(R.anim.slide_left_out, R.anim.slide_left_in);
+			overridePendingTransition(R.anim.silde_up_in, R.anim.slide_up_out);
 			
 			break;
 		case Key.AUDIOS_NAME:
@@ -397,7 +406,7 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 						@Override
 						public void onAnimationEnd(Animator animation) {
 							// TODO Auto-generated method stub
-							frist.setVisibility(View.VISIBLE);
+							
 							
 							plus.setBackgroundResource(R.drawable.plus);
 							plus.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
@@ -417,53 +426,100 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 								@Override
 								public void onAnimationEnd(Animator animation) {
 									// TODO Auto-generated method stub
-									
+									plus.clearAnimation();
 									runOnUiThread(new Runnable() {
 										
 										@Override
 										public void run() {
 											// TODO Auto-generated method stub
-											frist.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.auswahl_down));
-											initUIBgView.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mHelper.getAppHeight()).setDuration(1000).start();
-											initUIListView.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mHelper.getAppHeight()).setDuration(1000).start();
-											initUIDown.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(1000).start();
-											initUIBottom.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(1000).start();
+											
+											initUIListView.clearAnimation();
+											initUIListView.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(0-mHelper.getAppHeight()).setDuration(800).setListener(new AnimatorListener() {
+												
+												@Override
+												public void onAnimationStart(Animator animation) {
+													// TODO Auto-generated method stub
+													
+												}
+												
+												@Override
+												public void onAnimationRepeat(Animator animation) {
+													// TODO Auto-generated method stub
+													
+												}
+												
+												@Override
+												public void onAnimationEnd(Animator animation) {
+													// TODO Auto-generated method stub
+													/*runOnUiThread(new Runnable() {	
+														@Override
+														public void run() {
+															// TODO Auto-generated method stub
+															initUIBgView.clearAnimation();
+															initUIBgView.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mHelper.getAppHeight()).setDuration(800).start();
+															
+														}
+													});*/
+													runOnUiThread(new Runnable() {
+														
+														@Override
+														public void run() {
+															// TODO Auto-generated method stub
+															frist.clearAnimation();
+															frist.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.auswahl_down));
+														
+														}
+													});
+													frist.setVisibility(View.VISIBLE);
+													initUIBottom.setVisibility(View.GONE);
+													initUIDown.setVisibility(View.GONE);
+													initUIHeader.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(800).setListener(new AnimatorListener() {
+														
+														@Override
+														public void onAnimationStart(Animator animation) {
+															// TODO Auto-generated method stub
+															initUIHeader.setBackgroundColor(Color.TRANSPARENT);
+														}
+														
+														@Override
+														public void onAnimationRepeat(Animator animation) {
+															// TODO Auto-generated method stub
+															
+														}
+														
+														@Override
+														public void onAnimationEnd(Animator animation) {
+															// TODO Auto-generated method stub
+															Intent intent3 = new Intent(getApplicationContext(), Home.class);
+															clearMemory();
+															intent3.putExtra("HomeBG", getIntent().getExtras().getString("Audios"));
+															intent3.putExtra("Home", "Home");
+														//	intent3.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+															startActivity(intent3);
+															finish();
+															overridePendingTransition(R.anim.alpha_in,R.anim.alpha_in);
+															
+														}
+														
+														@Override
+														public void onAnimationCancel(Animator animation) {
+															// TODO Auto-generated method stub
+															
+														}
+													}).start();
+												}
+												
+												@Override
+												public void onAnimationCancel(Animator animation) {
+													// TODO Auto-generated method stub
+													
+												}
+											}).start();
+											
 										}
 									});
 									
-										initUIHeader.animate().setInterpolator(new LinearInterpolator()).translationYBy(0).translationY(mAudios.animUpPlus).setDuration(1000).setListener(new AnimatorListener() {
 										
-										@Override
-										public void onAnimationStart(Animator animation) {
-											// TODO Auto-generated method stub
-											handler.sendEmptyMessageDelayed(1, 300);
-										}
-										
-										@Override
-										public void onAnimationRepeat(Animator animation) {
-											// TODO Auto-generated method stub
-											
-										}
-										
-										@Override
-										public void onAnimationEnd(Animator animation) {
-											// TODO Auto-generated method stub
-											Intent intent3 = new Intent(getApplicationContext(), Home.class);
-											clearMemory();
-											intent3.putExtra("HomeBG", getIntent().getExtras().getString("Audios"));
-											intent3.putExtra("Home", "Home");
-											startActivity(intent3);
-											finish();
-											overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);
-											
-										}
-										
-										@Override
-										public void onAnimationCancel(Animator animation) {
-											// TODO Auto-generated method stub
-											
-										}
-									}).start();
 								}
 								
 								@Override
@@ -496,13 +552,23 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		super.onResume();
 		deine.setOnClickListener(this);
 		audio.setOnClickListener(this);
+		IntentFilter mNetworkStateIntentFilter = new IntentFilter();
+		mNetworkStateIntentFilter
+				.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+		registerReceiver(mNetworkStateIntentReceiver, mNetworkStateIntentFilter);
+
+		
+	}
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		unregisterReceiver(mNetworkStateIntentReceiver);
 	}
 	public void clearMemory(){
 		deine.setOnClickListener(null);
 		audio.setOnClickListener(null);
-	//	audios = null;
-	//	wrapper=null;
-	//	libraries = null;
+	
 	}
 	@Override
 	public void onBackPressed() {
@@ -546,7 +612,12 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 			case 1:
 				initUIHeader.setBackgroundColor(Color.TRANSPARENT);
 				break;
-
+			case 2:
+				deine.setEnabled(true);
+				audio.setEnabled(true);
+				libraries.setEnabled(true);
+				plus.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.home_plus_flip));
+				break;
 			default:
 				break;
 			}
@@ -588,7 +659,36 @@ public class Audios_Library extends Activity implements OnClickListener,OnScroll
 		}				
 	}
 	
-	
+	BroadcastReceiver mNetworkStateIntentReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			ConnectivityManager cm = ((ConnectivityManager) context
+					.getSystemService(Context.CONNECTIVITY_SERVICE));
+			
+				if(mHelper.isOnline(getApplicationContext())){
+					initUIListView.setVisibility(View.VISIBLE);
+					initUIConnection.setVisibility(View.GONE);
+					runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							initUIListView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.auswahl_down));
+							
+						}
+					});
+				}else{
+					initUIListView.setVisibility(View.INVISIBLE);
+					initUIConnection.setVisibility(View.VISIBLE);
+					
+				
+				
+
+			} 
+		}
+	};
+
 	
 	
 

@@ -105,7 +105,7 @@ public class Deine_Adapter extends BaseAdapter {
 	    				// TODO Auto-generated method stub
 	    				try{
 	    				Intent intent = new Intent(mContext, Musik.class);
-	    				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+	    				
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    				intent.putExtra("Audios", indexHome);
 	    				intent.putExtra(Audios.TITLE, arr.get(position).getmTitle());
@@ -114,6 +114,7 @@ public class Deine_Adapter extends BaseAdapter {
 	
 	    				intent.putExtra(Audios.ID, String.valueOf(arr.get(position).getmID()));
 	    				mContext.startActivity(intent);
+	    				
 	    				
 	    				//System.gc();
 	    				//System.exit(0);

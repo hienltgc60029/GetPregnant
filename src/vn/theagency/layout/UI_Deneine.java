@@ -56,7 +56,7 @@ public class UI_Deneine {
 		mDecSize = (int) mHelper.DpToSp(15);
 		play_width = (int) mHelper.DpToPixel(27);
 		play_height = (int) mHelper.DpToPixel(20);
-		seekbar_width = (int) (3*mHelper.getAppWidth()/5);
+		seekbar_width = (int) (mHelper.getAppWidth()/2);
 		seekbar_height = (int) mHelper.DpToPixel(8);
 		bottom_height = (int) this.mHelper.DpToPixel(92);
 		bottom = (int) this.mHelper.DpToPixel(52);
@@ -82,7 +82,7 @@ public class UI_Deneine {
 		view.setId(Key.btn_back);
 		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
 				btn_back, btn_back);
-		viewPara.setMargins(15, 15, 0, 0);
+		viewPara.setMargins((int)mHelper.DpToPixel(12),(int) mHelper.DpToPixel(12), 0, 0);
 		view.setLayoutParams(viewPara);
 		view.setBackgroundResource(R.drawable.btn_back);
 		//
@@ -148,6 +148,7 @@ public class UI_Deneine {
 		paraHeader.gravity = Gravity.CENTER_HORIZONTAL;
 		view.setLayoutParams(paraHeader);
 		view.setBackgroundResource(R.drawable.btn_more);
+		view.setAlpha(0.3f);
 		return view;
 	}
 
@@ -243,7 +244,7 @@ public class UI_Deneine {
 		View view = new View(this.context);
 		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
 				play_width, play_height);
-		viewPara.leftMargin = 50;
+		viewPara.leftMargin = (int) mHelper.DpToPixel(30);
 		viewPara.gravity = Gravity.CENTER_VERTICAL;
 		view.setLayoutParams(viewPara);
 		view.setId(Key.PLAY);
@@ -253,7 +254,7 @@ public class UI_Deneine {
 		FrameLayout.LayoutParams startPara = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		startPara.leftMargin = 120;
+		startPara.leftMargin = (int) mHelper.DpToPixel(70);
 		startPara.gravity = Gravity.CENTER_VERTICAL;
 		timeStart.setLayoutParams(startPara);
 		timeStart.setText("25:58");
@@ -263,7 +264,7 @@ public class UI_Deneine {
 		FrameLayout.LayoutParams endPara = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT,
 				FrameLayout.LayoutParams.WRAP_CONTENT);
-		endPara.leftMargin = (int) (mHelper.getAppWidth() / 4 + seekbar_width);
+		endPara.leftMargin = (int) (mHelper.getAppWidth() - mHelper.DpToPixel(60));
 		endPara.gravity = Gravity.CENTER_VERTICAL;
 		timeEnd.setLayoutParams(endPara);
 		timeEnd.setText("57:30");
@@ -271,8 +272,8 @@ public class UI_Deneine {
 
 		SeekBar mDec = new SeekBar(this.context);
 		FrameLayout.LayoutParams decPara = new FrameLayout.LayoutParams(
-				seekbar_width, FrameLayout.LayoutParams.WRAP_CONTENT);
-		decPara.leftMargin = (int) (mHelper.getAppWidth() / 4);
+				(int) (mHelper.getAppWidth()-mHelper.DpToPixel(170)), FrameLayout.LayoutParams.WRAP_CONTENT);
+		decPara.leftMargin = (int) (mHelper.DpToPixel(110));
 		decPara.gravity = Gravity.CENTER_VERTICAL;
 		mDec.setLayoutParams(decPara);
 		mDec.setProgressDrawable(this.context.getResources().getDrawable(

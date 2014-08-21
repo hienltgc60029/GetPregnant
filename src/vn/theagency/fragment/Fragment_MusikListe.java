@@ -1,6 +1,7 @@
 package vn.theagency.fragment;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,6 +25,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
@@ -60,9 +62,9 @@ public class Fragment_MusikListe extends Fragment implements
 	View prev, next, play, pause, volume, repeat, shuffer, header;
 	AnimationDrawable anim;
 	SeekBar seekLine, seekVolume;
-	public int mPosition;
-	int mMaxVolume = 20;
-	int curVolume=10;
+	public int mPosition=0;
+	int mMaxVolume = 10;
+	int curVolume=5;
 	Messenger messenger;
 	Message mg;
 	TextView start,end;
@@ -70,6 +72,11 @@ public class Fragment_MusikListe extends Fragment implements
 	private TimerTask task;
 	private Timer timer = null;
 	int progresss = 0;
+	boolean isProcess=true;
+	boolean isShuffer = false;
+	boolean isRepeat = false;
+	int[] intArray;
+	int shufferSong = 0;
 	private static Fragment_MusikListe _ins;
 
 	public Fragment_MusikListe(ArrayList<Songs> arr){
@@ -85,7 +92,14 @@ public class Fragment_MusikListe extends Fragment implements
 		}else{
 			Fragment_MusikListe._ins.adapter.notifyDataSetChanged();
 		}
-	//	createListenner();
+		if(!isActive){
+			if(Fragment_MusikListe._ins.media!=null){
+				
+				Fragment_MusikListe._ins.media.stop();
+						
+			}
+			Fragment_MusikListe._ins = null;
+		}
 
 		return Fragment_MusikListe._ins;
 	}
@@ -105,17 +119,27 @@ public class Fragment_MusikListe extends Fragment implements
 		this.initUIListView = this.mMusik.initUIListView();
 
 		initUI();
-		
-		
-		
 		Musik musik = (Musik) getActivity();
 		messenger = musik.getMessenger();
 		
-		
+	
 		
 		mg = new Message();
 		Message.obtain();
 		preference();
+		if(isShuffer){
+			shuffer.setBackgroundResource(R.drawable.btn_shuffer_actice);
+		}else{
+			shuffer.setBackgroundResource(R.drawable.btn_shuffer_normal);
+		}
+		if(isRepeat){
+			
+			repeat.setBackgroundResource(R.drawable.btn_repeat_active);
+		}else{
+			repeat.setBackgroundResource(R.drawable.btn_repeat_normal);
+		}
+		
+		
 		return wrapper;
 	}
 	
@@ -161,6 +185,7 @@ public class Fragment_MusikListe extends Fragment implements
 		// ///////////////////////
 
 		seekLine = (SeekBar) wrapper.findViewById(Key.SEEKBAR_LINE);
+		seekLine.setOnSeekBarChangeListener(this);
 
 		// seekLine.setVisibility(View.GONE);
 		seekVolume = (SeekBar) wrapper.findViewById(Key.SEEKBAR_VOLUME);
@@ -169,7 +194,7 @@ public class Fragment_MusikListe extends Fragment implements
 		
 		
 		
-		adapter = new Musik_Adapter(arr, R.layout.items_musik, getActivity());
+		adapter = new Musik_Adapter((int)(mMusik.musik_list_height/7),arr, R.layout.items_musik, getActivity());
 		
 
 		
@@ -188,10 +213,13 @@ public class Fragment_MusikListe extends Fragment implements
 
 		createListenner();
 		
-		mPosition = 0;
+	
 		if(media!=null){
 			if(media.isPlaying()){
+				
 				if(list!=null){
+					//start.setText(mHelper.count(progresss));
+					//end.setText(mHelper.count((media.getDuration() - (progresss*1000))/1000));
 					Log.i("LTH", "1");
 					pause.setVisibility(View.VISIBLE);
 					play.setVisibility(View.GONE);
@@ -252,27 +280,20 @@ public class Fragment_MusikListe extends Fragment implements
 	}
 
 	
-	Thread thread = new Thread(new Runnable() {
-		
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			try {
-				list.setOnItemClickListener(null);
-				thread.sleep(500);
-				list.setOnItemClickListener(Fragment_MusikListe._ins);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}) ;
+	
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		
 		try {
+			if(isProcess){
+			isProcess = false;
+			if(timer!=null){
+				timer.cancel();
+				timer = null;
+			}
+			
 			if(media!=null){
 				if(media.isPlaying()){
 					media.stop();
@@ -288,7 +309,7 @@ public class Fragment_MusikListe extends Fragment implements
 			} else {
 				prev.setEnabled(true);
 			}
-			if (mPosition == arr.size()) {
+			if (mPosition == (arr.size()-1)) {
 				next.setEnabled(false);
 			} else {
 				next.setEnabled(true);
@@ -305,18 +326,17 @@ public class Fragment_MusikListe extends Fragment implements
 
 			play.setVisibility(View.GONE);
 			pause.setVisibility(View.VISIBLE);
-			thread.start();
-
+			
+			float log1=(float)(Math.log(mMaxVolume-curVolume)/Math.log(mMaxVolume));
+			media.setVolume((1-log1),(1-log1));
+			handler.sendEmptyMessageDelayed(1, 500);
+			}
 		} catch (Exception ex) {
 			Log.i("LTH", "Listview error");
 		}
 	}
 
-	public void returnFalseStatus(){
-		for (int i = 0; i < arr.size(); i++) {
-			arr.get(i).setmStatus(false);
-		}
-	}
+	
 	
 
 	@Override
@@ -394,8 +414,24 @@ public class Fragment_MusikListe extends Fragment implements
 			}
 			break;
 		case Key.REPEAT:
+			if(!isRepeat){
+				isRepeat = true;
+				repeat.setBackgroundResource(R.drawable.btn_repeat_active);
+			}else{
+				isRepeat = false;
+				repeat.setBackgroundResource(R.drawable.btn_repeat_normal);
+			}
 			break;
 		case Key.SHUFFER:
+			if(!isShuffer){
+				intArray = new int[arr.size()];
+				isShuffer = true;
+				shuffer.setBackgroundResource(R.drawable.btn_shuffer_actice);
+			}else{
+				isShuffer = false;
+				shuffer.setBackgroundResource(R.drawable.btn_shuffer_normal);
+				intArray = null;
+			}
 			
 			break;
 		case Key.HEADER:
@@ -411,6 +447,20 @@ public class Fragment_MusikListe extends Fragment implements
 			break;
 		}
 	}
+	Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			if(msg.what == 1){
+				isProcess = true;
+			}
+			
+			adapter.notifyDataSetChanged();
+		}
+		
+	};
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
@@ -419,6 +469,30 @@ public class Fragment_MusikListe extends Fragment implements
 		switch (seekBar.getId()) {
 		case Key.SEEKBAR_VOLUME:
 			curVolume = progress;
+			if(media!=null){
+				if(media.isPlaying()){
+					float log1=(float)(Math.log(mMaxVolume-curVolume)/Math.log(mMaxVolume));
+					media.setVolume((1-log1),(1-log1));
+				}
+			}
+		//	media.setVolume((float)(curVolume/10),(float)(curVolume/10));
+			break;
+		case Key.SEEKBAR_LINE:
+			
+			if(progress!=progresss){
+				if(media!=null && media.isPlaying()){
+					seekLine.setMax((int)media.getDuration()/1000);
+				progresss = progress;
+				media.seekTo(progresss*1000);
+				}
+			}
+			//progresss =(int) (media.getCurrentPosition()/1000);
+			if(media!=null && media.isPlaying()){
+			seekLine.setMax((int)media.getDuration()/1000);
+			start.setText(mHelper.count(progress));
+			end.setText(mHelper.count((media.getDuration() - (progress*1000))/1000));
+			}
+			
 			break;
 		}
 	 }
@@ -472,6 +546,7 @@ public class Fragment_MusikListe extends Fragment implements
 				mp.start();
 				int duration = mp.getDuration();
 				int period = duration / 1000;
+				mMusik.mLine.setMax(period);
 				task = new TimerTask() {
 
 					@Override
@@ -480,17 +555,17 @@ public class Fragment_MusikListe extends Fragment implements
 							@Override
 							public void run() {
 								if (media.isPlaying()) {
+									
 									progresss++;
 									mMusik.mLine.setProgress(progresss);
-									media.setVolume((float) curVolume / mMaxVolume, (float) curVolume
-											/ mMaxVolume);
+									
 								}
 							}
 						});
 					}
 				};
 				timer = new Timer();
-				timer.schedule(task, 0, period * 10);
+				timer.schedule(task, 0, 1000);
 			}
 		});
 		media.setOnErrorListener(new OnErrorListener() {
@@ -507,21 +582,90 @@ public class Fragment_MusikListe extends Fragment implements
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				// TODO Auto-generated method stub
-				
-				if (mPosition < (arr.size()-1)) {
-					
-					media.stop();
-					mPosition = mPosition + 1;
-					if (media.isPlaying()) {
-						play.setVisibility(View.GONE);
-						pause.setVisibility(View.VISIBLE);
+				mMusik.mLine.setProgress(0);
+				if(isShuffer){
+					boolean shufferPlay = false;
+					if(isRepeat){
+						for(int i = 0 ; i < intArray.length;i++){
+							intArray[i]=0;
+						}
 					}
-					list.performItemClick(list.getChildAt(mPosition), mPosition,
-							list.getAdapter().getItemId(mPosition));
-					adapter.notifyDataSetChanged();
-
 					
+					Random random = new Random();
+					int a = random.nextInt(arr.size()-1);
+					
+						
+						for(int i = 0 ; i < intArray.length;i++){
+								if(intArray[i] == a){	
+									a = random.nextInt(arr.size()-1);
+									i=0;
+								}
+								if(intArray[intArray.length-1]!=0){
+									shufferPlay = true;
+									i = intArray.length;
+								}
+						}
+							
+				if(!shufferPlay){
+					intArray[shufferSong]= a;
+					shufferSong++;
+				
+				media.stop();
+				mPosition = a;
+				list.setSelection(a);
+				list.requestFocus();
+				list.smoothScrollToPosition(a);
+				if (media.isPlaying()) {
+					play.setVisibility(View.GONE);
+					pause.setVisibility(View.VISIBLE);
 				}
+				list.performItemClick(list.getChildAt(mPosition), mPosition,
+						list.getAdapter().getItemId(mPosition));
+				adapter.notifyDataSetChanged();
+				}
+						
+				}else{
+					if (mPosition < (arr.size()-1)) {
+						
+						media.stop();
+						mPosition = mPosition + 1;
+						if (media.isPlaying()) {
+							play.setVisibility(View.GONE);
+							pause.setVisibility(View.VISIBLE);
+						}
+						list.performItemClick(list.getChildAt(mPosition), mPosition,
+								list.getAdapter().getItemId(mPosition));
+						adapter.notifyDataSetChanged();
+
+						
+					}else{
+						if(isRepeat){
+							list.setSelection(0);
+							list.requestFocus();
+							list.smoothScrollToPosition(0);
+							
+							media.stop();
+							mPosition = 0;
+							if (media.isPlaying()) {
+								play.setVisibility(View.GONE);
+								pause.setVisibility(View.VISIBLE);
+							}
+							list.performItemClick(list.getChildAt(mPosition), mPosition,
+									list.getAdapter().getItemId(mPosition));
+							adapter.notifyDataSetChanged();
+						}
+						arr.get(arr.size()-1).setmStatus(false);
+						adapter.notifyDataSetChanged();
+						end.setText("00:00");
+						prev.setEnabled(false);
+						next.setEnabled(false);
+						play.setVisibility(View.VISIBLE);
+						pause.setVisibility(View.GONE);
+						
+					}
+				}
+			
+				
 			}
 		});
 	}

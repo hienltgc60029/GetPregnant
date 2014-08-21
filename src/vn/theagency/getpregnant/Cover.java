@@ -77,27 +77,33 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-	//	aus.setOnClickListener(this);
+		aus.setOnClickListener(this);
 		 auf.setOnClickListener(this);
-	//	unt.setOnClickListener(this);
-	//	vor.setOnClickListener(this);
-	//	ver.setOnClickListener(this);
-	//	home.setOnClickListener(this);
-	//	hide.setOnClickListener(this);
-	//	auf.setOnTouchListener(this);
+		unt.setOnClickListener(this);
+		vor.setOnClickListener(this);
+		ver.setOnClickListener(this);
+		home.setOnClickListener(this);
+		hide.setOnClickListener(this);
+	
 
 	}
 
 	public void preference() {
 		aus = findViewById(Key.linearAusgleichen);
 		auf = findViewById(Key.linearAuflosen);
-		auf1 = findViewById(Key.auflosen);
+		
 	
 		unt = findViewById(Key.linearUnterstutzen);
 		vor = findViewById(Key.linearVorbereiten);
 		ver = findViewById(Key.linearVerbessern);
 		home = findViewById(Key.HOME);
 		hide = findViewById(Key.HEADER);
+		auf1 = findViewById(Key.auflosen);
+		aus1 = findViewById(Key.ausgleichen);
+		unt1 = findViewById(Key.unterstutzen);
+		ver1 = findViewById(Key.verbessern);
+		vor1 = findViewById(Key.vorbereiten);
+		
 	}
 
 	public void initUI() {
@@ -136,45 +142,66 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		switch (v.getId()) {
 		case Key.linearAuflosen:	
 			auf.setBackgroundResource(R.drawable.icon_btn_auf_active);
-			new CoverAnimation(auf, R.anim.cover_flip_right).execute(0);
-			new CoverAnimation(aus,R.anim.cover_move_left).execute(0);
-			
+			new CoverAnimation(auf, R.anim.cover_flip_right,auf.getId()).execute(0);
+			new CoverAnimation(aus,R.anim.cover_move_left,auf.getId()).execute(0);
+			aus1.setVisibility(View.GONE);
 			break;
 		case Key.linearAusgleichen:
-			Intent intent4 = new Intent(getApplicationContext(), Home.class);
-			clearMemory();
-			intent4.putExtra("HomeBG", String.valueOf(1));
-			startActivity(intent4);
-			finish();
-			
+			aus.setBackgroundResource(R.drawable.icon_btn_ausg_active);
+			new CoverAnimation(aus, R.anim.cover_flip_right,Key.linearAusgleichen).execute(0);
+			new CoverAnimation(auf,R.anim.cover_move_right,Key.linearAusgleichen).execute(0);
+			auf1.setVisibility(View.GONE);	
 			break;
 		case Key.linearUnterstutzen:
-			Intent intent1 = new Intent(getApplicationContext(), Home.class);
-			clearMemory();
-			intent1.putExtra("HomeBG", String.valueOf(3));
-			startActivity(intent1);
-			finish();
+			unt.setBackgroundResource(R.drawable.icon_btn_unt_active);
+			new CoverAnimation(unt, R.anim.cover_flip_right,Key.linearUnterstutzen).execute(0);
+			new CoverAnimation(auf,R.anim.cover_move_right,Key.linearUnterstutzen).execute(0);
+			new CoverAnimation(aus,R.anim.cover_move_right01,Key.linearUnterstutzen).execute(0);
+			auf1.setVisibility(View.GONE);	
+			aus1.setVisibility(View.GONE);	
+			
+			//
+			
 			break;
 		case Key.linearVerbessern:
-			Intent intent2 = new Intent(getApplicationContext(), Home.class);
-			clearMemory();
-			intent2.putExtra("HomeBG", String.valueOf(4));
-			startActivity(intent2);
-			finish();
+			ver.setBackgroundResource(R.drawable.icon_btn_ver_active);
+			new CoverAnimation(ver, R.anim.cover_flip_right,Key.linearVerbessern).execute(0);
+			new CoverAnimation(auf,R.anim.cover_move_left,Key.linearVerbessern).execute(0);
+			new CoverAnimation(aus,R.anim.cover_move_left01,Key.linearVerbessern).execute(0);
+			auf1.setVisibility(View.GONE);	
+			aus1.setVisibility(View.GONE);	
+			
+			
+			//
+			
 
 			break;
 		case Key.linearVorbereiten:
-			Intent intent3 = new Intent(getApplicationContext(), Home.class);
-			clearMemory();
-			intent3.putExtra("HomeBG", String.valueOf(5));
-			startActivity(intent3);
-			finish();
+			vor.setBackgroundResource(R.drawable.icon_btn_vor_active);
+			new CoverAnimation(vor, R.anim.cover_flip_right,Key.linearVorbereiten).execute(0);
+			new CoverAnimation(ver,R.anim.cover_move_left,Key.linearVorbereiten).execute(0);
+			new CoverAnimation(aus,R.anim.cover_move_left01,Key.linearVorbereiten).execute(0);
+			new CoverAnimation(auf,R.anim.cover_move_right,Key.linearVorbereiten).execute(0);
+			new CoverAnimation(unt,R.anim.cover_move_right01,Key.linearVorbereiten).execute(0);
+			auf1.setVisibility(View.GONE);	
+			aus1.setVisibility(View.GONE);
+			ver1.setVisibility(View.GONE);
+			unt1.setVisibility(View.GONE);
+			
+			
+			
 
 			break;
 		case Key.HOME:
+			Intent openClockIntent = new Intent(getApplicationContext(),Alarm01.class);
+			openClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(openClockIntent);
+			
+		/*//	this.initUIInfo.animate().xBy(0).translationX((int)(mHelper.getAppWidth()/2 - mHelper.DpToPixel(32))).setDuration(1000).start();
+			
 			this.initUIWarning.setVisibility(View.VISIBLE);
 			this.initUIHideBackGround.setVisibility(View.VISIBLE);
-			this.home.setVisibility(View.GONE);
+			this.home.setVisibility(View.GONE);*/
 			break;
 		case Key.HEADER:
 			this.home.setVisibility(View.VISIBLE);
@@ -212,35 +239,138 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			switch (msg.what) {
-			case R.anim.cover_flip_right:
-				new CoverAnimation(auf,R.anim.cover_flip_left).execute(0);
+			
+			switch (msg.arg2) {
+			case Key.linearAuflosen:
+				if(msg.arg1==R.anim.cover_flip_right){
+					new CoverAnimation(auf,R.anim.cover_flip_left,auf.getId()).execute(0);
+				}
+				if(msg.arg1==R.anim.cover_move_left){
+					new CoverAnimation(ver,R.anim.cover_move_right,auf.getId()).execute(0);
+					new CoverAnimation(vor,R.anim.cover_move_right01,auf.getId()).execute(0);
+					new CoverAnimation(unt,R.anim.cover_move_right02,auf.getId()).execute(0);
+					ver1.setVisibility(View.GONE);
+					vor1.setVisibility(View.GONE);
+					unt1.setVisibility(View.GONE);
+				}
+				if(msg.arg1==R.anim.cover_move_right){
+					auf1.setVisibility(View.GONE);
+					new CoverAnimation(auf, R.anim.cover_zoom_out,auf.getId()).execute(250);
+					initUIText.setVisibility(View.GONE);
+					new CoverAnimation(wrapper, R.anim.cover_alpha_out,auf.getId()).execute(0);
+					
+				}
+				if(msg.arg1==R.anim.cover_zoom_out){
+					Intent intent = new Intent(getApplicationContext(), Home.class);
+					 intent.putExtra("HomeBG", String.valueOf(2));
+					
+					 startActivity(intent); 
+					 clearMemory(); 
+					 finish();
+					 overridePendingTransition(R.anim.alpha_in,R.anim.alpha_in);
+				}
 				break;
-			case R.anim.cover_move_left:
-				new CoverAnimation(ver,R.anim.cover_move_right).execute(0);
-				new CoverAnimation(vor,R.anim.cover_move_right01).execute(0);
-				new CoverAnimation(unt,R.anim.cover_move_right02).execute(0);
+			case Key.linearAusgleichen:
+				if(msg.arg1==R.anim.cover_flip_right){
+					new CoverAnimation(aus,R.anim.cover_flip_left,Key.linearAusgleichen).execute(0);
+				}
+				if(msg.arg1==R.anim.cover_move_right){
+					new CoverAnimation(ver,R.anim.cover_move_left,Key.linearAusgleichen).execute(0);
+					new CoverAnimation(vor,R.anim.cover_move_left01,Key.linearAusgleichen).execute(0);
+					new CoverAnimation(unt,R.anim.cover_move_left02,Key.linearAusgleichen).execute(0);
+					ver1.setVisibility(View.GONE);
+					vor1.setVisibility(View.GONE);
+					unt1.setVisibility(View.GONE);	
+				}
+				if(msg.arg1==R.anim.cover_move_left){
+					aus1.setVisibility(View.GONE);
+					new CoverAnimation(aus, R.anim.cover_zoom_out,Key.linearAusgleichen).execute(250);
+					initUIText.setVisibility(View.GONE);
+					new CoverAnimation(wrapper, R.anim.cover_alpha_out,Key.linearAusgleichen).execute(0);	
+				}
+				if(msg.arg1==R.anim.cover_zoom_out){
+					Intent intent = new Intent(getApplicationContext(), Home.class);
+					 intent.putExtra("HomeBG", String.valueOf(1));
+					 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					 startActivity(intent); 
+					 clearMemory(); 
+					 finish();
+					 overridePendingTransition(0,0);
+				}
 				break;
-			case R.anim.cover_move_right:
-				auf1.setVisibility(View.GONE);
-				//new CoverAnimation(initUIText, R.anim.cover_title_sldeup);
-				new CoverAnimation(auf, R.anim.cover_zoom_out).execute(250);
-				new CoverAnimation(wrapper, R.anim.cover_alpha_out).execute(0);
+			case Key.linearUnterstutzen:
+				if(msg.arg1==R.anim.cover_flip_right){
+					new CoverAnimation(unt,R.anim.cover_flip_left,Key.linearUnterstutzen).execute(0);
+				}
+				if(msg.arg1==R.anim.cover_move_right){
+					new CoverAnimation(ver,R.anim.cover_move_left,Key.linearUnterstutzen).execute(0);
+					new CoverAnimation(vor,R.anim.cover_move_left01,Key.linearUnterstutzen).execute(0);
+					ver1.setVisibility(View.GONE);
+					vor1.setVisibility(View.GONE);		
+				}
+				if(msg.arg1==R.anim.cover_move_left){
+					unt1.setVisibility(View.GONE);
+					new CoverAnimation(unt, R.anim.cover_zoom_out,Key.linearUnterstutzen).execute(250);
+					initUIText.setVisibility(View.GONE);
+					new CoverAnimation(wrapper, R.anim.cover_alpha_out,Key.linearUnterstutzen).execute(0);	
+				}
+				if(msg.arg1==R.anim.cover_zoom_out){
+					Intent intent = new Intent(getApplicationContext(), Home.class);
+					 intent.putExtra("HomeBG", String.valueOf(3));
+					 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					 startActivity(intent); 
+					 clearMemory(); 
+					 finish();
+					 overridePendingTransition(0,0);
+				}
 				break;
-			case R.anim.cover_zoom_out:
-				
-				Intent intent = new Intent(getApplicationContext(), Home.class);
-				 intent.putExtra("HomeBG", String.valueOf(2));
-				 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				 startActivity(intent); 
-				 clearMemory(); 
-				 finish();
-				 overridePendingTransition(0,0);
+			case Key.linearVerbessern:
+				if(msg.arg1==R.anim.cover_flip_right){
+					new CoverAnimation(ver,R.anim.cover_flip_left,Key.linearVerbessern).execute(0);
+				}
+				if(msg.arg1==R.anim.cover_move_left){
+					new CoverAnimation(unt,R.anim.cover_move_right,Key.linearVerbessern).execute(0);
+					new CoverAnimation(vor,R.anim.cover_move_right01,Key.linearVerbessern).execute(0);
+					unt1.setVisibility(View.GONE);
+					vor1.setVisibility(View.GONE);		
+				}
+				if(msg.arg1==R.anim.cover_move_right){
+					ver1.setVisibility(View.GONE);
+					new CoverAnimation(ver, R.anim.cover_zoom_out,Key.linearVerbessern).execute(250);
+					initUIText.setVisibility(View.GONE);
+					new CoverAnimation(wrapper, R.anim.cover_alpha_out,Key.linearVerbessern).execute(0);	
+				}
+				if(msg.arg1==R.anim.cover_zoom_out){
+					Intent intent = new Intent(getApplicationContext(), Home.class);
+					 intent.putExtra("HomeBG", String.valueOf(4));
+					 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					 startActivity(intent); 
+					 clearMemory(); 
+					 finish();
+					 overridePendingTransition(0,0);
+				}
 				break;
-			case R.anim.cover_flip_left:
-				
-				
+			case Key.linearVorbereiten:
+				if(msg.arg1==R.anim.cover_flip_right){
+					new CoverAnimation(vor,R.anim.cover_flip_left,Key.linearVorbereiten).execute(0);
+				}
+				if(msg.arg1==R.anim.cover_flip_left){
+					vor1.setVisibility(View.GONE);
+					new CoverAnimation(vor, R.anim.cover_zoom_out,Key.linearVorbereiten).execute(250);
+					initUIText.setVisibility(View.GONE);
+					new CoverAnimation(wrapper, R.anim.cover_alpha_out,Key.linearVorbereiten).execute(0);	
+				}
+				if(msg.arg1==R.anim.cover_zoom_out){
+					Intent intent = new Intent(getApplicationContext(), Home.class);
+					 intent.putExtra("HomeBG", String.valueOf(5));
+					 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					 startActivity(intent); 
+					 clearMemory(); 
+					 finish();
+					 overridePendingTransition(0,0);
+				}
 				break;
+
 			default:
 				break;
 			}
@@ -255,14 +385,16 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		View viewAnimation;
 		Animation anim;
 		int animRes;
+		int viewParentId;
 		
 		
-		public CoverAnimation(View viewAnimation, int animRes) {
+		public CoverAnimation(View viewAnimation, int animRes,int viewParentId) {
 			super();
 			this.viewAnimation = viewAnimation;
 			this.animRes = animRes;
 			anim = AnimationUtils.loadAnimation(Cover.this,
 					animRes);
+			this.viewParentId = viewParentId;
 		}
 
 		@Override
@@ -275,8 +407,16 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 					// TODO Auto-generated method stub
 					viewAnimation.clearAnimation();
 					viewAnimation.setAnimation(anim);
-					viewAnimation.startAnimation(anim);	
-					handler.sendEmptyMessageDelayed(animRes, (anim.getDuration()-params[0]));
+					viewAnimation.startAnimation(anim);
+					
+					Message msg = new Message();
+					msg.arg1 = animRes;
+					msg.arg2 = viewParentId;
+					
+					handler.sendMessageDelayed(msg, (anim.getDuration()-params[0]));
+					
+				//	handler.sendEmptyMessageDelayed(animRes, (anim.getDuration()-params[0]));
+					
 				}
 			});
 			return null;

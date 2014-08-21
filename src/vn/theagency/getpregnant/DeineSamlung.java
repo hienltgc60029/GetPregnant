@@ -431,12 +431,18 @@ public class DeineSamlung extends Activity implements OnClickListener,
 			boolean fromUser) {
 		// TODO Auto-generated method stub
 		if(progress!=progresss){
-			progresss = progress;
-			player.seekTo(progresss*1000);
+			if(player!=null && player.isPlaying()){
+				progresss = progress;
+				player.seekTo(progresss*1000);
+			}else{
+				progress=0;
+			}
+			
 		}
+		if(player!=null && player.isPlaying()){
 		timeStart.setText(mHelper.count(progress));
 		timeEnd.setText(mHelper.count((player.getDuration() - (progress*1000))/1000));
-		
+		}
 		
 	}
 

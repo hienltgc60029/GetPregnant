@@ -1,8 +1,15 @@
 package vn.theagency.helper;
 
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -113,7 +120,47 @@ public class Helper {
 		return number;
 	}
 
-	
-	 
+	public boolean isOnline(Context context) {
+	    ConnectivityManager cm =
+	        (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+	        return true;
+	    }
+	    return false;
+	}
+	public void mp3load(String urlRequest,String name) {
+		try{
+		URL url = new URL(urlRequest);
+		            HttpURLConnection c = (HttpURLConnection) url.openConnection();
+		            c.setRequestMethod("GET");
+		            c.setDoOutput(true);
+		            c.connect();
+
+		            String PATH = Environment.getExternalStorageDirectory()
+		                    + "/GetPregnant/";
+		            
+		            File file = new File(PATH);
+		            file.mkdirs();
+
+		             String fileName = name;
+
+
+		            File outputFile = new File(file, fileName);
+		            FileOutputStream fos = new FileOutputStream(outputFile);
+
+		            InputStream is = c.getInputStream();
+
+		            byte[] buffer = new byte[1024];
+		            int len1 = 0;
+		            while ((len1 = is.read(buffer)) != -1) {
+		                fos.write(buffer, 0, len1);
+		            }
+		            fos.close();
+		            is.close();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		}
 	 
 }

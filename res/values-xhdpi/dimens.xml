@@ -11,6 +11,7 @@
     
     <dimen name="AUSWAHL">220dp</dimen>
     
+    <dimen name="SIZE">1px</dimen>
 
     <!-- Audios Item -->
     <dimen name="plusMarginLeft">150dp</dimen>

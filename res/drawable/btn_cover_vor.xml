@@ -2,9 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     
     <item android:state_pressed="true"
-        android:drawable="@drawable/btn_vor_cover_active" />
+        android:drawable="@drawable/icon_btn_vor_active" />
     <item android:state_focused="true"
-        android:drawable="@drawable/btn_vor_cover_active" />
+        android:drawable="@drawable/icon_btn_vor_active" />
     <item
-         android:drawable="@drawable/btn_vor_cover_normal" />
+         android:drawable="@drawable/icon_btn_vor_normal" />
 </selector>

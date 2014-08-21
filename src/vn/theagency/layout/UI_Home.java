@@ -70,8 +70,8 @@ public class UI_Home {
 		titleWidth =(int) (8*this.mHelper.getAppWidth()/10);
 		titleHeight =(int) this.mHelper.DpToPixel(120);
 		int header_height = (int) this.mHelper.DpToPixel(46-(55/2));
-		topMargin = (int) ((84*mHelper.getAppHeight())/100);
-		animUpPlus = topMargin - header_height+1; 
+		topMargin = (int) ((4*mHelper.getAppHeight())/5);
+		animUpPlus = topMargin; 
 		
 		
 	}
@@ -221,16 +221,26 @@ public class UI_Home {
 	}
 
 	public FrameLayout initUIAddition(int imgTitle) {	
+		//
+		
+		
+		
 		FrameLayout main = new FrameLayout(this.context);
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+				FrameLayout.LayoutParams.MATCH_PARENT, (int) this.mHelper.DpToPixel(92));
 		mainFrame.topMargin = topMargin;
-		mainFrame.gravity =Gravity.CENTER_HORIZONTAL;
-		
 		main.setLayoutParams(mainFrame);
-
 		
+
+		//
+		FrameLayout layout = new FrameLayout(this.context);
+		layout.setId(Key.HEADER);
+		
+		FrameLayout.LayoutParams layoutFrame = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+		layoutFrame.gravity = Gravity.CENTER;
+		layout.setLayoutParams(layoutFrame);
 		//===
 		
 		View audios = new View(this.context);
@@ -239,13 +249,13 @@ public class UI_Home {
 		
 		audiosPara.gravity = Gravity.CENTER_VERTICAL;
 		audios.setLayoutParams(audiosPara);
-		audios.setBackgroundResource(R.drawable.plus);
+		audios.setBackgroundResource(R.drawable.btn_plus);
 		audios.setId(Key.AUSWAHL);
 		
 		
 
 		TextView text = new TextView(this.context);
-	//	text.setText("AUSWAHL");
+		text.setText("AUSWAHL");
 		text.setTextSize(textsize);
 		text.setTextColor(Color.parseColor("#5c5c5c"));
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),"museosans_300.otf");
@@ -259,10 +269,14 @@ public class UI_Home {
 		
 		textPara.gravity = Gravity.CENTER_VERTICAL;
 		text.setLayoutParams(textPara);
+		//
+		
 		
 	//	main.setBackgroundColor(Color.RED);
-		main.addView(audios);
-		main.addView(text);
+		
+		layout.addView(audios);
+		layout.addView(text);
+		main.addView(layout);
 		
 		return main;
 		

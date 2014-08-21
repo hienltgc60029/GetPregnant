@@ -134,6 +134,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		this.wrapper.setLayoutParams(para);
+		this.wrapper.setBackgroundColor(Color.BLACK);
 		// this.wrapper.setBackgroundResource(R.drawable.bg);
 		// Image BG
 		frist = new View(getActivity());
@@ -151,11 +152,9 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 		bg.setBackgroundResource(getArguments().getInt("background"));
 		bg.setLayoutParams(bgPara);
 		//
-		View bgHeader = new View(getActivity());
-		bgHeader.setBackgroundColor(Color.BLACK);
-		bgHeader.setLayoutParams(bgPara);
+		
 		// Image Home
-		this.wrapper.addView(bgHeader);
+		
 		this.wrapper.addView(frist);
 		this.wrapper.addView(bg);
 		this.wrapper.addView(initUIHome);
@@ -175,6 +174,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 		
 		plus = wrapper.findViewById(Key.AUSWAHL);
 		if(isFrist){
+			plusText.setVisibility(View.INVISIBLE);
 			this.initUIAddition.startAnimation(plusMove);
 			
 		//	plus.startAnimation(plusMove);
@@ -225,6 +225,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		clearMemory();
 		switch (v.getId()) {
 		case Key.auflosen:
 
@@ -284,7 +285,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			}
 			break;
 		case Key.AUSWAHL:
-			clearMemory();
+			
 			plus.clearAnimation();
 			getActivity().runOnUiThread(new Runnable() {
 				
@@ -293,7 +294,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 					// TODO Auto-generated method stub
 					
 				//	initUIAddition.startAnimation(plusUp);
-					Log.i("LTH", String.valueOf(0-titles.animUpPlus)+"animUpPlus");
+					
 					initUIAddition.animate().translationYBy(0).translationY(0-titles.animUpPlus).setDuration(800).setListener(new AnimatorListener() {
 						
 						@Override
@@ -305,8 +306,156 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 									@Override
 									public void run() {
 										// TODO Auto-generated method stub
-										initUIHome.startAnimation(homeUp);
-										initUIText.startAnimation(homeUp);
+										initUIHome.setVisibility(View.GONE);
+										initUIText.setVisibility(View.GONE);
+										bg.startAnimation(homeUp);
+									
+									}
+								});
+								
+						
+						}
+						
+						@Override
+						public void onAnimationRepeat(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							// TODO Auto-generated method stub
+								layoutTitles.animate().translationYBy(0).translationY(100).setDuration(200).start();
+								getActivity().runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										plus.animate().rotationYBy(0).rotationY(90).setDuration(250).setListener(new AnimatorListener() {
+											
+											@Override
+											public void onAnimationStart(Animator animation) {
+												// TODO Auto-generated method stub
+												
+											}
+											
+											@Override
+											public void onAnimationRepeat(Animator animation) {
+												// TODO Auto-generated method stub
+												
+											}
+											
+											@Override
+											public void onAnimationEnd(Animator animation) {
+												// TODO Auto-generated method stub
+												plus.setBackgroundResource(R.drawable.btn_slip);
+												plus.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
+													
+													@Override
+													public void onAnimationStart(Animator animation) {
+														// TODO Auto-generated method stub
+														
+													}
+													
+													@Override
+													public void onAnimationRepeat(Animator animation) {
+														// TODO Auto-generated method stub
+														
+													}
+													
+													@Override
+													public void onAnimationEnd(Animator animation) {
+														// TODO Auto-generated method stub
+														try {
+															
+															clearMemory();
+
+															switch (getArguments().getInt("background")) {
+															case R.drawable.bg:
+																msg.arg2 = 1;
+																break;
+															case R.drawable.bg_auf:
+																msg.arg2 = 2;
+																break;
+															case R.drawable.bg_unt:
+																msg.arg2 = 3;
+																break;
+															case R.drawable.bg_ver:
+																msg.arg2 = 4;
+																break;
+															case R.drawable.bg_vor:
+																msg.arg2 = 5;
+																break;
+
+															default:
+																break;
+															}
+
+															msg.arg1 = 6;
+															messenger.send(msg);
+														} catch (Exception ex) {
+															ex.printStackTrace();
+														}
+
+													}
+													
+													@Override
+													public void onAnimationCancel(Animator animation) {
+														// TODO Auto-generated method stub
+														
+													}
+												}).start();
+											}
+											
+											@Override
+											public void onAnimationCancel(Animator animation) {
+												// TODO Auto-generated method stub
+												
+											}
+										}).start();
+									}
+								});
+								
+							}
+							
+						
+						
+						@Override
+						public void onAnimationCancel(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+					}).start();
+				//	plus.startAnimation(plusUp);
+					
+				}
+			});
+			
+			
+			
+			break;
+		case Key.AUDIOS_NAME:
+			plus.clearAnimation();
+			getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					
+				//	initUIAddition.startAnimation(plusUp);
+					
+					initUIAddition.animate().translationYBy(0).translationY(0-titles.animUpPlus).setDuration(800).setListener(new AnimatorListener() {
+						
+						@Override
+						public void onAnimationStart(Animator animation) {
+							// TODO Auto-generated method stub
+							
+								getActivity().runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										// TODO Auto-generated method stub
+										initUIHome.setVisibility(View.GONE);
+										initUIText.setVisibility(View.GONE);
 										bg.startAnimation(homeUp);
 									
 									}
@@ -430,20 +579,16 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 			});
 			
 			
-			
-			break;
-		case Key.AUDIOS_NAME:
-			//clearMemory();
-			
-			
 			break;
 		case Key.HOME:
-
-			/*
-			 * try { clearMemory(); msg.arg1 = 7; msg.arg2 = 0;
-			 * messenger.send(msg); } catch (Exception ex) {
-			 * ex.printStackTrace(); }
-			 */
+			  try { 
+				  msg.arg1 = 7; 
+				  msg.arg2 = 0;
+				  messenger.send(msg); 
+				  } catch (Exception ex) {
+					  ex.printStackTrace(); 
+			  }
+			 
 			break;
 
 		default:
@@ -489,6 +634,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 		// TODO Auto-generated method stub
 		
 		if(animation == plusMove){
+			plusText.setVisibility(View.VISIBLE);
 			plusText.setText("AUSWAHL");
 			plusText.startAnimation(plusTextMove);
 			plus.startAnimation(plusFlip);

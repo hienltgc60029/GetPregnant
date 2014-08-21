@@ -36,7 +36,7 @@ public class Key {
 	public static final int PREVAUDIO = 703;
 	
 	public static final int SEEKBAR_LINE = 704;
-	public static final int SEEKBAR_VOLUME = 704;
+	public static final int SEEKBAR_VOLUME = 709;
 	public static final int VOLUME = 705;
 	public static final int SHUFFER = 706;
 	public static final int REPEAT = 707;
@@ -50,6 +50,7 @@ public class Key {
 
 	public static final int START = 900;
 	public static final int End = 901;
+	public static final int NOT_CONNECTTION = 11000;
 	
 	
 	

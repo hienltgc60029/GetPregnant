@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,13 +22,15 @@ public class Musik_Adapter extends BaseAdapter {
 	int Layout;
 	Context context;
 	AnimationDrawable anim;
+	int sizeRow;
 	
 	
-	public Musik_Adapter(ArrayList<Songs> arr, int layout, Context context) {
+	public Musik_Adapter(int sizeRow,ArrayList<Songs> arr, int layout, Context context) {
 		super();
 		this.arr = arr;
 		Layout = layout;
 		this.context = context;
+		this.sizeRow = sizeRow;
 	}
 
 	@Override
@@ -77,6 +80,11 @@ public class Musik_Adapter extends BaseAdapter {
 			view = inflater.inflate(Layout, null);
 			mViewHolder = new MyViewHolder();
             view.setTag(mViewHolder);
+            AbsListView.LayoutParams params = new AbsListView.LayoutParams(
+					AbsListView.LayoutParams.MATCH_PARENT, sizeRow);
+			
+			view.setLayoutParams(params);
+			
 		}else{
 			mViewHolder = (MyViewHolder) view.getTag();
 		}
@@ -111,13 +119,7 @@ public class Musik_Adapter extends BaseAdapter {
         	 }
         	 mViewHolder.mIcon.setVisibility(View.GONE);
          }
-       //  mViewHolder.ivIcon  = detail(convertView, R.id.ivIcon,  myList.get(position).getImgResId());
-
-
-	/*	TextView name = (TextView) view.findViewById(R.id.title);
-		name.setText(arr.get(position).getmName());
-		TextView time = (TextView) view.findViewById(R.id.counter);
-		time.setText(arr.get(position).getmLine());*/
+      
 		
 		return view;
 	}

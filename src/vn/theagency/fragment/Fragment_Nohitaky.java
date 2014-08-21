@@ -3,12 +3,16 @@ package vn.theagency.fragment;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import vn.theagency.getpregnant.Alarn;
+import vn.theagency.getpregnant.Deine_Titel;
 import vn.theagency.getpregnant.Musik;
 import vn.theagency.getpregnant.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Nohitaky;
 import vn.theagency.objects.Audios;
+import vn.theagency.sqlite.SQliteData;
+import vn.theagency.sqlite.SQliteData.SQdata;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -130,7 +134,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		wecker = (ImageView) this.wrapper.findViewById(Key.NOHITAKI_Wecker);
 		wecker.setOnClickListener(this);
 		this.musik_line = (SeekBar) this.wrapper.findViewById(Key.SEEKBAR_LINE);
-//		this.musik_line.setOnSeekBarChangeListener(this);
+		this.musik_line.setOnSeekBarChangeListener(this);
 		
 		changeBg = (Switch) this.wrapper.findViewById(Key.NOHITAKI_ChangeBg);
 		changeBg.setChecked(true);
@@ -218,16 +222,19 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 			}
 			break;
 		case Key.NOHITAKI_Wecker:
-			Intent openClockIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
-			openClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			getActivity().startActivity(openClockIntent);
-		case Key.btn_back:
-			try {
-				msg.arg1 = 3;
+			
+			((Musik)getActivity()).getHandler().sendEmptyMessage(1);
+			/*try {
+				msg.arg1 = 4;
 				messenger.send(msg);
 			} catch (Exception ex) {
 				ex.printStackTrace();
-			}
+			}*/
+			break;
+		case Key.btn_back:
+			((Musik)getActivity()).onBackPressed();
+			
+		
 			break;
 		case Key.PLAYAUDIO:
 			//Play Audios
@@ -272,33 +279,55 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		}
 	}
 	
-	public void deleteFragment(){
-		System.gc();
-	}
+	
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		// TODO Auto-generated method stub
-		if (changeBg.isChecked()) {
+		switch (buttonView.getId()) {
+		case Key.NOHITAKI_MusikCheck:
 			
-			/*WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-			lp.screenBrightness = 1f;
-			getActivity().getWindow().setAttributes(lp);*/
-			
-			this.initUIBackGroundDark.setVisibility(View.GONE);
-			
-			
-		} else {
-			
-			/*WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-			lp.screenBrightness = 0.2f;
-			getActivity().getWindow().setAttributes(lp);*/
-			
-			this.initUIBottom.setAlpha(0.5f);
-			this.initUIMusik.setAlpha(0.5f);
-			this.initUIBackGroundDark.setVisibility(View.VISIBLE);
-			
+			if(isChecked){
+				SQliteData data = new SQliteData(getActivity());
+				data.open();
+				data.removeAudios(audio.getmID());
+				data.putAudiosCollections(audio);
+				data.close();
+			}else{
+				SQliteData data = new SQliteData(getActivity());
+				data.open();
+				data.removeAudiosCollections(audio.getmID());
+				data.putAudios(audio);
+				data.close();
+			}
+			break;
+		case Key.NOHITAKI_ChangeBg:
+			if (changeBg.isChecked()) {
+				
+				/*WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+				lp.screenBrightness = 1f;
+				getActivity().getWindow().setAttributes(lp);*/
+				
+				this.initUIBackGroundDark.setVisibility(View.GONE);
+				
+				
+			} else {
+				
+				/*WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+				lp.screenBrightness = 0.2f;
+				getActivity().getWindow().setAttributes(lp);*/
+				
+				this.initUIBottom.setAlpha(0.5f);
+				this.initUIMusik.setAlpha(0.5f);
+				this.initUIBackGroundDark.setVisibility(View.VISIBLE);
+				
+			}
+			break;
+
+		default:
+			break;
 		}
+		
 	}
 
 
@@ -332,8 +361,7 @@ private void PlayResource(int res) {
 								progresss++;
 								musik_line.setProgress(progresss);
 								
-								timeStart.setText(count(progresss));
-								timeEnd.setText(count(period-progresss));
+								
 							}
 						}
 					});
@@ -374,18 +402,22 @@ public String count(int process){
 @Override
 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 	// TODO Auto-generated method stub
-	 if(fromUser){
-	        player.seekTo(progress);
-	        musik_line.setProgress(progress);
-	        this.progresss = progress;
-	        }
+	if(progress!=progresss){
+		if(player!=null && player.isPlaying()){
+		progresss = progress;
+		player.seekTo(progresss*1000);
+		}
+	}
+	if(player!=null && player.isPlaying()){
+	timeStart.setText(mHelper.count(progress));
+	timeEnd.setText(mHelper.count((player.getDuration() - (progress*1000))/1000));
+	}
 }
 
 @Override
 public void onStartTrackingTouch(SeekBar seekBar) {
 	// TODO Auto-generated method stub
-	
-}
+	}
 
 @Override
 public void onStopTrackingTouch(SeekBar seekBar) {

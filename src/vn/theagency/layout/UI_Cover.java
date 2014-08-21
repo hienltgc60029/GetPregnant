@@ -33,7 +33,7 @@ public class UI_Cover {
 	private UI_Cover(Context _context) {
 		this.context = _context;
 		this.mHelper = Helper.shareIns(this.context);
-		size();
+		size(context.getResources().getDimension(R.dimen.SIZE));
 	}
 
 	
@@ -43,21 +43,21 @@ public class UI_Cover {
 		}
 		return UI_Cover._ins;
 	}
-	private void size() {
+	private void size(float a) {
 		
 
-		text_width= (int) mHelper.DpToPixel(303);
-		text_heigt= (int) mHelper.DpToPixel(84);
-		icon_top = (int) mHelper.DpToPixel(400);
-		icon_width = (int) mHelper.DpToPixel(95);
-		icon_height = (int) mHelper.DpToPixel(101);
-		icon_left = (int) mHelper.DpToPixel(12);
-		icon_left_parent =(int) mHelper.DpToPixel(25);
-		icon_top_1 =(int) mHelper.DpToPixel(513);
-		icon_left_ausg =(int) mHelper.DpToPixel(79);
-		icon_info = (int) mHelper.DpToPixel(31);
-		warning_height =(int) mHelper.DpToPixel(411);
-		warning_width = (int) mHelper.DpToPixel(324);
+		text_width= (int) (mHelper.DpToPixel(303)*a);
+		text_heigt= (int) ( mHelper.DpToPixel(84)*a);
+		icon_top = (int) (mHelper.DpToPixel(400)*a);
+		icon_width = (int) ( mHelper.DpToPixel(95)*a);
+		icon_height = (int) ( mHelper.DpToPixel(101)*a);
+		icon_left = (int) ( mHelper.DpToPixel(12)*a);
+		icon_left_parent =(int) (mHelper.DpToPixel(25)*a);
+		icon_top_1 =(int) ( mHelper.DpToPixel(513)*a);
+		icon_left_ausg =(int) ( mHelper.DpToPixel(79)*a);
+		icon_info = (int) ( mHelper.DpToPixel(40)*a);
+		warning_height =(int) ( mHelper.DpToPixel(411)*a);
+		warning_width = (int) ( mHelper.DpToPixel(324)*a);
 		
 		
 		
@@ -129,7 +129,7 @@ public class UI_Cover {
 		int leftVor = leftVer+icon_left+icon_width;
 		int leftUnt = leftVor+icon_left+icon_width;
 		//
-		int marginTop1 = (int) ((63*mHelper.getAppHeight())/100);
+		int marginTop1 = (int) mHelper.getAppHeight()-(icon_height*2)-(icon_left*3);
 		int marginTop2 = marginTop1+icon_height+icon_left;
 		//
 		
@@ -150,6 +150,11 @@ public class UI_Cover {
 		ver.setLayoutParams(verParams);
 		ver.setBackgroundResource(R.drawable.btn_cover_ver);
 		ver.setId(Key.linearVerbessern);
+		//===
+		View ver1 = new View(this.context);
+		ver1.setBackgroundResource(R.drawable.bg_btn_ver);
+		ver1.setLayoutParams(verParams);
+		ver1.setId(Key.verbessern);
 		//
 		
 		
@@ -162,6 +167,11 @@ public class UI_Cover {
 		vor.setLayoutParams(vorParams);
 		vor.setBackgroundResource(R.drawable.btn_cover_vor);
 		vor.setId(Key.linearVorbereiten);
+		//===
+		View vor1 = new View(this.context);
+		vor1.setBackgroundResource(R.drawable.bg_btn_vor);
+		vor1.setLayoutParams(vorParams);
+		vor1.setId(Key.vorbereiten);
 		//
 		View unt = new View(this.context);
 		FrameLayout.LayoutParams untParams = new FrameLayout.LayoutParams(
@@ -172,6 +182,11 @@ public class UI_Cover {
 		unt.setLayoutParams(untParams);
 		unt.setBackgroundResource(R.drawable.btn_cover_unt);
 		unt.setId(Key.linearUnterstutzen);
+		//==
+		View unt1 = new View(this.context);
+		unt1.setBackgroundResource(R.drawable.bg_btn_unt);
+		unt1.setLayoutParams(untParams);
+		unt1.setId(Key.unterstutzen);
 		//
 		
 		View ausg = new View(this.context);
@@ -184,6 +199,11 @@ public class UI_Cover {
 		ausg.setLayoutParams(ausParams);
 		ausg.setBackgroundResource(R.drawable.btn_cover_aus);
 		ausg.setId(Key.linearAusgleichen);
+		//===
+		View ausg1 = new View(this.context);
+		ausg1.setBackgroundResource(R.drawable.bg_btn_aus);
+		ausg1.setLayoutParams(ausParams);
+		ausg1.setId(Key.ausgleichen);
 		//
 		View auf = new View(this.context);
 		FrameLayout.LayoutParams aufParams = new FrameLayout.LayoutParams(
@@ -201,13 +221,16 @@ public class UI_Cover {
 		auf1.setId(Key.auflosen);
 		
 		//
-		
+		layout.addView(ausg1);
 		layout.addView(ausg);
 		
 		layout.addView(auf1);
 		layout.addView(auf);
+		layout.addView(ver1);
 		layout.addView(ver);
+		layout.addView(vor1);
 		layout.addView(vor);
+		layout.addView(unt1);
 		layout.addView(unt);
 		
 		

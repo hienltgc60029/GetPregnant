@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import vn.theagency.getpregnant.R;
 import vn.theagency.objects.Audios;
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
@@ -108,6 +112,16 @@ public class Audios_Adapter extends BaseAdapter {
 			mViewHolder.btnDownload = mButton(view, R.id.btn,
 					R.drawable.btn_buy);
 		}
+		mViewHolder.btnDownload.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				AsyntaskDownloadMp3 mp3 = new AsyntaskDownloadMp3("Wen");
+				mp3.execute("http://programmerguru.com/android-tutorial/wp-content/uploads/2014/01/jai_ho.mp3");
+			//	mp3.execute("https://dl-web.dropbox.com/get/Wendeltreppe.mp3?_subject_uid=284654301&w=AAB0WsvwxlIyN0ZsQixzIvbD1ftooCjZ6MEWaAuisPAgvA");	
+			}
+		});
 		//
 		mViewHolder.mDec.setText(setTextRight(arr.get(position).getmDecription()));
 		
@@ -166,24 +180,24 @@ public class Audios_Adapter extends BaseAdapter {
 
 	public String setTextRight(String text) {
 		int index=0;
+		text = text.trim();
 		String newText = text;
-		if (testLenght(12, text) > 3) {
-
-			for (int j = (text.length() - 2); j == 0; j--) {
-				Log.i("LTH", ":"+text.substring(j)+":");
-				if (text.substring(j).equalsIgnoreCase(" ")) {
-					index++;
-					if(index==2){
-						Log.i("LTH", text.substring(0,j));
-						if(testLenght(12, text.substring(0,j))<3){
-							newText = text.substring(0, j)+"\n"+text.substring(j);
+		
+			if (testLenght(12, text) > 4) {
+				for (int j = (text.length() - 2); j > 0; j--) {
+					char temp = text.charAt(j);
+					if (String.valueOf(temp).equals(" ")) {
+						index++;
+						if(index==2){				
+							if(testLenght(12, text.substring(0,j))==4){
+								newText = text.substring(0, j)+"\n"+text.substring(j+1);
+							}	
 						}
-						
 					}
 				}
-
-			}
+			
 		}
+		
 		return newText;
 	}
 }

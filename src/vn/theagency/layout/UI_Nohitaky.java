@@ -3,6 +3,7 @@ package vn.theagency.layout;
 import vn.theagency.getpregnant.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -20,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+@SuppressLint("NewApi")
 public class UI_Nohitaky {
 
 	private Helper mHelper;
@@ -129,15 +131,16 @@ public class UI_Nohitaky {
 	public FrameLayout initUIBack() {
 		FrameLayout layout = new FrameLayout(this.context);
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				btn_back, btn_back);
-		params.topMargin = (int) this.mHelper.DpToPixel(10);
-		params.leftMargin = (int) this.mHelper.DpToPixel(10);
+				FrameLayout.LayoutParams.WRAP_CONTENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT);
+		params.topMargin = (int) this.mHelper.DpToPixel(12);
+		params.leftMargin = (int) this.mHelper.DpToPixel(12);
 		layout.setLayoutParams(params);
 
 		ImageView view = new ImageView(this.context);
 		FrameLayout.LayoutParams viewParams = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.WRAP_CONTENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
+				btn_back,
+				btn_back);
 		view.setLayoutParams(viewParams);
 		view.setBackgroundResource(R.drawable.btn_back);
 		view.setId(Key.btn_back);
@@ -226,6 +229,7 @@ public class UI_Nohitaky {
 		return layout;
 	}
 
+	@SuppressLint("NewApi")
 	public LinearLayout initUIBottom() {
 		// Height for this UI
 		int height = (int) ((mHelper.getAppHeight() / 2) - (musik_height / 2));
@@ -325,7 +329,7 @@ public class UI_Nohitaky {
 
 	public RelativeLayout initUIMusicBar() {
 		// Top in parent
-		int pTop = (int) ((mHelper.getAppHeight() / 2) - musik_height - DP_10);
+		int pTop = (int) ((mHelper.getAppHeight() / 2) - musik_height);
 		RelativeLayout main = new RelativeLayout(this.context);
 		// time start
 		TextView timeStart = new TextView(this.context);

@@ -17,6 +17,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -44,7 +46,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 	Audios audios;
 	View deine,back;
 	ArrayList<Audios> arr;
-	
+	String indexHome;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -79,7 +81,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		
 		int height01 =(int) (this.mDeine.bottom+this.mDeine.bottom_down+this.mDeine.header_height) ;
 		int height = (int) (mHelper.getAppHeight()-height01)/3;
-		String indexHome = getIntent().getExtras().getString("Audios");
+		indexHome = getIntent().getExtras().getString("Audios");
 		SQliteData data = new SQliteData(getApplicationContext());
 		data.open();
 		arr =data.getAllAudios();
@@ -88,6 +90,12 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), arr,height,indexHome);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
+		
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		
 	}
 	public void initUI() {
@@ -155,6 +163,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
 		startActivity(intent);
 		finish();
+		overridePendingTransition(R.anim.slide_down_out, R.anim.slide_down_in);
 	
 	}
 	@Override
@@ -183,6 +192,29 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		if((firstVisibleItem+visibleItemCount)== totalItemCount){
 			this.initUIDown.setVisibility(View.GONE);
 		}
+	}
+	Handler handler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			Intent intent = new Intent(getApplicationContext(), Musik.class);
+			
+		//	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.putExtra("Audios", indexHome);
+			intent.putExtra(Audios.TITLE, arr.get(msg.what).getmTitle());
+			intent.putExtra(Audios.DECRIPTION, arr.get(msg.what).getmDecription());
+			intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(msg.what).getmImageURL()));
+
+			intent.putExtra(Audios.ID, String.valueOf(arr.get(msg.what).getmID()));
+			startActivity(intent);
+			finish();
+		}
+		
+	};
+	public Handler getHandler(){
+		return handler;
 	}
 	
 }

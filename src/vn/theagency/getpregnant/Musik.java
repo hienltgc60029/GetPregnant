@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -44,7 +45,7 @@ public class Musik extends Activity {
 	public View volume;
 	ArrayList<Songs> arr;
 	Audios audio;
-	int sliteVolume = 10;
+	
 	FragmentTransaction transaction;
 	
 
@@ -53,11 +54,27 @@ public class Musik extends Activity {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			super.handleMessage(msg);
-			actionClickHander(msg.arg1);
-			sliteVolume = msg.arg2;
+			Log.i("LTH", String.valueOf(msg.arg1));
+			actionClickHander(msg.arg1);	
 		}
 	};
+	Handler handler2 = new Handler(){
 
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			
+			Intent openClockIntent = new Intent("android.intent.action.SET_ALARM");
+			openClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(openClockIntent);
+		}
+		
+	};
+	public Handler getHandler(){
+		return handler2;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -89,10 +106,12 @@ public class Musik extends Activity {
 			startActivity(intent);
 			System.exit(0);
 		}
+	}
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		
-		
-		
-
 	}
 	public void actionClickHander(int action) {
 		switch (action) {
@@ -112,10 +131,6 @@ public class Musik extends Activity {
 			transaction.commit();
 
 			break;
-		case 3:
-			onBackPressed();
-			break;
-
 		default:
 			break;
 		}
@@ -164,13 +179,9 @@ public class Musik extends Activity {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
 		Fragment_Nohitaky.newInstance(null,false);
-		// clearMemory();
-		Intent intent = new Intent(getApplicationContext(), Deine_Titel.class);
-		intent.putExtra("Audios", getIntent().getExtras().getString("Audios"));
-		startActivity(intent);
-		finish();
-		System.gc();
-		System.exit(0);
+		Fragment_MusikListe.newInstance(false, null);
+		
+		
 	}
 
 	

@@ -27,7 +27,7 @@ public class UI_Musik {
 
 	int headerHeight, seekbar_width, seekbar_height;
 	int musik_bar_width,musik_bar_height;
-	int musik_list_height,musik_list_width;
+	public static int musik_list_height,musik_list_width;
 	int marginMusik;
 
 	int LEFT_VOLUME;
@@ -105,10 +105,10 @@ public class UI_Musik {
 
 	public RelativeLayout initUIMusicBar() {
 		RelativeLayout main = new RelativeLayout(this.context);
-		LayoutTransition lt = new LayoutTransition();
-		lt.disableTransitionType(LayoutTransition.DISAPPEARING);
+		
+		
 		main.setBackgroundResource(R.drawable.bg_music_tools);
-		main.setLayoutTransition(lt);
+		
 		View shuffer = new View(this.context);
 		shuffer.setBackgroundResource(R.drawable.btn_shuffer);
 		shuffer.setId(Key.SHUFFER);
@@ -132,15 +132,20 @@ public class UI_Musik {
 		volume.setBackgroundResource(R.drawable.btn_volume);
 		volume.setId(Key.VOLUME);
 		//
-
+		
+		TextView timeStart = new TextView(this.context);
+		timeStart.setAlpha(0.4f);
+		timeStart.setText("00:00");
+		timeStart.setTextColor(Color.parseColor("#fffac2"));
+	//	timeStart.setGravity(Gravity.RIGHT);
+		timeStart.setId(Key.START);	
+//
 		RelativeLayout.LayoutParams barVolumePara = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		
-	
 		barVolumePara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
 		barVolumePara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
-		barVolumePara.topMargin = (int)(musik_bar_height/4);
+		barVolumePara.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
 
 		mBarVolume = new SeekBar(this.context);
 		mBarVolume.setProgressDrawable(this.context.getResources().getDrawable(
@@ -149,40 +154,46 @@ public class UI_Musik {
 				R.drawable.thumbler_small));
 		mBarVolume.setId(Key.SEEKBAR_VOLUME);
 		mBarVolume.setVisibility(View.GONE);
+		//Line Para
+		RelativeLayout.LayoutParams LinePara = new RelativeLayout.LayoutParams(
+				RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.WRAP_CONTENT);
+		LinePara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
+		LinePara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
+		LinePara.addRule(RelativeLayout.ABOVE, timeStart.getId());
+	//	LinePara.topMargin = (int) (musik_bar_height-mHelper.DpToPixel(50));
+
+		
 		//
 
 		RelativeLayout.LayoutParams startPara = new RelativeLayout.LayoutParams(
-				100,
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		startPara.bottomMargin = 10;
-	
+		startPara.bottomMargin = (int) mHelper.DpToPixel(5);
 		startPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,
 				RelativeLayout.TRUE);
-		startPara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
+		startPara.leftMargin = (int)marginMusik/2;
+		startPara.addRule(RelativeLayout.ALIGN_LEFT, mLine.getId());
+	//	startPara.addRule(RelativeLayout.RIGHT_OF, volume.getId());
 	
 		//startPara.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
 
-		TextView timeStart = new TextView(this.context);
-		timeStart.setAlpha(0.8f);
-		timeStart.setText("00:00");
-		timeStart.setTextColor(Color.parseColor("#fffac2"));
-		timeStart.setGravity(Gravity.RIGHT);
-		timeStart.setId(Key.START);
+		
 		
 		//
 		TextView timeEnd = new TextView(this.context);
 		RelativeLayout.LayoutParams endPara = new RelativeLayout.LayoutParams(
-				100,
+				RelativeLayout.LayoutParams.WRAP_CONTENT,
 				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		endPara.bottomMargin = 10;
+		endPara.bottomMargin = (int) mHelper.DpToPixel(5);
 		endPara.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		endPara.addRule(RelativeLayout.LEFT_OF, shuffer.getId());
-		
+		endPara.rightMargin = (int)marginMusik/2;
 		
 		timeEnd.setText("00:00");
-		timeEnd.setAlpha(0.8f);
+		timeEnd.setAlpha(0.4f);
 		timeEnd.setTextColor(Color.parseColor("#fffac2"));
-		timeEnd.setGravity(Gravity.LEFT);
+	//	timeEnd.setGravity(Gravity.LEFT);
 		timeEnd.setId(Key.End);
 		//
 		RelativeLayout.LayoutParams repeatPara = new RelativeLayout.LayoutParams(
@@ -218,7 +229,7 @@ public class UI_Musik {
 		main.setLayoutParams(params);
 		main.addView(volume, volumePara);
 		main.addView(mBarVolume, barVolumePara);
-		main.addView(mLine, barVolumePara);
+		main.addView(mLine, LinePara);
 		main.addView(timeStart, startPara);
 		main.addView(timeEnd, endPara);
 		main.addView(repeat, repeatPara);

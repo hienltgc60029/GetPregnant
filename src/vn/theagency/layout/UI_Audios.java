@@ -63,9 +63,8 @@ public class UI_Audios {
 		bottom_down = (int) this.mHelper.DpToPixel(40);
 		plusMargin = (int) mHelper.DpToPixel(70);
 		plusTextMargin= (int) mHelper.DpToPixel(50);
-		int height = (int) this.mHelper.DpToPixel(46-(55/2));
-		int topMargin = (int) ((84*mHelper.getAppHeight())/100);
-		animUpPlus = topMargin - height+1; 
+		
+		animUpPlus =(int) ((4*mHelper.getAppHeight())/5);; 
 		Log.i("LTH", "UI_AudiosAnim"+ String.valueOf(animUpPlus));
 	}
 
@@ -75,10 +74,24 @@ public class UI_Audios {
 		ListView view = new ListView(this.context);
 		int height = (int) (mHelper.getAppHeight() - (header_height * 2));
 		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, height, 500);
+				LayoutParams.MATCH_PARENT, height);
 		viewPara.topMargin = header_height;
 		view.setLayoutParams(viewPara);
 		view.setId(Key.LISTVIEW_LIBRARY);
+		return view;
+	}
+	public View initUIConnection() {
+		
+
+		View view = new View(this.context);
+		
+		FrameLayout.LayoutParams viewPara = new FrameLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		
+		view.setLayoutParams(viewPara);
+		view.setBackgroundResource(R.drawable.bg_not_connected);
+		view.setId(Key.NOT_CONNECTTION);
+		view.setVisibility(View.GONE);
 		return view;
 	}
 
@@ -172,6 +185,7 @@ public class UI_Audios {
 		paraHeader.gravity = Gravity.CENTER_HORIZONTAL;
 		view.setLayoutParams(paraHeader);
 		view.setBackgroundResource(R.drawable.btn_more);
+		view.setAlpha(0.3f);
 		return view;
 	}
 
