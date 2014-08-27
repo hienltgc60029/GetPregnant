@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<animation-list xmlns:android="http://schemas.android.com/apk/res/android"  >
-    
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"  > 
     <item android:drawable="@drawable/equalizer01" android:duration="200" />
     <item android:drawable="@drawable/equalizer02" android:duration="200" />
     <item android:drawable="@drawable/equalizer03" android:duration="200" />
@@ -9,7 +8,4 @@
     <item android:drawable="@drawable/equalizer06" android:duration="200" />
     <item android:drawable="@drawable/equalizer07" android:duration="200" />
     <item android:drawable="@drawable/equalizer08" android:duration="200" />
-   
-    
-
 </animation-list>

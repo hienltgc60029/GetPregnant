@@ -1,7 +1,7 @@
 package vn.theagency.fragment;
 
 import vn.theagency.getpregnant.Home;
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Home;
@@ -51,7 +51,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 	Animation plusMove, plusUp,homeUp,zoomIn,plusFlip,plusTextMove,titleBounce,flipLeft,slideUp;
 	boolean isFrist;
 	ImageView mTitle;
-
+	FrameLayout bgAddtion;
 	public static Fragment_Home newInstance(int pTop, int bg, int background,
 			int pTitle, boolean isFrist) {
 		
@@ -203,6 +203,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 
 		home = (ImageView) wrapper.findViewById(Key.HOME);
 		home.setOnClickListener(this);
+		bgAddtion = (FrameLayout) wrapper.findViewById(Key.BG_ADDITION);
 
 	}
 
@@ -294,7 +295,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 					// TODO Auto-generated method stub
 					
 				//	initUIAddition.startAnimation(plusUp);
-					
+					layoutTitles.animate().translationYBy(0).translationY(100).setDuration(200).start();
 					initUIAddition.animate().translationYBy(0).translationY(0-titles.animUpPlus).setDuration(800).setListener(new AnimatorListener() {
 						
 						@Override
@@ -325,7 +326,7 @@ public class Fragment_Home extends Fragment implements OnClickListener,
 						@Override
 						public void onAnimationEnd(Animator animation) {
 							// TODO Auto-generated method stub
-								layoutTitles.animate().translationYBy(0).translationY(100).setDuration(200).start();
+							bgAddtion.setBackgroundColor(Color.BLACK);
 								getActivity().runOnUiThread(new Runnable() {
 									
 									@Override

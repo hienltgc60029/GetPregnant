@@ -1,6 +1,6 @@
 package vn.theagency.layout;
 
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import android.app.ActionBar.LayoutParams;
@@ -35,7 +35,7 @@ public class UI_Deneine {
 	private UI_Deneine(Context _context) {
 		this.context = _context;
 		this.mHelper = Helper.shareIns(this.context);
-		size();
+		size(context.getResources().getDimension(R.dimen.SIZE));
 	}
 
 	public static UI_Deneine shareIns(Context _context) {
@@ -45,22 +45,22 @@ public class UI_Deneine {
 		return UI_Deneine._ins;
 	}
 
-	public void size() {
+	public void size(float a) {
 		//
-		btn_back = (int) mHelper.DpToPixel(30);
+		btn_back = (int) this.context.getResources().getDimension(R.dimen.BACK);
 
 		//
 		header_width = (int) mHelper.DpToPixel(360);
 		header_height = (int) mHelper.getAppHeight() / 5;
-		mTitleSize = (int) mHelper.DpToSp(35);
-		mDecSize = (int) mHelper.DpToSp(15);
-		play_width = (int) mHelper.DpToPixel(27);
-		play_height = (int) mHelper.DpToPixel(20);
+		mTitleSize = (int) this.context.getResources().getDimension(R.dimen.TITLE);
+		mDecSize = (int) this.context.getResources().getDimension(R.dimen.DEC);
+		play_width = (int) (mHelper.DpToPixel(27)*a);
+		play_height = (int) (mHelper.DpToPixel(20)*a);
 		seekbar_width = (int) (mHelper.getAppWidth()/2);
-		seekbar_height = (int) mHelper.DpToPixel(8);
-		bottom_height = (int) this.mHelper.DpToPixel(92);
-		bottom = (int) this.mHelper.DpToPixel(52);
-		bottom_down = (int) this.mHelper.DpToPixel(40);
+		seekbar_height = (int) (mHelper.DpToPixel(8));
+		bottom_height = (int) (this.mHelper.DpToPixel(92)*a);
+		bottom = (int) (this.mHelper.DpToPixel(52)*a);
+		bottom_down = (int) (this.mHelper.DpToPixel(40)*a);
 		
 
 	}
@@ -129,7 +129,7 @@ public class UI_Deneine {
 		View view = new View(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
+				bottom);
 		paraHeader.topMargin = hieght;
 		view.setLayoutParams(paraHeader);
 		view.setBackgroundResource(R.drawable.btn_deine_samlung);
@@ -179,6 +179,9 @@ public class UI_Deneine {
 		mTitle.setTextSize(mTitleSize);
 		mTitle.setText("DEINE TITEL");
 		mTitle.setGravity(Gravity.CENTER_HORIZONTAL);
+		Typeface type = Typeface.createFromAsset(this.context.getAssets(),
+				"museosans_300.otf");
+		mTitle.setTypeface(type);
 		mTitle.setAlpha(0.8f);
 		// Decription
 		TextView mDec = new TextView(this.context);
@@ -226,7 +229,7 @@ public class UI_Deneine {
 				LinearLayout.LayoutParams.WRAP_CONTENT);
 		titlePara.bottomMargin = 20;
 		mTitle.setLayoutParams(titlePara);
-		mTitle.setTextSize(30);
+		mTitle.setTextSize(mTitleSize);
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),
 				"museosans_300.otf");
 		mTitle.setTypeface(type);
@@ -302,7 +305,7 @@ public class UI_Deneine {
 		View view = new View(this.context);
 		FrameLayout.LayoutParams paraHeader = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.WRAP_CONTENT);
+				bottom);
 		paraHeader.topMargin = hieght;
 		view.setLayoutParams(paraHeader);
 		view.setBackgroundResource(R.drawable.btn_hinzu);

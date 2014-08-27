@@ -14,7 +14,7 @@ public class Key {
 	public static final int linearVorbereiten = 1001;
 	public static final int linearUnterstutzen = 1000;
 	public static final int TITLE = 1005;
-	
+	public static final int BG_ADDITION = 9876;
 	public static final int AUSWAHL = 200;
 	
 	public static final int AUDIOS_NAME = 300;
@@ -33,6 +33,7 @@ public class Key {
 	public static final int PLAYAUDIO = 700;
 	public static final int PAUSEAUDIO = 701;
 	public static final int NEXTAUDIO = 702;
+	
 	public static final int PREVAUDIO = 703;
 	
 	public static final int SEEKBAR_LINE = 704;
@@ -52,6 +53,8 @@ public class Key {
 	public static final int End = 901;
 	public static final int NOT_CONNECTTION = 11000;
 	
-	
+	public static final int DOWNLOAD_PDF = 435334;
+	public static final int SAMMLUNG = 2423432;
+	public static final int WARNING = 2426432;
 	
 }

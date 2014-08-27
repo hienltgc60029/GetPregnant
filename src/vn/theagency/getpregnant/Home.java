@@ -19,7 +19,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
-
+import vn.theagency.getpregnantapplication.R;
 public class Home extends Activity {
 
 	private Helper mHelper;
@@ -93,7 +93,7 @@ public class Home extends Activity {
 				/*unt.setCustomAnimations(R.animator.alpha_up,
 						R.animator.alpha_down);*/
 				unt.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((4 * mHelper.getAppHeight()) / 40)),
+						((int) ((5 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_unterstutzen, R.drawable.bg_unt,
 						(int) (mHelper.getAppWidth() / 2),isFrist));
 				unt.commit();
@@ -103,7 +103,7 @@ public class Home extends Activity {
 						.beginTransaction();
 
 				unt.replace(R.id.container, Fragment_Home.newInstance(
-						((int) ((3 * mHelper.getAppHeight()) / 40)),
+						((int) ((5 * mHelper.getAppHeight()) / 40)),
 						R.drawable.txt_unterstutzen, R.drawable.bg_unt,
 						(int) (mHelper.getAppWidth() / 2),isFrist));
 				unt.commit();

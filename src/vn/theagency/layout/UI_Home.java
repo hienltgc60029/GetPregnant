@@ -1,7 +1,7 @@
 package vn.theagency.layout;
 
 import vn.theagency.customlayout.PhotoView;
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.getpregnant.Audios_Library.AuswahlAnimation;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
@@ -37,12 +37,12 @@ public class UI_Home {
 	int titleHeight;
 	public static int animUpPlus;
 	int topMargin;
-	
+	int barHeight;
 	
 	private UI_Home(Context _context) {
 		this.context = _context;
 		this.mHelper = Helper.shareIns(this.context);
-		this.size();
+		size(context.getResources().getDimension(R.dimen.SIZE));
 	}
 
 	public static UI_Home shareIns(Context _context) {
@@ -57,23 +57,23 @@ public class UI_Home {
 	/**
 	 * 
 	 */
-	public void size() {
-		icon_home = (int) mHelper.DpToPixel(40) ;
+	public void size(float a) {
+		icon_home = (int) (mHelper.DpToPixel(40)*a) ;
 		icon_home_aligh = (int) mHelper.DpToPixel(12) ;
-		plus = (int) mHelper.DpToPixel(55);
+		plus = (int) (mHelper.DpToPixel(55)*a);
 		plusMargin = (int) mHelper.getAppWidth()/3;
-		textAddition = (int) mHelper.DpToPixel(100);
-		plusTextMargin= (int)mHelper.DpToPixel(50);
-		textsize = (int) mHelper.DpToSp(20);
-		Log.i("LTH", "textsize:" + String.valueOf(textsize));
+		textAddition = (int) (mHelper.DpToPixel(100)*a);
+		plusTextMargin= (int)(mHelper.DpToPixel(50)*a);
+		textsize = (int) (mHelper.DpToSp(20)*a);
+		
 		
 		titleWidth =(int) (8*this.mHelper.getAppWidth()/10);
-		titleHeight =(int) this.mHelper.DpToPixel(120);
-		int header_height = (int) this.mHelper.DpToPixel(46-(55/2));
+		titleHeight =(int) (this.mHelper.DpToPixel(120)*a);
+		
 		topMargin = (int) ((4*mHelper.getAppHeight())/5);
 		animUpPlus = topMargin; 
 		
-		
+		barHeight = (int) (this.mHelper.DpToPixel(30)*a);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class UI_Home {
 	public FrameLayout initUI(int pos) {
 		
 		
-		int barHeight = (int) this.mHelper.DpToPixel(30);
+		barHeight = (int) this.mHelper.DpToPixel(30);
 
 		// Auflosen
 		FrameLayout linearAuflosen = new FrameLayout(this.context);
@@ -228,10 +228,10 @@ public class UI_Home {
 		FrameLayout main = new FrameLayout(this.context);
 		
 		FrameLayout.LayoutParams mainFrame = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, (int) this.mHelper.DpToPixel(92));
+				FrameLayout.LayoutParams.MATCH_PARENT, textAddition);
 		mainFrame.topMargin = topMargin;
 		main.setLayoutParams(mainFrame);
-		
+		main.setId(Key.BG_ADDITION);
 
 		//
 		FrameLayout layout = new FrameLayout(this.context);

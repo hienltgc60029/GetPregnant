@@ -1,6 +1,6 @@
 package vn.theagency.layout;
 
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import android.annotation.SuppressLint;
@@ -43,7 +43,7 @@ public class UI_Nohitaky {
 	int playWidth;
 	int seekHeight;
 	int seekWidth;
-	int avartaHeight, avartaWidth;
+	int avarta;
 	int mTitleSize,mDecSize;
 
 	int DP_10;
@@ -71,7 +71,7 @@ public class UI_Nohitaky {
 		
 
 		
-		btn_back = (int)this.mHelper.DpToPixel(30);
+		btn_back = (int)this.context.getResources().getDimension(R.dimen.BACK);
 		
 
 		
@@ -85,8 +85,8 @@ public class UI_Nohitaky {
 		DP_10 = (int) this.context.getResources().getDimension(R.dimen.DP_10);
 
 		
-		swHeight = (int) this.mHelper.DpToPixel(200);
-		swWidth = (int) this.mHelper.DpToPixel(220);
+		swHeight = (int) this.mHelper.DpToPixel(39);
+		swWidth = (int) this.mHelper.DpToPixel(150);
 		
 		playHeight = (int)this.mHelper.DpToPixel(20);
 		playWidth = (int)this.mHelper.DpToPixel(27);
@@ -97,10 +97,10 @@ public class UI_Nohitaky {
 		seekWidth = (int)this.mHelper.DpToPixel(12);
 		
 
-		avartaHeight = (int)this.mHelper.DpToPixel(137);
-		avartaWidth = (int) this.mHelper.DpToPixel(137);
-		mTitleSize = (int) this.mHelper.DpToSp(25);
-		mDecSize = (int) this.mHelper.DpToSp(15);
+		avarta = (int)this.context.getResources().getDimension(R.dimen.AVARTA_NOHITAKY);
+		
+		mTitleSize = (int) this.context.getResources().getDimension(R.dimen.TITLE_NOHITAKY);
+		mDecSize = (int) this.context.getResources().getDimension(R.dimen.DEC_NOHITAKY);
 		
 		
 	}
@@ -154,15 +154,15 @@ public class UI_Nohitaky {
 		RelativeLayout main = new RelativeLayout(this.context);
 
 		FrameLayout.LayoutParams mainPara = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT, avartaHeight);
-		mainPara.topMargin = (int) this.mHelper.DpToPixel(75);
+				FrameLayout.LayoutParams.MATCH_PARENT, avarta);
+		mainPara.topMargin = (int) this.mHelper.DpToPixel(60);
 		main.setLayoutParams(mainPara);
 
 		ImageView avarta = new ImageView(this.context);
 		avarta.setId(Key.AUDIOS_NAME);
 		avarta.setImageResource(pAvarta);
 		RelativeLayout.LayoutParams avarPara = new RelativeLayout.LayoutParams(
-				avartaWidth, avartaHeight);
+				this.avarta, this.avarta);
 		avarPara.leftMargin = (int) this.mHelper.DpToPixel(20);
 
 		Typeface type = Typeface.createFromAsset(this.context.getAssets(),
@@ -174,6 +174,7 @@ public class UI_Nohitaky {
 		title.setTextColor(Color.WHITE);
 		title.setAlpha(0.8f);
 		title.setText(pTitle);
+		title.setLineSpacing(-9f, 1f);
 		
 		
 
@@ -240,22 +241,25 @@ public class UI_Nohitaky {
 		main.setLayoutParams(mainParams);
 		main.setWeightSum(4f);
 		main.setOrientation(LinearLayout.VERTICAL);
-		main.setBackgroundResource(R.drawable.bg_nohitaki);
+	//	main.setBackgroundResource(R.drawable.bg_nohitaki);
 
 		// Download Music
 		LinearLayout layout = new LinearLayout(this.context);
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
 		layout.setLayoutParams(layoutParams);
-		layoutParams.gravity = Gravity.RIGHT;
-		layoutParams.rightMargin = DP_10;
-		layout.setOrientation(LinearLayout.HORIZONTAL);
+		layout.setId(Key.SAMMLUNG);
+		layout.setBackgroundResource(R.drawable.nohi_btn_deine_sammlung);
+		layout.setOrientation(LinearLayout.VERTICAL);
 		CheckBox musik = new CheckBox(this.context);
 		musik.setId(Key.NOHITAKI_MusikCheck);
 		LinearLayout.LayoutParams musikPara = new LinearLayout.LayoutParams(
 				checkWidth, checkHeight);
-
-		musikPara.gravity = Gravity.CENTER;
+		int topMargin = (int)(((height/4)-checkHeight)/2);
+		musikPara.topMargin=topMargin;
+		musikPara.gravity = Gravity.RIGHT;
+		musikPara.rightMargin= DP_10;
+		
 		musik.setLayoutParams(musikPara);
 		musik.setBackgroundResource(R.drawable.btn_check_normal);
 		// musik.setBackgroundResource(R.drawable.btn_check);
@@ -265,16 +269,18 @@ public class UI_Nohitaky {
 		LinearLayout layout1 = new LinearLayout(this.context);
 		LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
-		layoutParams1.gravity = Gravity.RIGHT;
-		layoutParams1.rightMargin = DP_10;
+		layout1.setId(Key.DOWNLOAD_PDF);
+		layout1.setBackgroundResource(R.drawable.nohi_btn_download);
 		layout1.setLayoutParams(layoutParams1);
-		layout1.setOrientation(LinearLayout.HORIZONTAL);
+		layout1.setOrientation(LinearLayout.VERTICAL);
 		CheckBox musik1 = new CheckBox(this.context);
 		musik1.setId(Key.NOHITAKI_PDFCheck);
 		musik1.setBackgroundResource(R.drawable.btn_check_normal);
 		LinearLayout.LayoutParams musikPara1 = new LinearLayout.LayoutParams(
 				checkWidth, checkHeight);
-		musikPara1.gravity = Gravity.CENTER;
+		musikPara1.topMargin=topMargin;
+		musikPara1.gravity = Gravity.RIGHT;
+		musikPara1.rightMargin= DP_10;
 		musik1.setLayoutParams(musikPara1);
 		// musik1.setBackgroundResource(R.drawable.btn_check);
 		musik1.setButtonDrawable(R.drawable.btn_check);
@@ -283,31 +289,35 @@ public class UI_Nohitaky {
 		LinearLayout layout2 = new LinearLayout(this.context);
 		LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
-		layoutParams2.gravity = Gravity.RIGHT;
-		layoutParams2.rightMargin = DP_10;
+		
+		layout2.setBackgroundResource(R.drawable.nohi_btn_wecker_normal);
 		layout2.setLayoutParams(layoutParams2);
-		layout2.setOrientation(LinearLayout.HORIZONTAL);
+		layout2.setOrientation(LinearLayout.VERTICAL);
 		ImageView musik2 = new ImageView(this.context);
 		musik2.setId(Key.NOHITAKI_Wecker);
 		LinearLayout.LayoutParams musikPara2 = new LinearLayout.LayoutParams(
 				checkWidth, checkHeight);
-		musikPara2.gravity = Gravity.CENTER;
+		musikPara2.topMargin=topMargin;
+		musikPara2.gravity = Gravity.RIGHT;
+		musikPara2.rightMargin= DP_10;
 		musik2.setLayoutParams(musikPara2);
 		musik2.setImageResource(R.drawable.btn_wecker);
 		layout2.addView(musik2);
 		// ==========
-		LinearLayout layout3 = new LinearLayout(this.context);
+		FrameLayout layout3 = new FrameLayout(this.context);
 		LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
 				FrameLayout.LayoutParams.WRAP_CONTENT, 0, 1f);
-		layoutParams3.gravity = Gravity.RIGHT;
-		layoutParams3.rightMargin = DP_10;
+		
+		layout3.setBackgroundResource(R.drawable.nohi_btn_hintergrund_normal);
 		layout3.setLayoutParams(layoutParams3);
-		layout3.setOrientation(LinearLayout.HORIZONTAL);
+	//	layout3.setOrientation(LinearLayout.HORIZONTAL);
 		Switch musik3 = new Switch(this.context);
 		musik3.setId(Key.NOHITAKI_ChangeBg);
-		LinearLayout.LayoutParams musikPara3 = new LinearLayout.LayoutParams(
+		FrameLayout.LayoutParams musikPara3 = new FrameLayout.LayoutParams(
 				swWidth, swHeight);
-		musikPara3.gravity = Gravity.CENTER;
+		
+		musikPara3.rightMargin = DP_10;
+		musikPara3.gravity = Gravity.CENTER_VERTICAL|Gravity.RIGHT;
 		musik3.setLayoutParams(musikPara3);
 
 		musik3.setThumbResource(R.drawable.apptheme_switch_inner_holo_light);

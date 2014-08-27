@@ -2,20 +2,17 @@ package vn.theagency.getpregnant;
 
 import java.util.ArrayList;
 
-import vn.theagency.bussiness.Store;
-import vn.theagency.helper.Key;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Deine_Adapter;
 import vn.theagency.helper.Helper;
+import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Deneine;
 import vn.theagency.objects.Audios;
 import vn.theagency.sqlite.SQliteData;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -47,6 +44,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 	View deine,back;
 	ArrayList<Audios> arr;
 	String indexHome;
+	Deine_Adapter adapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -85,9 +83,12 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		SQliteData data = new SQliteData(getApplicationContext());
 		data.open();
 		arr =data.getAllAudios();
+		for(int i = 0 ; i < arr.size();i++){
+			Log.i("LTH", String.valueOf(arr.get(i).getmImageURL()));
+		}
 		data.close();
 		
-		Deine_Adapter adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), arr,height,indexHome);
+		adapter = new Deine_Adapter(R.layout.items, getApplicationContext(), arr,height,indexHome);
 		list.setAdapter(adapter);
 		list.setOnScrollListener(this);
 		
@@ -96,6 +97,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		adapter.notifyDataSetChanged();
 		
 	}
 	public void initUI() {
@@ -166,20 +168,7 @@ public class Deine_Titel extends Activity implements OnClickListener,OnScrollLis
 		overridePendingTransition(R.anim.slide_down_out, R.anim.slide_down_in);
 	
 	}
-	@Override
-	public void finish() {
-		// TODO Auto-generated method stub
-		super.finish();
-		clearMemory();
-		System.gc();
-	}
-	@Override
-	protected void onDestroy() {
-		
-		super.onDestroy();
-		clearMemory();
-		System.gc();
-	}
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		// TODO Auto-generated method stub

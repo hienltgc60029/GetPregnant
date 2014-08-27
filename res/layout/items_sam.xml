@@ -37,7 +37,7 @@
             android:paddingTop="0dp"
             android:text="Lieblingsplatz"
             android:textColor="#fffab2"
-            android:textSize="21dp"
+            android:textSize="@dimen/TITLE_ITEMS"
             android:alpha="0.5" />
 <FrameLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:lines="4"
             android:text="Blindtext elitis endiatiu sincil lue molest Uciam ipita int."
             android:textColor="#fffab2"
-            android:textSize="12dp" />
+            android:textSize="@dimen/DEC_ITEMS" />
        
 </FrameLayout>
 

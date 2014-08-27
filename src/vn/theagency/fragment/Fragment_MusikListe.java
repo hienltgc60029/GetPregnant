@@ -5,10 +5,8 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import vn.theagency.bussiness.Store;
 import vn.theagency.getpregnant.Musik;
-import vn.theagency.getpregnant.R;
-import vn.theagency.helper.GetSongsAll;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Musik_Adapter;
@@ -21,10 +19,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -35,19 +30,17 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Fragment_MusikListe extends Fragment implements
 		OnItemClickListener, OnClickListener, OnSeekBarChangeListener
 		 {
-	private Store mStore;
+	
 	private Helper mHelper;
 	public UI_Musik mMusik;
 	public FrameLayout wrapper;
@@ -583,6 +576,9 @@ public class Fragment_MusikListe extends Fragment implements
 			public void onCompletion(MediaPlayer mp) {
 				// TODO Auto-generated method stub
 				mMusik.mLine.setProgress(0);
+				for (int i = 0; i < arr.size(); i++) {
+					arr.get(i).setmStatus(false);
+				}
 				if(isShuffer){
 					boolean shufferPlay = false;
 					if(isRepeat){
@@ -603,6 +599,13 @@ public class Fragment_MusikListe extends Fragment implements
 								if(intArray[intArray.length-1]!=0){
 									shufferPlay = true;
 									i = intArray.length;
+									try {
+										
+										mg.arg1 = 3;
+										messenger.send(mg);
+									} catch (Exception ex) {
+										ex.printStackTrace();
+									}
 								}
 						}
 							
@@ -653,14 +656,16 @@ public class Fragment_MusikListe extends Fragment implements
 							list.performItemClick(list.getChildAt(mPosition), mPosition,
 									list.getAdapter().getItemId(mPosition));
 							adapter.notifyDataSetChanged();
+						}else{
+							try {
+								
+								mg.arg1 = 3;
+								messenger.send(mg);
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
 						}
-						arr.get(arr.size()-1).setmStatus(false);
-						adapter.notifyDataSetChanged();
-						end.setText("00:00");
-						prev.setEnabled(false);
-						next.setEnabled(false);
-						play.setVisibility(View.VISIBLE);
-						pause.setVisibility(View.GONE);
+						
 						
 					}
 				}

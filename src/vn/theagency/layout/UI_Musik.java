@@ -1,6 +1,6 @@
 package vn.theagency.layout;
 
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import android.animation.LayoutTransition;
@@ -39,7 +39,7 @@ public class UI_Musik {
 		this.context = _context;
 		this.mHelper = Helper.shareIns(this.context);
 		initValues();
-		size(1);
+		size(this.context.getResources().getDimension(R.dimen.SIZE));
 	}
 
 	public static UI_Musik shareIns(Context _context) {
@@ -59,13 +59,13 @@ public class UI_Musik {
 		seekbar_width = (int) this.mHelper.DpToPixel(20);
 		seekbar_height = (int) this.mHelper.DpToPixel(20);
 		//
-		headerHeight = (int) this.mHelper.DpToPixel(101);
-		playWidth = (int) this.mHelper.DpToPixel(46);
-		playHeight = (int) this.mHelper.DpToPixel(46);
-		nextWidth = (int) this.mHelper.DpToPixel(88);
-		nextHeight = (int) this.mHelper.DpToPixel(45);
-		prevWidth = (int) this.mHelper.DpToPixel(88);
-		prevHeight = (int) this.mHelper.DpToPixel(45);
+		headerHeight = (int) (this.mHelper.DpToPixel(101)*a);
+		playWidth = (int) (this.mHelper.DpToPixel(46)*a);
+		playHeight = (int) (this.mHelper.DpToPixel(46)*a);
+		nextWidth = (int) (this.mHelper.DpToPixel(88)*a);
+		nextHeight = (int) (this.mHelper.DpToPixel(45)*a);
+		prevWidth = (int) (this.mHelper.DpToPixel(88)*a);
+		prevHeight = (int) (this.mHelper.DpToPixel(45)*a);
 		repeatWidth = (int) this.mHelper.DpToPixel(29);
 		repeatHeight = (int) this.mHelper.DpToPixel(32);
 		shufferWidth = (int) this.mHelper.DpToPixel(32);
@@ -77,9 +77,9 @@ public class UI_Musik {
 		musik_bar_width = (int) this.mHelper.DpToPixel(304);
 		musik_bar_height = (int) this.mHelper.DpToPixel(54);
 		musik_list_width = (int) this.mHelper.DpToPixel(304); 
-		musik_list_height = (int) (55*this.mHelper.getAppHeight())/100;
+		
 		marginMusik =(int) this.mHelper.DpToPixel(28);
-
+		musik_list_height =  (int) (this.mHelper.getAppHeight()-musik_bar_height-(marginMusik + headerHeight)-playHeight-this.mHelper.DpToPixel(30));
 	}
 
 	public View initUIBackGround() {
@@ -243,8 +243,9 @@ public class UI_Musik {
 		
 		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT,
-				(int) (mHelper.getAppHeight() / 6));
+				FrameLayout.LayoutParams.WRAP_CONTENT);
 		params.gravity = Gravity.BOTTOM;
+		params.bottomMargin = (int) this.mHelper.DpToPixel(15);
 		main.setLayoutParams(params);
 		//
 		View prev = new View(this.context);
@@ -252,7 +253,7 @@ public class UI_Musik {
 				prevWidth, prevHeight);
 		prevPara.gravity = Gravity.LEFT;
 		prevPara.gravity = Gravity.CENTER_VERTICAL;
-		prevPara.leftMargin = 56;
+		prevPara.leftMargin = (int) this.mHelper.DpToPixel(28);
 		prev.setLayoutParams(prevPara);
 		prev.setBackgroundResource(R.drawable.btn_prev);
 		prev.setId(Key.PREVAUDIO);
@@ -277,7 +278,7 @@ public class UI_Musik {
 		View next = new View(this.context);
 		FrameLayout.LayoutParams nextPara = new FrameLayout.LayoutParams(
 				prevWidth, prevHeight);
-		nextPara.rightMargin = 56;
+		nextPara.rightMargin = (int) this.mHelper.DpToPixel(28);
 		nextPara.gravity = Gravity.RIGHT | Gravity.CENTER_VERTICAL;
 		next.setLayoutParams(nextPara);
 		next.setBackgroundResource(R.drawable.btn_next);

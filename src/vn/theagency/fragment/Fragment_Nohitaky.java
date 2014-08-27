@@ -1,12 +1,18 @@
 package vn.theagency.fragment;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import vn.theagency.getpregnant.Alarn;
+import vn.theagency.getpregnant.DeineSamlung;
 import vn.theagency.getpregnant.Deine_Titel;
 import vn.theagency.getpregnant.Musik;
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Nohitaky;
@@ -16,13 +22,20 @@ import vn.theagency.sqlite.SQliteData.SQdata;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Message;
 import android.os.Messenger;
 import android.provider.AlarmClock;
@@ -41,6 +54,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		OnCheckedChangeListener, OnSeekBarChangeListener {
@@ -70,6 +84,8 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 	private TimerTask task;
 	private Timer timer = null;
 	int progresss = 0;
+	LinearLayout download,sammlung;
+	String path;
 	public Fragment_Nohitaky(Audios pAudio){
 		this.audio = pAudio;
 	}
@@ -108,7 +124,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		this.initUIMusik = this.mNohitaky.initUIMusik();
 		this.initUIBottom = this.mNohitaky.initUIBottom();
 		this.initUIMusicBar = this.mNohitaky.initUIMusicBar();
-		this.initUITitle = this.mNohitaky.initUITitle(this.audio.getmImageURL(),this.audio.getmTitle(),this.audio.getmDecription());
+		this.initUITitle = this.mNohitaky.initUITitle(this.audio.getmImageURL(),this.audio.getmTitle(),("\n"+this.audio.getmDecription()));
 		this.initUIBackGroundDark = this.mNohitaky.initUIBackGroundDark();
 
 		initUI();
@@ -125,11 +141,22 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		onAttach(getActivity());
 		play_musik = wrapper.findViewById(Key.PLAY);
 		play_musik.setOnClickListener(this);
-
+		download = (LinearLayout) wrapper.findViewById(Key.DOWNLOAD_PDF);
+		download.setOnClickListener(this);
+		sammlung = (LinearLayout) wrapper.findViewById(Key.SAMMLUNG);
+		sammlung.setOnClickListener(this);
 		musikCheck = (CheckBox) this.wrapper
 				.findViewById(Key.NOHITAKI_MusikCheck);
 		musikCheck.setOnCheckedChangeListener(this);
 		pdfCheck = (CheckBox) this.wrapper.findViewById(Key.NOHITAKI_PDFCheck);
+		pdfCheck.setEnabled(false);
+		path=Environment.getExternalStorageDirectory()+"/GetPregnant/";
+		
+		File file = new File(path,((Musik)getActivity()).namePDF);
+		if (file.exists()) {
+		  pdfCheck.setActivated(true);
+		  download.setEnabled(true);
+		}
 
 		wecker = (ImageView) this.wrapper.findViewById(Key.NOHITAKI_Wecker);
 		wecker.setOnClickListener(this);
@@ -146,7 +173,7 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		
 		timeStart = (TextView) this.wrapper.findViewById(Key.START);
 		timeEnd = (TextView) this.wrapper.findViewById(Key.End);
-		timeEnd.setText(String.valueOf(getDurationLength(Integer.parseInt(audio.mID))));
+
 		
 		if(player!=null){
 			if(player.isPlaying()){
@@ -156,31 +183,22 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 			}
 		}
 	}
-	private String getDurationLength(int id) {
-		int pos;
+	private String getDurationLength() {
+		
 		String number;
 		String timePhut = null;
 		String timeGiay = null;
-		if (audio.mID.equalsIgnoreCase("1")) {
-			pos = R.raw.wen;	
-		} else if (audio.mID.equalsIgnoreCase("2")) {
-			pos = R.raw.lie;			
-		} else if (audio.mID.equalsIgnoreCase("3")) {
-			pos = R.raw.zuru;	
-		} else {
-			pos = R.raw.gen;
-		}
-	    MediaPlayer mp = MediaPlayer.create(getActivity(), pos);
+		
 	   
 
-			int phut = (int) ((mp.getDuration() / 60000) % 60);
+			int phut = (int) ((player.getDuration() / 60000) % 60);
 			if (phut < 10) {
 				timePhut = "0" + String.valueOf(phut);
 			} else {
 				timePhut = String.valueOf(phut);
 			}
 
-			int giay = (int) (((mp.getDuration() - (phut * 60000)) / 1000) % 60);
+			int giay = (int) (((player.getDuration() - (phut * 60000)) / 1000) % 60);
 			if (giay < 10) {
 				timeGiay = "0" + String.valueOf(giay);
 			} else {
@@ -221,15 +239,11 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 				ex.printStackTrace();
 			}
 			break;
+		
 		case Key.NOHITAKI_Wecker:
 			
 			((Musik)getActivity()).getHandler().sendEmptyMessage(1);
-			/*try {
-				msg.arg1 = 4;
-				messenger.send(msg);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}*/
+			
 			break;
 		case Key.btn_back:
 			((Musik)getActivity()).onBackPressed();
@@ -239,39 +253,33 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		case Key.PLAYAUDIO:
 			//Play Audios
 			if(player!=null){
-				if(player.isPlaying()){
-					play_audio.setBackgroundResource(R.drawable.btn_playaudio);
-					player.pause();
-					
-					
-					
+				
+					if(player.isPlaying()){
+						play_audio.setBackgroundResource(R.drawable.btn_playaudio);
+						player.pause();		
+					}else{
+						play_audio.setBackgroundResource(R.drawable.btn_pause);
+						player.start();				
+					}
 				}else{
-					play_audio.setBackgroundResource(R.drawable.btn_pause);
-					player.start();
-					
-					
-				}
-			}else{
-				
-
 				play_audio.setBackgroundResource(R.drawable.btn_pause);
-				if (audio.mID.equalsIgnoreCase("1")) {
-					positionSong = R.raw.wen;	
-				} else if (audio.mID.equalsIgnoreCase("2")) {
-					positionSong = R.raw.lie;			
-				} else if (audio.mID.equalsIgnoreCase("3")) {
-					positionSong = R.raw.zuru;	
-				} else {
-					positionSong = R.raw.gen;
-				}
-				PlayResource(positionSong);
 				
+				PlayResource(audio.getmPrice());
 				
-			}
+				timeEnd.setText(getDurationLength());
+			}		
+			break;
+		case Key.DOWNLOAD_PDF:
+			//((Musik)getActivity()).startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("www.education.gov.yk.ca/pdf/pdf-test.pdf")));
+			coppyPDF();
 			
 			
-			
-			
+			break;
+		case Key.SAMMLUNG:
+			Intent intent = new Intent(getActivity(),DeineSamlung.class);
+			intent.putExtra("Audios", ((Musik)getActivity()).getIntent().getExtras().getString("Audios"));
+			((Musik)getActivity()).startActivity(intent);
+			((Musik)getActivity()).finish();
 			
 			break;
 		default:
@@ -279,7 +287,29 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 		}
 	}
 	
-	
+	void coppyPDF(){
+		AssetManager assetManager= getActivity().getAssets();
+	 try {
+		InputStream inputStream=	assetManager.open(((Musik)getActivity()).namePDF);
+		
+		File file =new File(path, ((Musik)getActivity()).namePDF);
+		
+		FileOutputStream fileOutputStream =new FileOutputStream(file);
+		byte[] pByte=new byte[1024];
+		int lenght;
+		while ( (lenght =inputStream.read(pByte)) >0) {
+			fileOutputStream.write(pByte, 0, lenght);
+			
+		}
+		fileOutputStream.close();
+		Toast.makeText(getActivity(), "Download PDF Successfull", Toast.LENGTH_LONG).show();
+			} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		
+	}
+
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -337,9 +367,20 @@ public class Fragment_Nohitaky extends Fragment implements OnClickListener,
 
 
 
-private void PlayResource(int res) {
-	player = MediaPlayer.create(getActivity(), res);
-	player.start();
+private void PlayResource(String url) {
+	if(timer!=null){
+		timer.cancel();
+		timer=null;
+	}
+	player = new MediaPlayer();
+	player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+	try {
+		player.setDataSource(url);
+	} catch (Exception e) {
+		e.printStackTrace();
+	} 
+	player.prepareAsync();
+	//
 	player.setOnPreparedListener(new OnPreparedListener() {
 		@Override
 		public void onPrepared(MediaPlayer mp) {
@@ -348,8 +389,9 @@ private void PlayResource(int res) {
 			musik_line.setProgress(0);
 			
 			int duration = mp.getDuration();
-			musik_line.setMax((int)(duration/1000));
+			
 			final int period = duration / 1000;
+			musik_line.setMax(period-1);
 			task = new TimerTask() {
 
 				@Override
@@ -360,7 +402,17 @@ private void PlayResource(int res) {
 							if (player.isPlaying()) {
 								progresss++;
 								musik_line.setProgress(progresss);
-								
+								if(progresss==period){
+									
+									player.stop();
+									player.release();
+									progresss=0;
+									play_audio.setBackgroundResource(R.drawable.btn_pause);
+									
+									PlayResource(audio.getmPrice());
+									
+									timeEnd.setText(getDurationLength());
+								}
 								
 							}
 						}
@@ -372,6 +424,7 @@ private void PlayResource(int res) {
 
 		}
 	});
+	
 }
 
 public String count(int process){
@@ -406,6 +459,10 @@ public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 		if(player!=null && player.isPlaying()){
 		progresss = progress;
 		player.seekTo(progresss*1000);
+		if((progresss*1000)==player.getDuration()){
+			
+			PlayResource(audio.getmPrice());
+		}
 		}
 	}
 	if(player!=null && player.isPlaying()){
@@ -424,6 +481,8 @@ public void onStopTrackingTouch(SeekBar seekBar) {
 	// TODO Auto-generated method stub
 	
 }
+
+
 
 }
 

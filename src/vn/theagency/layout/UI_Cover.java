@@ -1,10 +1,11 @@
 package vn.theagency.layout;
 
 import vn.theagency.customlayout.PhotoView;
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,8 +25,8 @@ public class UI_Cover {
 	int icon_info;
 	int text_width;
 	int text_heigt;
-	int warning_height,warning_width;
-	
+	public int warning_height,warning_width;
+	public int animationInfo;
 
 	private Helper mHelper;
 	private Context context;
@@ -45,7 +46,7 @@ public class UI_Cover {
 	}
 	private void size(float a) {
 		
-
+		Log.i("LTH", "a= "+String.valueOf(a));
 		text_width= (int) (mHelper.DpToPixel(303)*a);
 		text_heigt= (int) ( mHelper.DpToPixel(84)*a);
 		icon_top = (int) (mHelper.DpToPixel(400)*a);
@@ -58,7 +59,7 @@ public class UI_Cover {
 		icon_info = (int) ( mHelper.DpToPixel(40)*a);
 		warning_height =(int) ( mHelper.DpToPixel(411)*a);
 		warning_width = (int) ( mHelper.DpToPixel(324)*a);
-		
+		animationInfo = (int)((icon_info/2)+icon_left);
 		
 		
 			
@@ -79,22 +80,32 @@ public class UI_Cover {
 				FrameLayout.LayoutParams.MATCH_PARENT,
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		v.setLayoutParams(params);
-		v.setBackgroundResource(R.drawable.cover_hide_bg);
+		v.setBackgroundResource(R.drawable.bg_nohitaky_2);
 		v.setVisibility(View.GONE);
 		v.setId(Key.HEADER);
 		return v;
 	}
-	public View initUIWarning() {
-		View v = new View(this.context);
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+	public FrameLayout initUIWarning() {
+		
+		
+		FrameLayout layout = new FrameLayout(context);
+		FrameLayout.LayoutParams paramsLayout = new FrameLayout.LayoutParams(
 				warning_width,
 				warning_height);
-		params.topMargin=icon_info+icon_left;
-		params.gravity = Gravity.CENTER_HORIZONTAL;
+		paramsLayout.topMargin=icon_info+icon_left;
+		paramsLayout.gravity = Gravity.CENTER_HORIZONTAL;
+		layout.setLayoutParams(paramsLayout);
+		View v = new View(this.context);
+		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.MATCH_PARENT,
+				FrameLayout.LayoutParams.MATCH_PARENT);
+		
 		v.setLayoutParams(params);
 		v.setBackgroundResource(R.drawable.warning_popup);
-		v.setVisibility(View.GONE);
-		return v;
+		
+		v.setId(Key.WARNING);
+		layout.addView(v);
+		return layout;
 	}
 	public View initUIText() {
 		View v = new View(this.context);
@@ -107,8 +118,11 @@ public class UI_Cover {
 		v.setBackgroundResource(R.drawable.cover_text);
 		return v;
 	}
-	public ImageView initUIInfo() {
-		
+	public FrameLayout initUIInfo() {
+		FrameLayout layout =new FrameLayout(context);
+		FrameLayout.LayoutParams paramsLayout = new FrameLayout.LayoutParams(
+				FrameLayout.LayoutParams.MATCH_PARENT,
+				FrameLayout.LayoutParams.WRAP_CONTENT);
 		ImageView view = new ImageView(this.context);
 		FrameLayout.LayoutParams viewParams = new FrameLayout.LayoutParams(
 				icon_info,
@@ -118,9 +132,9 @@ public class UI_Cover {
 		view.setLayoutParams(viewParams);
 		view.setBackgroundResource(R.drawable.btn_cover_info);
 		view.setId(Key.HOME);
+		layout.addView(view);
 		
-		
-		return view;
+		return layout;
 	}
 	public FrameLayout initUIBottom() {
 		int leftAusg = (int) ((this.mHelper.getAppWidth()/2)-icon_width-(icon_left/2));

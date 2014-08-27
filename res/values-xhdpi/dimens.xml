@@ -37,4 +37,18 @@
      <dimen name="MarginTextImage">5dp</dimen>
      <dimen name="PaddingLeft">20dp</dimen>
      <dimen name="PaddingRight">15dp</dimen>
+      <!-- TextItems -->
+     <dimen name="TITLE_ITEMS">21dp</dimen>
+     <dimen name="DEC_ITEMS">12dp</dimen>
+      <dimen name="DEC">8dp</dimen>
+       <dimen name="TITLE">18dp</dimen>
+        <dimen name="BACK">30dp</dimen>
+        <dimen name="PRICE">16sp</dimen>
+        <!-- Nohitaki -->
+         <dimen name="AVARTA_NOHITAKY">137dp</dimen>
+         <dimen name="TITLE_NOHITAKY">12dp</dimen>
+          <dimen name="DEC_NOHITAKY">10dp</dimen>
+       		
+        
+     
 </resources>

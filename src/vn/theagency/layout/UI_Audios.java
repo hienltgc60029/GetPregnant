@@ -1,6 +1,6 @@
 package vn.theagency.layout;
 
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.Key;
 import vn.theagency.helper.Helper;
 import android.animation.LayoutTransition;
@@ -34,14 +34,14 @@ public class UI_Audios {
 	int bottom,bottom_down;
 	public static int animUpPlus;
 	//
-	public static int header_width,header_height,textsize;
+	public static int header_height,textsize;
 
 	private static UI_Audios _ins;
 
 	private UI_Audios(Context _context) {
 		this.context = _context;
 		this.mHelper = Helper.shareIns(this.context);
-		size();
+		size(this.context.getResources().getDimension(R.dimen.SIZE));
 	}
 
 	public static UI_Audios shareIns(Context _context) {
@@ -50,21 +50,21 @@ public class UI_Audios {
 		}
 		return UI_Audios._ins;
 	}
-	private void size() {
+	private void size(float a) {
 		
-		plus_width = (int) mHelper.DpToPixel(55);
-		plus_height = (int) mHelper.DpToPixel(55);
+		plus_width = (int) (mHelper.DpToPixel(55)*a);
+		plus_height = (int)(mHelper.DpToPixel(55)*a);
 		
 		//
-		header_width = (int) this.mHelper.DpToPixel(360);
-		header_height = (int) this.mHelper.DpToPixel(92);
-		textsize = (int)  mHelper.DpToSp(20);
-		bottom = (int) this.mHelper.DpToPixel(52);
-		bottom_down = (int) this.mHelper.DpToPixel(40);
-		plusMargin = (int) mHelper.DpToPixel(70);
-		plusTextMargin= (int) mHelper.DpToPixel(50);
 		
-		animUpPlus =(int) ((4*mHelper.getAppHeight())/5);; 
+		header_height = (int) (this.mHelper.DpToPixel(100)*a);
+		textsize = (int)  (mHelper.DpToSp(20)*a);
+		bottom = (int) (this.mHelper.DpToPixel(52)*a);
+		bottom_down = (int) (this.mHelper.DpToPixel(40)*a);
+		plusMargin = (int) (mHelper.DpToPixel(70)*a);
+		plusTextMargin= (int) (mHelper.DpToPixel(50)*a);
+		
+		animUpPlus =(int) ((4*mHelper.getAppHeight())/5);
 		Log.i("LTH", "UI_AudiosAnim"+ String.valueOf(animUpPlus));
 	}
 

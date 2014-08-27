@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import vn.theagency.getpregnant.Cover;
 import vn.theagency.getpregnant.Musik;
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 
 import vn.theagency.objects.Audios;
 import vn.theagency.sqlite.SQliteData;
@@ -108,16 +108,13 @@ public class Deine_Adapter extends BaseAdapter {
 	    				
 	    				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	    				intent.putExtra("Audios", indexHome);
-	    				intent.putExtra(Audios.TITLE, arr.get(position).getmTitle());
-	    				intent.putExtra(Audios.DECRIPTION, arr.get(position).getmDecription());
-	    				intent.putExtra(Audios.IMAGEURL, String.valueOf(arr.get(position).getmImageURL()));
+	    				
 	
 	    				intent.putExtra(Audios.ID, String.valueOf(arr.get(position).getmID()));
 	    				mContext.startActivity(intent);
 	    				
 	    				
-	    				//System.gc();
-	    				//System.exit(0);
+	    				
 	    				}catch(Exception ex){
 	    					Toast.makeText(mContext, "This Function", Toast.LENGTH_LONG).show();
 	    					Intent intent = new Intent(mContext,Cover.class);
@@ -134,13 +131,8 @@ public class Deine_Adapter extends BaseAdapter {
 						// TODO Auto-generated method stub
 						SQliteData data = new SQliteData(mContext);
 						data.open();
-						
-						audios = new Audios(arr.get(position).getmID(),arr.get(position).getmTitle()
-								, arr.get(position).getmDecription()
-								, arr.get(position).getmPrice()
-								, arr.get(position).getmImageURL());
-						data.putAudiosCollections(audios);
-						data.removeAudios(audios.getmID());
+						data.putAudiosCollections(arr.get(position));
+						data.removeAudios(arr.get(position).getmID());
 						data.close();
 						arr.remove(position);
 						notifyDataSetChanged();

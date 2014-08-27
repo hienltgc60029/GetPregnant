@@ -42,7 +42,7 @@ public class SQliteData {
 					+ Audios.PRICE 
 					+ " text,"
 					+ Audios.IMAGEURL 
-					+ " text );";
+					+ " INTEGER );";
 			db.execSQL(order);
 			String order1 = "CREATE TABLE " + AUDIOS + " ("
 					+ Audios.ID
@@ -53,8 +53,10 @@ public class SQliteData {
 					+ " text," 
 					+ Audios.PRICE 
 					+ " text,"
+					+ Audios.STATUS 
+					+ " INTEGER,"
 					+ Audios.IMAGEURL 
-					+ " text );";
+					+ " INTEGER );";
 			db.execSQL(order1);
 			
 			
@@ -91,7 +93,7 @@ public void putAudiosCollections(Audios detail){
 		cv.put(Audios.TITLE, detail.getmTitle());
 		cv.put(Audios.DECRIPTION, detail.getmDecription());
 		cv.put(Audios.PRICE, detail.getmPrice());
-		cv.put(Audios.IMAGEURL, String.valueOf(detail.getmImageURL()));
+		cv.put(Audios.IMAGEURL,detail.getmImageURL());
 		ouDatabase.insert(AUDIOS_COLLECTIONS, null, cv);	
 	}
 public ArrayList<Audios> getAllAudiosCollections(){
@@ -105,7 +107,7 @@ public ArrayList<Audios> getAllAudiosCollections(){
 	int cusImageUrl = c.getColumnIndex(Audios.IMAGEURL);
 	for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 		Audios detail = new Audios(c.getString(cusID),c.getString(cusTitle), c.getString(cusDecription),
-				c.getString(cusPrice),Integer.parseInt(c.getString(cusImageUrl)));
+				c.getString(cusPrice),c.getInt(cusImageUrl),"",0);
 		audios.add(detail);
 	}
 
@@ -119,15 +121,29 @@ public void removeAllAudiosCollections() {
 }
 
 //
-public void putAudios(Audios detail){		
-	ContentValues cv = new ContentValues();
-	cv.put(Audios.ID, detail.getmID());
-	cv.put(Audios.TITLE, detail.getmTitle());
-	cv.put(Audios.DECRIPTION, detail.getmDecription());
-	cv.put(Audios.PRICE, detail.getmPrice());
-	cv.put(Audios.IMAGEURL, String.valueOf(detail.getmImageURL()));
-	ouDatabase.insert(AUDIOS, null, cv);	
+public void putAudios(Audios detail){
+	boolean isHas= false;
+	Cursor c = ouDatabase.rawQuery("SELECT * FROM " + AUDIOS, null);
+	int cusID = c.getColumnIndex(Audios.ID);
+	for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+		if(c.getString(cusID).equalsIgnoreCase(detail.getmID())){
+			isHas=true;
+		}
+		
+	}
+	if(!isHas){
+		ContentValues cv = new ContentValues();
+		cv.put(Audios.ID, detail.getmID());
+		cv.put(Audios.TITLE,( detail.getmTitle()));
+		cv.put(Audios.DECRIPTION, detail.getmDecription());
+		cv.put(Audios.PRICE, detail.getmPrice());
+		cv.put(Audios.IMAGEURL, detail.getmImageURL());
+		cv.put(Audios.STATUS, detail.getStatus());
+		ouDatabase.insert(AUDIOS, null, cv);	
+	}
+	
 }
+
 public ArrayList<Audios> getAllAudios(){
 ArrayList<Audios> audios = new ArrayList<Audios>();
 Cursor c = ouDatabase.rawQuery("SELECT * FROM " + AUDIOS, null);
@@ -136,10 +152,14 @@ int cusTitle = c.getColumnIndex(Audios.TITLE);
 int cusDecription = c.getColumnIndex(Audios.DECRIPTION);
 int cusPrice = c.getColumnIndex(Audios.PRICE);
 int cusImageUrl = c.getColumnIndex(Audios.IMAGEURL);
+int cusStatus = c.getColumnIndex(Audios.STATUS);
 for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-	Audios detail = new Audios(c.getString(cusID),c.getString(cusTitle), c.getString(cusDecription),
-			c.getString(cusPrice),Integer.parseInt(c.getString(cusImageUrl)));
-	audios.add(detail);
+	if(c.getInt(cusStatus)==1){
+		Audios detail = new Audios(c.getString(cusID),c.getString(cusTitle), c.getString(cusDecription),
+				c.getString(cusPrice),c.getInt(cusImageUrl),"",1);
+		audios.add(detail);
+	}
+	
 }
 
 return audios;
@@ -147,8 +167,50 @@ return audios;
 public void removeAudios(String ID) {
 ouDatabase.delete(AUDIOS, Audios.ID+"='"+ID+"'" , null);
 }
+public void removeAudiosByStatus(int ID) {
+ouDatabase.delete(AUDIOS, Audios.STATUS+"="+ID+"" , null);
+}
 
-
+public Audios getAudioByID(String ID){
+	Audios audios=null;
+	Cursor c = ouDatabase.rawQuery("SELECT * FROM " + AUDIOS, null);
 	
+	int cusID = c.getColumnIndex(Audios.ID);
+	int cusTitle = c.getColumnIndex(Audios.TITLE);
+	int cusDecription = c.getColumnIndex(Audios.DECRIPTION);
+	int cusPrice = c.getColumnIndex(Audios.PRICE);
+	int cusImageUrl = c.getColumnIndex(Audios.IMAGEURL);
+	for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+		if(c.getString(cusID).equalsIgnoreCase(ID)){
+			audios = new Audios(c.getString(cusID),c.getString(cusTitle), c.getString(cusDecription),
+					c.getString(cusPrice),c.getInt(cusImageUrl),"",0);
+		}
+		
+		
+	}
+
+	return audios;
+}
+
+public void getAudioIDByStatus(String url){
+	String audios="";
+	String path ="";
+	Cursor c = ouDatabase.rawQuery("SELECT * FROM " + AUDIOS, null);
+	int cusID = c.getColumnIndex(Audios.ID);
+	int cusStatus = c.getColumnIndex(Audios.STATUS);
+	for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+		if(c.getInt(cusStatus)==2){
+			audios=c.getString(cusID);
+			path = url+audios;
+		}	
+	}
+	
+	ContentValues cv = new ContentValues();
+	cv.put(Audios.STATUS, 1);
+	cv.put(Audios.PRICE, path);
+	ouDatabase.update(AUDIOS, cv, Audios.ID+"='"+audios+"'", null);
+	
+}
+
 }
 

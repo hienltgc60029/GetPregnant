@@ -2,17 +2,11 @@ package vn.theagency.helper;
 
 import java.util.ArrayList;
 
-import vn.theagency.bussiness.Store;
-import vn.theagency.getpregnant.DeineSamlung;
-import vn.theagency.getpregnant.R;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.objects.Audios;
 import vn.theagency.sqlite.SQliteData;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +16,6 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 @SuppressLint("InflateParams")
@@ -109,6 +102,7 @@ public class SammlungAdapter extends BaseAdapter {
 					
 					SQliteData data = new SQliteData(mContext);
 					data.open();
+					arr.get(position).setStatus(1);
 					data.putAudios(arr.get(position));
 					data.removeAudiosCollections(arr.get(position).getmID());
 					data.close();

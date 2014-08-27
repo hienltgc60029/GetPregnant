@@ -1,28 +1,24 @@
 package vn.theagency.getpregnant;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-import vn.theagency.bussiness.Store;
 import vn.theagency.fragment.Fragment_MusikListe;
 import vn.theagency.fragment.Fragment_Nohitaky;
+import vn.theagency.getpregnantapplication.R;
 import vn.theagency.helper.GetSongsAll;
 import vn.theagency.helper.Helper;
 import vn.theagency.layout.UI_Musik;
 import vn.theagency.objects.Audios;
 import vn.theagency.objects.Songs;
-import android.R.menu;
+import vn.theagency.sqlite.SQliteData;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
-import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -36,7 +32,7 @@ import android.widget.Toast;
 public class Musik extends Activity {
 
 	private Helper mHelper;
-	private Store mStore;
+
 	public UI_Musik mMusik;
 	public View initUIBackGround, initUIHeader;
 	public FrameLayout wrapper;
@@ -45,9 +41,10 @@ public class Musik extends Activity {
 	public View volume;
 	ArrayList<Songs> arr;
 	Audios audio;
+	public String index;
 	
 	FragmentTransaction transaction;
-	
+	public String namePDF="";
 
 	Handler handler = new Handler() {
 		@Override
@@ -83,17 +80,19 @@ public class Musik extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.musik);
+		
 		try{
+			index = getIntent().getExtras().getString("Audios");
+			setPDFbyIndex(Integer.parseInt(index));
 			getArray();
-			if(getIntent().getExtras().getString(Audios.TITLE)!=null){
-				String mTitle = getIntent().getExtras().getString(Audios.TITLE);
-				String mDecription = getIntent().getExtras().getString(
-						Audios.DECRIPTION);
-				String mImage = getIntent().getExtras().getString(Audios.IMAGEURL);
-				String mID = getIntent().getExtras().getString(Audios.ID);
+			if(getIntent().getExtras().getString(Audios.ID)!=null){
 				
-				audio = new Audios(mID, mTitle, mDecription, "",
-						Integer.parseInt(mImage));
+				SQliteData data = new SQliteData(getApplicationContext());
+				data.open();
+				audio =data.getAudioByID(getIntent().getExtras().getString(Audios.ID));
+				data.close();
+				
+				
 
 				FragmentTransaction transaction = getFragmentManager()
 						.beginTransaction();
@@ -105,6 +104,33 @@ public class Musik extends Activity {
 			Intent intent = new Intent(getApplicationContext(),Cover.class);
 			startActivity(intent);
 			System.exit(0);
+		}
+	}
+	public void setPDFbyIndex(int posi){
+		switch (posi) {
+		case 1:
+			//Ausgchen
+			namePDF = "ausgleichen.pdf";
+			break;
+		case 2:
+			//auflonsen
+			namePDF = "auflosen.pdf";
+			break;
+		case 3:
+			//unterstutzen
+			namePDF = "unterstutzen.pdf";
+			break;
+		case 4:
+			//verbessern
+			namePDF = "verbessern.pdf";
+			break;
+		case 5:
+			//vorbereiten
+			namePDF = "vorbereiten.pdf";
+			break;
+
+		default:
+			break;
 		}
 	}
 	@Override
@@ -129,7 +155,22 @@ public class Musik extends Activity {
 			transaction.replace(R.id.musik,
 					Fragment_Nohitaky.newInstance(audio,true));
 			transaction.commit();
-
+			break;
+		case 4:
+			Fragment_Nohitaky.newInstance(null,false);
+			FragmentTransaction transaction2 = getFragmentManager()
+					.beginTransaction();
+			transaction2.replace(R.id.musik,
+					Fragment_Nohitaky.newInstance(audio,true));
+			transaction2.commit();
+			break;
+		case 3:
+			Fragment_MusikListe.newInstance(false, null);
+			FragmentTransaction transaction3 = getFragmentManager()
+					.beginTransaction();
+			transaction3.replace(R.id.musik,
+					Fragment_MusikListe.newInstance(true, arr));
+			transaction3.commit();
 			break;
 		default:
 			break;

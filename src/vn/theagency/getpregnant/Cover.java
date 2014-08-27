@@ -4,6 +4,8 @@ import vn.theagency.helper.Helper;
 import vn.theagency.helper.Key;
 import vn.theagency.layout.UI_Cover;
 import android.R.integer;
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,10 +27,11 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import vn.theagency.getpregnantapplication.R;
 public class Cover extends Activity implements OnClickListener,OnTouchListener{
 
 	private Helper mHelper;
@@ -36,15 +39,16 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 	public FrameLayout wrapper;
 
 	public View initUIBackGround;
-	public ImageView initUIInfo;
+	public FrameLayout initUIInfo;
 	public FrameLayout initUIBottom;
 	public View initUIText;
-
+	ImageView info;
 	View aus, unt, vor, ver, home, hide,auf;
 	View aus1, unt1, vor1, ver1, auf1;
 
-	View initUIWarning, initUIHideBackGround;
-	
+	View warning, initUIHideBackGround;
+	FrameLayout initUIWarning;
+	boolean isInfo = true;
 	AnimationDrawable frameAnimation;
 
 	@Override
@@ -67,7 +71,8 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		this.initUIHideBackGround = this.mCover.initUIHideBackGround();
 
 		initUI();
-		
+		info = (ImageView) findViewById(Key.HOME);
+		warning = findViewById(Key.WARNING);
 		preference();
 	}
 
@@ -115,12 +120,13 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 		this.wrapper.setLayoutParams(para);
 
 		this.wrapper.addView(initUIBackGround);
-		this.wrapper.addView(this.initUIInfo);
+		
 		this.wrapper.addView(this.initUIText);
 
 		this.wrapper.addView(this.initUIBottom);
 		this.wrapper.addView(this.initUIHideBackGround);
 		this.wrapper.addView(this.initUIWarning);
+		this.wrapper.addView(this.initUIInfo);
 		setContentView(this.wrapper);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if(!prefs.getBoolean("first_time", false))
@@ -193,20 +199,278 @@ public class Cover extends Activity implements OnClickListener,OnTouchListener{
 
 			break;
 		case Key.HOME:
-			Intent openClockIntent = new Intent(getApplicationContext(),Alarm01.class);
-			openClockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(openClockIntent);
+		
+			if(isInfo){
+				this.info.animate().xBy(0).translationX((int)(mHelper.getAppWidth()/2 - mCover.animationInfo)).setDuration(250).setListener(new AnimatorListener() {
+					
+					@Override
+					public void onAnimationStart(Animator animation) {
+						// TODO Auto-generated method stub
+						isInfo = false;
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animator animation) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						// TODO Auto-generated method stub
+						info.animate().rotationYBy(0).rotationY(90).setDuration(250).setListener(new AnimatorListener() {
+							
+							@Override
+							public void onAnimationStart(Animator animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onAnimationRepeat(Animator animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onAnimationEnd(Animator animation) {
+								// TODO Auto-generated method stub
+								info.setBackgroundResource(R.drawable.btn_close);
+								
+								
+								
+								info.animate().rotationYBy(90).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
+									
+									@Override
+									public void onAnimationStart(Animator animation) {
+										// TODO Auto-generated method stub
+										initUIHideBackGround.setVisibility(View.VISIBLE);
+										initUIHideBackGround.setAlpha(0.5f);
+									}
+									
+									@Override
+									public void onAnimationRepeat(Animator animation) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									@Override
+									public void onAnimationEnd(Animator animation) {
+										// TODO Auto-generated method stub
+										initUIWarning.clearAnimation();
+										initUIWarning.setVisibility(View.VISIBLE);
+									//	warning.setVisibility(View.VISIBLE);
+										warning.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.auswahl_down));
+									//	new CoverAnimation(initUIWarning, R.anim.auswahl_down, initUIWarning.getId());
+										
+										
+									//	new CoverAnimation(initUIWarning, R.anim.auswahl_down, initUIWarning.getId());
+									}
+									
+									@Override
+									public void onAnimationCancel(Animator animation) {
+										// TODO Auto-generated method stub
+										
+									}
+								}).start();
+							}
+							
+							@Override
+							public void onAnimationCancel(Animator animation) {
+								// TODO Auto-generated method stub
+								
+							}
+						}).start();
+					}
+					
+					@Override
+					public void onAnimationCancel(Animator animation) {
+						// TODO Auto-generated method stub
+						
+					}
+				}).start();
+			}else{
+				isInfo = true;
+				this.info.clearAnimation();
+				info.animate().rotationYBy(0).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
+					
+					@Override
+					public void onAnimationStart(Animator animation) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animator animation) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						// TODO Auto-generated method stub
+						info.setBackgroundResource(R.drawable.btn_cover_info);
+						info.animate().rotationYBy(180).rotationY(360).setDuration(250).setListener(new AnimatorListener() {
+							
+							@Override
+							public void onAnimationStart(Animator animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onAnimationRepeat(Animator animation) {
+								// TODO Auto-generated method stub
+								
+							}
+							
+							@Override
+							public void onAnimationEnd(Animator animation) {
+								// TODO Auto-generated method stub
+								
+								info.animate().translationX(0).setDuration(250).setListener(new AnimatorListener() {
+									
+									@Override
+									public void onAnimationStart(Animator animation) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									@Override
+									public void onAnimationRepeat(Animator animation) {
+										// TODO Auto-generated method stub
+										
+									}
+									
+									@Override
+									public void onAnimationEnd(Animator animation) {
+										// TODO Auto-generated method stub
+										warning.setVisibility(View.GONE);
+									}
+									
+									@Override
+									public void onAnimationCancel(Animator animation) {
+										// TODO Auto-generated method stub
+										
+									}
+								}).start();
+							}
+							
+							@Override
+							public void onAnimationCancel(Animator animation) {
+								// TODO Auto-generated method stub
+								
+							}
+						}).start();
+					}
+					
+					@Override
+					public void onAnimationCancel(Animator animation) {
+						// TODO Auto-generated method stub
+						
+					}
+				}).start();
+				
+				
+				this.home.setVisibility(View.VISIBLE);
+				this.initUIWarning.setVisibility(View.GONE);
+				this.initUIHideBackGround.setVisibility(View.GONE);
+			}
 			
-		/*//	this.initUIInfo.animate().xBy(0).translationX((int)(mHelper.getAppWidth()/2 - mHelper.DpToPixel(32))).setDuration(1000).start();
 			
-			this.initUIWarning.setVisibility(View.VISIBLE);
+			
+			
+			/*this.initUIWarning.setVisibility(View.VISIBLE);
 			this.initUIHideBackGround.setVisibility(View.VISIBLE);
 			this.home.setVisibility(View.GONE);*/
 			break;
 		case Key.HEADER:
+			isInfo = true;
+			this.info.clearAnimation();
+			info.animate().rotationYBy(0).rotationY(180).setDuration(250).setListener(new AnimatorListener() {
+				
+				@Override
+				public void onAnimationStart(Animator animation) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationRepeat(Animator animation) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					// TODO Auto-generated method stub
+					info.setBackgroundResource(R.drawable.btn_cover_info);
+					info.animate().rotationYBy(180).rotationY(360).setDuration(250).setListener(new AnimatorListener() {
+						
+						@Override
+						public void onAnimationStart(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void onAnimationRepeat(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							// TODO Auto-generated method stub
+							
+							info.animate().translationX(0).setDuration(250).setListener(new AnimatorListener() {
+								
+								@Override
+								public void onAnimationStart(Animator animation) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onAnimationRepeat(Animator animation) {
+									// TODO Auto-generated method stub
+									
+								}
+								
+								@Override
+								public void onAnimationEnd(Animator animation) {
+									// TODO Auto-generated method stub
+									warning.setVisibility(View.GONE);
+								}
+								
+								@Override
+								public void onAnimationCancel(Animator animation) {
+									// TODO Auto-generated method stub
+									
+								}
+							}).start();
+						}
+						
+						@Override
+						public void onAnimationCancel(Animator animation) {
+							// TODO Auto-generated method stub
+							
+						}
+					}).start();
+				}
+				
+				@Override
+				public void onAnimationCancel(Animator animation) {
+					// TODO Auto-generated method stub
+					
+				}
+			}).start();
+			
+			
 			this.home.setVisibility(View.VISIBLE);
 			this.initUIWarning.setVisibility(View.GONE);
 			this.initUIHideBackGround.setVisibility(View.GONE);
+			
 			break;
 
 		default:
